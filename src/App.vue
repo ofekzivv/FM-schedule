@@ -8,7 +8,7 @@ export default {
   name: 'App',
   data(){
     return{
-test:10
+test:9
     }
   }
 }
