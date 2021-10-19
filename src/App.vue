@@ -8,7 +8,8 @@ export default {
   name: 'App',
   data(){
     return{
-test:8
+test:8,
+      test2:54543
     }
   }
 }
