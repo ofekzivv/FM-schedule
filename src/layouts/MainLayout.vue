@@ -3,14 +3,16 @@
     <q-header  class="my-font">
       <q-toolbar>
 
-        <q-toolbar-title class="absolute-center text-bold">
-          Flash Media Scheduler
+        <q-toolbar-title class="absolute-center english-font text-h5">
+          FLASH MEDIA SCHEDULER
+          <q-icon name="bolt" size="md" />
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
     <q-drawer
       bordered
+      dark
       content-class="bg-grey-1"
       :breakpoint="598"
       show-if-above
@@ -20,6 +22,7 @@
       <q-tabs
         v-model="tab"
         vertical
+        class="bg-secondary"
       >
         <q-route-tab
           v-for="link in essentialLinks"
@@ -58,6 +61,12 @@
 import EssentialLink from 'components/EssentialLink.vue'
 
 const linksData = [
+  {
+    title: 'בית',
+    label: 'בית',
+    icon: 'home',
+    link: '/'
+  },
   {
     title: 'תצוגה יומית',
     label: 'לפי יום',
