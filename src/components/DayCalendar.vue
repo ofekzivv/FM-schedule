@@ -21,15 +21,18 @@
       hour24-format
       :interval-start="16"
       :interval-count="30"
+      @click:time2="onClickTime2"
+
     />
   </div>
 </template>
 
 <script>
 import { QCalendar } from '@quasar/quasar-ui-qcalendar'
+import EventAdder from "components/EventAdder";
 
 export default {
-  data () {
+  data() {
     return {
       selectedDate: ''
     }
@@ -38,11 +41,26 @@ export default {
     QCalendar
   },
   methods: {
-    calendarNext () {
+    calendarNext() {
       this.$refs.calendar.next()
     },
-    calendarPrev () {
+    calendarPrev() {
       this.$refs.calendar.prev()
+    },
+    onClickTime2(data) {
+      this.$q.dialog({
+        component: EventAdder,
+        parent: this,
+        eventDate: data.scope.timestamp.date,
+        eventTime: data.scope.timestamp.time,
+        // ...more.props...
+      }).onOk(() => {
+        console.log('OK')
+      }).onCancel(() => {
+        console.log('Cancel')
+      }).onDismiss(() => {
+        console.log('Called on OK or Cancel')
+      })
     }
   }
 }
@@ -62,7 +80,11 @@ export default {
     font-size: 1.2em;
     font-weight: bold;
   }
+
+
 }
+
+
 
 
 </style>
