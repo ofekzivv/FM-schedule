@@ -1,48 +1,56 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+  <q-layout view="hHh Lpr hFf">
+    <q-header  class="my-font">
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
-        />
 
-        <q-toolbar-title>
-          Quasar App
+        <q-toolbar-title class="absolute-center text-bold">
+          Flash Media Scheduler
         </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
     <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
       bordered
       content-class="bg-grey-1"
+      :breakpoint="598"
+      show-if-above
+      class="large-screen-only"
+      :width="150"
     >
-      <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Essential Links
-        </q-item-label>
-        <EssentialLink
+      <q-tabs
+        v-model="tab"
+        vertical
+      >
+        <q-route-tab
           v-for="link in essentialLinks"
           :key="link.title"
           v-bind="link"
-        />
-      </q-list>
+          :to="link.link"
+          :name="link.title"
+          :icon="link.icon"
+          :label="link.label" />
+      </q-tabs>
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view/>
     </q-page-container>
+
+    <q-footer class="small-screen-only">
+      <q-tabs
+        v-model="tab"
+        dense
+      >
+        <q-route-tab
+          v-for="link in essentialLinks"
+          :key="link.title"
+          v-bind="link"
+          :to="link.link"
+          :name="link.title"
+          :icon="link.icon"
+          :label="link.label" />
+      </q-tabs>
+    </q-footer>
   </q-layout>
 </template>
 
@@ -51,46 +59,22 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksData = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'תצוגה יומית',
+    label: 'לפי יום',
+    icon: 'today',
+    link: 'DayView'
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: 'תצוגה שבועית',
+    label: 'לפי שבוע',
+    icon: 'date_range',
+    link: 'WeekView'
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
+    title: 'תצוגה חודשית',
+    label: 'לפי חודש',
+    icon: 'calendar_view_month',
+    link: 'MonthView'
   }
 ];
 
@@ -99,9 +83,13 @@ export default {
   components: { EssentialLink },
   data () {
     return {
-      leftDrawerOpen: false,
-      essentialLinks: linksData
+      essentialLinks: linksData,
+      tab: 'Home'
     }
   }
 }
 </script>
+
+<style lang="scss">
+
+</style>
