@@ -1,4 +1,5 @@
 import firebase from 'firebase/compat';
+const app = require("firebase/app")
 
 firebase.initializeApp( {
   apiKey: "AIzaSyARqN0HgQTBN4rM8SZWSlZXaVSb-u9BjeQ",
@@ -12,5 +13,6 @@ firebase.initializeApp( {
 
 
 export default {
-  firebase
+  firebase,
+  app
 }
