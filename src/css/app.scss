@@ -1,1 +1,29 @@
 // app global css in SCSS form
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+.my-font {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.text-grand-hotel {
+  font-family: 'Grand Hotel', 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif
+}
+
+
+.small-screen-only {
+  @media (max-width: $breakpoint-xs-max) {display  : block}
+
+  @media (min-width: $breakpoint-sm-min) {display: none}
+}
+
+.large-screen-only {
+  @media (max-width: $breakpoint-xs-max) {display: none}
+
+  @media (min-width: $breakpoint-sm-min) {display: block}
+}
+
+
+.constrain {
+  max-width:  975px;
+  margin: 0 auto;
+}
+
