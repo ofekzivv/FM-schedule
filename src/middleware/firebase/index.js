@@ -1,5 +1,6 @@
 import firebase from 'firebase/compat';
-
+const app = require("firebase/app")
+cxvvcxcxvcxvcxvcv
 firebase.initializeApp( {
   apiKey: "AIzaSyARqN0HgQTBN4rM8SZWSlZXaVSb-u9BjeQ",
   authDomain: "schedulerflashdev.firebaseapp.com",
@@ -12,5 +13,6 @@ firebase.initializeApp( {
 
 
 export default {
-  firebase
+  firebase,
+  app
 }
