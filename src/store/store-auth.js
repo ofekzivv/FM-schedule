@@ -1,4 +1,5 @@
 import firebaseInstance from '../middleware/firebase'
+import {getUser} from '../middleware/firebase/index'
 import {LocalStorage} from 'quasar'
 
 const state = {
@@ -48,6 +49,9 @@ const actions = {
         commit('setLoggedIn', true)
         LocalStorage.set('loggedIn', true)
         window.user = user
+        this.getUser().then(userData => {
+          localStorage.set('user', userData)
+        })
         this.$router.push('/').catch(err => {
         })
       } else {
