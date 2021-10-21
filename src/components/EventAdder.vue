@@ -9,53 +9,15 @@
 
         <q-select v-model="model" :options="options" label="סוג אירוע" />
 
-        <q-input filled v-model="formData.startDate" label="בחר תאריך ושעת התחלה">
-          <template v-slot:prepend>
+        <q-input filled v-model="formData.date" mask="date" :rules="['date']">
+          <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-date v-model="formData.startDate" mask="YYYY-MM-DD HH:mm">
+              <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                <q-date v-model="formData.date">
                   <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat/>
+                    <q-btn v-close-popup label="Close" color="primary" flat />
                   </div>
                 </q-date>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-
-          <template v-slot:append>
-            <q-icon name="access_time" class="cursor-pointer">
-              <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-time v-model="formData.startDate" mask="YYYY-MM-DD HH:mm" format24h :minute-options="minuteOptionsTime">
-                  <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat/>
-                  </div>
-                </q-time>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input>
-
-        <q-input filled v-model="formData.endDate" label="בחר תאריך ושעת סיום">
-          <template v-slot:prepend>
-            <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-date v-model="formData.endDate" mask="YYYY-MM-DD HH:mm">
-                  <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat/>
-                  </div>
-                </q-date>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-
-          <template v-slot:append>
-            <q-icon name="access_time" class="cursor-pointer">
-              <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-time v-model="formData.endDate" mask="YYYY-MM-DD HH:mm" format24h  :minute-options="minuteOptionsTime">
-                  <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat/>
-                  </div>
-                </q-time>
               </q-popup-proxy>
             </q-icon>
           </template>
@@ -86,8 +48,7 @@ export default {
       formData: {
         title: '',
         details: '',
-        startDate: `${this.eventDate} ${this.eventTime}`,
-        endDate: `${this.eventDate} ${this.eventTime}`
+        date:`${this.eventDate}`
       },
       minuteOptionsTime: [ 0, 15, 30, 45 ],
     }
