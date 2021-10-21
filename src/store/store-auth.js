@@ -49,10 +49,8 @@ const actions = {
         commit('setLoggedIn', true)
         LocalStorage.set('loggedIn', true)
         window.user = user
-        this.getUser().then(userData => {
-          localStorage.set('user', userData)
-        })
-        this.$router.push('/').catch(err => {
+        this.$router.push('/')
+          .catch(() => {
         })
       } else {
         commit('setLoggedIn', false)

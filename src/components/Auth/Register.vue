@@ -96,8 +96,8 @@ export default {
       if (!this.$refs.email.hasError && !this.$refs.password.hasError) {
         this.registerUser(this.formData)
           .then(() => {
-            debugger
-            addUser({name: this.formData.name, companyName: this.formData.companyName, email: this.formData.email})
+
+            addUser({companyName: this.formData.companyName, email: this.formData.email})
             this.$q.notify({
               color: 'green-4',
               textColor: 'white',

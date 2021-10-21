@@ -1,8 +1,12 @@
-import {getUser} from '../../middleware/firebase/database/index'
+import {getUser, getAllUsers} from '../../middleware/firebase/database'
 
 export default {
-  getUserInfo: async ({commit}, userId) => {
-    let arr = await this.getUser(userId)
-    commit('setUserData', arr)
+  // getUserInfo: async ({commit}, user) => {
+  //   let arr = await getUser({})
+  //   commit('setUserData', arr)
+  // },
+  getUsers: async ({commit}) =>{
+    const users = await getAllUsers();
+    commit('setUsers', users)
   }
 }
