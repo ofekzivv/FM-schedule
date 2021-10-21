@@ -1,4 +1,4 @@
-import {getUser, getAllUsers} from '../../middleware/firebase/database'
+import {getUser, getAllUsers} from 'src/middleware/firebase/database'
 
 export default {
   // getUserInfo: async ({commit}, user) => {

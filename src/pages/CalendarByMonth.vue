@@ -7,7 +7,7 @@
       </div>
     </div>
     <div>
-    <MonthCalendar v-if="model" :user="model"/>
+    <MonthCalendar v-if="model" :company="model"/>
     </div>
   </div>
 </template>

@@ -7,7 +7,7 @@
 
         <q-input v-model="formData.details" label="פרטים"/>
 
-        <q-select v-model="model" :options="options" label="סוג אירוע" />
+        <q-select v-model="eventTypeSelector" :options="options" label="סוג אירוע" />
 
         <q-input filled v-model="formData.date" mask="date" :rules="['date']">
           <template v-slot:append>
@@ -35,22 +35,22 @@
 </template>
 
 <script>
-
+import {addEvent} from 'src/middleware/firebase/database'
 export default {
   name: "EventAdder",
-  props: ['eventDate', 'eventTime'],
+  props: ['eventDate', 'eventMonth', 'companyName', 'eventYear'],
   data() {
     return {
-      model: null,
+      eventTypeSelector: null,
       options: [
         'פוסט', 'תמונה', 'סרטון'
       ],
       formData: {
+        eventType: '',
         title: '',
         details: '',
         date:`${this.eventDate}`
       },
-      minuteOptionsTime: [ 0, 15, 30, 45 ],
     }
   },
   mounted() {
@@ -77,9 +77,9 @@ export default {
     },
 
     onOKClick() {
-      // on OK, it is REQUIRED to
-      // emit "ok" event (with optional payload)
-      // before hiding the QDialog
+      this.formData.eventType = this.eventTypeSelector
+      debugger
+      addEvent({name: this.formData.title,companyName: this.companyName,month: this.eventMonth,year: this.eventYear , event: this.formData })
       this.$emit('ok')
       // or with payload: this.$emit('ok', { ... })
 

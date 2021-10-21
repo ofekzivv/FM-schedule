@@ -27,9 +27,25 @@ function getUser(options) {
       return arr;
 })
 }
+export async function getMonthlyEvents(options){
+  return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.year}/${options.month}`).once('value')
+    .then(res => {
+      const arr = [];
+      const map = res.val();
+      for (const key in map) {
+        const item = map[key];
+        item.id = key;
+        arr.push(item);
+      }
+      return arr;
+    })
+}
+export function addEvent(options){
+  return  fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.year}/${options.month}/${options.name}`).set(options.event)
+}
 
-function getUserEvents(options) {
-  return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events`).once('value')
+export async function getUserEvents(options) {
+  return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events`).once('value')
     .then(res => {
       const arr = [];
       const map = res.val();
@@ -48,5 +64,5 @@ export async function addUser(options) {
 }
 
 export default {
-  getUser, getUserEvents, addUser
+  getUser, getUserEvents
 }
