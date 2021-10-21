@@ -31,7 +31,7 @@ module.exports = function (/* ctx */) {
       // 'ionicons-v4',
       // 'mdi-v5',
       // 'fontawesome-v5',
-      // 'eva-icons',
+       'eva-icons',
       // 'themify',
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
@@ -79,7 +79,8 @@ module.exports = function (/* ctx */) {
       iconSet: 'material-icons', // Quasar icon set
       lang: 'he', // Quasar language pack
       config: {
-        notify: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ }
+        notify: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ },
+        loading: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ }
       },
 
       // Possible values for "importStrategy":
@@ -97,7 +98,8 @@ module.exports = function (/* ctx */) {
       // Quasar plugins
       plugins: [
         'Dialog',
-        'Notify'
+        'Notify',
+        'Loading'
       ]
     },
 

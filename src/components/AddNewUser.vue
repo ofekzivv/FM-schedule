@@ -54,6 +54,7 @@ export default {
       return re.test(String(email).toLowerCase());
     },
     submitForm() {
+      this.$q.loading.show()
       this.$refs.email.validate()
       addUser({companyName: this.formData.companyName, email: this.formData.email}).then(() => {
         this.$q.notify({
@@ -64,6 +65,7 @@ export default {
         this.formData.companyName = ''
         this.formData.email = ''
       })
+      this.$q.loading.hide()
     },
   }
 }
