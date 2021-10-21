@@ -13,6 +13,7 @@
 </template>
 
 <script>
+//temporary
 const optionsGroups = [
   {label:'חגים', color: 'yellow', value: 'חגים'},
   {label:'משפחה', color: 'red', value: 'משפחה'},
