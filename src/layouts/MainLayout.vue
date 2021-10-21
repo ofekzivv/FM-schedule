@@ -17,7 +17,7 @@
       :breakpoint="598"
       show-if-above
       class="large-screen-only"
-      :width="150"
+      :width="180"
     >
       <q-tabs
         v-model="tab"
@@ -32,7 +32,10 @@
           :name="link.title"
           :icon="link.icon"
           :label="link.label" />
+
+          <TasksFilter/>
       </q-tabs>
+
     </q-drawer>
 
     <q-page-container>
@@ -59,6 +62,7 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
+import TasksFilter from "components/TasksFilter";
 
 const linksData = [
   {
@@ -89,7 +93,7 @@ const linksData = [
 
 export default {
   name: 'MainLayout',
-  components: { EssentialLink },
+  components: { EssentialLink, TasksFilter },
   data () {
     return {
       essentialLinks: linksData,
@@ -100,5 +104,4 @@ export default {
 </script>
 
 <style lang="scss">
-
 </style>
