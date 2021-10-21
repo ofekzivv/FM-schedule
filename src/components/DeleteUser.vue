@@ -1,12 +1,12 @@
 <template>
   <div>
     <p>בחר את המשתמש שברצונך למחוק: </p>
-    <q-select v-model="model" outlined :options="options" label="משתמש" style="max-width: 400px; margin: 0 auto" />
+    <q-select v-model="companyName" outlined :options="options" label="משתמש" style="max-width: 400px; margin: 0 auto" />
     <q-btn
-      :disable="!this.model"
+      :disable="!this.companyName"
       class="q-mt-md"
       label="מחק משתמש"
-      @click="deleteUser()"
+      @click="removeUser()"
       color="primary"/>
   </div>
 </template>
@@ -17,15 +17,20 @@ import {mapState, mapMutations, mapActions} from "vuex";
 export default {
   data() {
     return {
-      model: null,
+      companyName: null,
       options: []
     }
   },
   computed: mapState('users',['users']),
   methods:{
-    ...mapActions('users',['getUsers']),
-    deleteUser() {
-      console.log(this.model)
+    ...mapActions('users',['getUsers', 'deleteUser']),
+    removeUser() {
+      this.deleteUser(this.companyName).then(() => {
+        this.$q.notify({
+          type: 'negative',
+          message: `המשתמש נמחק.`
+        })
+      }).catch(err => console.log(err))
     }
   },
   async created() {
