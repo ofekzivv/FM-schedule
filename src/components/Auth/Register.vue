@@ -70,7 +70,7 @@
 
 <script>
 import {mapActions} from "vuex";
-
+import {addUser} from 'src/middleware/firebase/database'
 export default {
   data() {
     return {
@@ -95,8 +95,9 @@ export default {
       this.$refs.password.validate()
       if (!this.$refs.email.hasError && !this.$refs.password.hasError) {
         this.registerUser(this.formData)
-          .then(userId => {
-            //this.getUserInfo(userId)
+          .then(() => {
+            debugger
+            addUser({name: this.formData.name, companyName: this.formData.companyName, email: this.formData.email})
             this.$q.notify({
               color: 'green-4',
               textColor: 'white',
