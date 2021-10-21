@@ -11,7 +11,6 @@
         narrow-indicator
       >
         <q-tab name="login" label="התחברות"/>
-        <q-tab name="register" label="הרשמה"/>
       </q-tabs>
 
       <q-separator/>
@@ -19,10 +18,6 @@
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="login">
           <Login/>
-        </q-tab-panel>
-
-        <q-tab-panel name="register">
-          <Register/>
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -38,7 +33,6 @@ export default {
   },
   components: {
     'Login' : require('components/Auth/Login').default,
-    'Register' : require('components/Auth/Register').default
   }
 }
 </script>
