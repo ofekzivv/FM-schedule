@@ -1,31 +1,31 @@
 <template>
-<div class="q-pa-lg">
-  <strong class="title-filter">סנן אירועים:</strong>
-  <div class="filter-group">
-    <q-option-group
-      v-model="filteredGroup"
-      :options="options"
-      color="options.color"
-      type="toggle"
-    />
+  <div class="q-pa-lg">
+    <strong class="title-filter">סנן אירועים:</strong>
+    <div class="filter-group">
+      <q-option-group
+        v-model="filteredGroup"
+        :options="options"
+        color="options.color"
+        type="toggle"
+      />
+    </div>
   </div>
-</div>
 </template>
 
 <script>
 //temporary
 const optionsGroups = [
-  {label:'חגים', color: 'yellow', value: 'חגים'},
-  {label:'משפחה', color: 'red', value: 'משפחה'},
-  {label:'חברים', color: 'blue', value: 'חברים'},
-  {label:'מסיבות', color: 'green', value: 'מסיבות'},
+  {label: 'חגים', color: 'yellow', value: 'חגים'},
+  {label: 'משפחה', color: 'red', value: 'משפחה'},
+  {label: 'חברים', color: 'blue', value: 'חברים'},
+  {label: 'מסיבות', color: 'green', value: 'מסיבות'},
 ]
 
 export default {
   name: "TasksFilter",
   props: ['items'],
-  data(){
-    return{
+  data() {
+    return {
       //will be in the state
       options: optionsGroups,
       filteredGroup: [],
@@ -35,12 +35,13 @@ export default {
 </script>
 
 <style scoped>
-.title-filter{
+.title-filter {
   margin-right: 7px;
   max-height: 10px;
   justify-content: start;
 }
-.filter-group{
+
+.filter-group {
   justify-content: start;
 }
 </style>
