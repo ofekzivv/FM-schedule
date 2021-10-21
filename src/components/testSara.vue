@@ -4,7 +4,17 @@
 
 <script>
 export default {
-  name: "testSara"
+  name: "testSara",
+  data(){
+    return{
+
+    }
+  },
+  methods: {
+    a(){
+      console.log('hiiii')
+    }
+  }
 }
 </script>
 
