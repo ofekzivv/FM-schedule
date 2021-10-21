@@ -6,12 +6,13 @@
 export default {
   name: "testSara",
   data(){
-    return{
+     return{
 
-    }
+     }
   },
   methods: {
     a(){
+      console.log('hello')
       console.log('hiiii')
     }
   }
