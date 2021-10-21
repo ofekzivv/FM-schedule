@@ -7,6 +7,8 @@
 
         <q-input v-model="formData.details" label="פרטים"/>
 
+        <q-select v-model="model" :options="options" label="סוג אירוע" />
+
         <q-input filled v-model="formData.startDate" label="בחר תאריך ושעת התחלה">
           <template v-slot:prepend>
             <q-icon name="event" class="cursor-pointer">
@@ -23,7 +25,7 @@
           <template v-slot:append>
             <q-icon name="access_time" class="cursor-pointer">
               <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-time v-model="formData.startDate" mask="YYYY-MM-DD HH:mm" format24h>
+                <q-time v-model="formData.startDate" mask="YYYY-MM-DD HH:mm" format24h :minute-options="minuteOptionsTime">
                   <div class="row items-center justify-end">
                     <q-btn v-close-popup label="Close" color="primary" flat/>
                   </div>
@@ -49,7 +51,7 @@
           <template v-slot:append>
             <q-icon name="access_time" class="cursor-pointer">
               <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-time v-model="formData.endDate" mask="YYYY-MM-DD HH:mm" format24h>
+                <q-time v-model="formData.endDate" mask="YYYY-MM-DD HH:mm" format24h  :minute-options="minuteOptionsTime">
                   <div class="row items-center justify-end">
                     <q-btn v-close-popup label="Close" color="primary" flat/>
                   </div>
@@ -77,12 +79,17 @@ export default {
   props: ['eventDate', 'eventTime'],
   data() {
     return {
+      model: null,
+      options: [
+        'פוסט', 'תמונה', 'סרטון'
+      ],
       formData: {
         title: '',
         details: '',
         startDate: `${this.eventDate} ${this.eventTime}`,
         endDate: `${this.eventDate} ${this.eventTime}`
-      }
+      },
+      minuteOptionsTime: [ 0, 15, 30, 45 ],
     }
   },
   mounted() {

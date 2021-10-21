@@ -1,12 +1,30 @@
 <template>
   <q-layout view="hHh Lpr hFf">
-    <q-header  class="my-font">
+    <q-header class="my-font">
       <q-toolbar>
 
         <q-toolbar-title class="absolute-center english-font text-h5">
           FLASH MEDIA SCHEDULER
-          <q-icon name="bolt" size="md" />
+          <q-icon name="bolt" size="md"/>
         </q-toolbar-title>
+
+        <q-space/>
+
+        <q-btn
+          v-if="!loggedIn"
+          icon="login"
+          label="התחבר"
+          to="/auth"
+          flat
+          size="12px" />
+        <q-btn
+          v-if="loggedIn"
+          @click="logout()"
+          icon="logout"
+          label="התנתק"
+          flat
+          size="12px" />
+
       </q-toolbar>
     </q-header>
 
@@ -31,9 +49,9 @@
           :to="link.link"
           :name="link.title"
           :icon="link.icon"
-          :label="link.label" />
+          :label="link.label"/>
 
-          <TasksFilter/>
+        <TasksFilter/>
       </q-tabs>
 
     </q-drawer>
@@ -54,7 +72,7 @@
           :to="link.link"
           :name="link.title"
           :icon="link.icon"
-          :label="link.label" />
+          :label="link.label"/>
       </q-tabs>
     </q-footer>
   </q-layout>
@@ -63,6 +81,7 @@
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
 import TasksFilter from "components/TasksFilter";
+import {mapActions, mapState} from "vuex";
 
 const linksData = [
   {
@@ -93,11 +112,20 @@ const linksData = [
 
 export default {
   name: 'MainLayout',
-  components: { EssentialLink, TasksFilter },
-  data () {
+  components: {EssentialLink, TasksFilter},
+  data() {
     return {
       essentialLinks: linksData,
       tab: 'Home'
+    }
+  },
+  computed:{
+    ...mapState('auth', ['loggedIn']),
+  },
+  methods: {
+    ...mapActions('auth', ['logoutUser']),
+    logout() {
+      this.logoutUser()
     }
   }
 }
