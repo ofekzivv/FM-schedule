@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import users from './users'
 
+import users from './users'
 import auth from './store-auth'
 
 

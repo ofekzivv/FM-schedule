@@ -1,5 +1,6 @@
 import fireBaseInstance from '../';
 
+
 function getUser(options) {
   return fireBaseInstance.firebase.database().ref(`users/${window.user.uid}`).once('value')
     .then(res => {
