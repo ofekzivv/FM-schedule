@@ -91,20 +91,8 @@ const linksData = [
     link: '/'
   },
   {
-    title: 'תצוגה יומית',
-    label: 'לפי יום',
-    icon: 'today',
-    link: 'DayView'
-  },
-  {
-    title: 'תצוגה שבועית',
-    label: 'לפי שבוע',
-    icon: 'date_range',
-    link: 'WeekView'
-  },
-  {
-    title: 'תצוגה חודשית',
-    label: 'לפי חודש',
+    title: 'לוח שנה',
+    label: 'לוח שנה',
     icon: 'calendar_view_month',
     link: 'MonthView'
   }
