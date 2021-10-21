@@ -1,4 +1,5 @@
 import {getUser, getAllUsers} from 'src/middleware/firebase/database'
+import firebaseInstance from '../../middleware/firebase/database'
 
 export default {
   // getUserInfo: async ({commit}, user) => {
@@ -8,5 +9,11 @@ export default {
   getUsers: async ({commit}) =>{
     const users = await getAllUsers();
     commit('setUsers', users)
+  },
+
+  deleteUser: async ({commit}, companyName) => {
+    await firebaseInstance.deleteUserFromDb(companyName).then(() => {
+      console.log('The user was removed from actions')
+    }).catch(err => console.log(err))
   }
 }

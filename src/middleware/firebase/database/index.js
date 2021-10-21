@@ -27,6 +27,13 @@ function getUser(options) {
       return arr;
 })
 }
+
+ function deleteUserFromDb(companyName) {
+ return fireBaseInstance.firebase.database().ref(`users/${companyName}`).remove().then(() => {
+   console.log('the user was removed from db')
+ }).catch(err => err)
+}
+
 export async function getMonthlyEvents(options){
   return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.year}/${options.month}`).once('value')
     .then(res => {
@@ -63,6 +70,8 @@ export async function addUser(options) {
   return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).set({email: options.email, companyName: options.companyName})
 }
 
+
+
 export default {
-  getUser, getUserEvents
+  getUser, getUserEvents, deleteUserFromDb
 }
