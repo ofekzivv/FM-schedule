@@ -1,8 +1,6 @@
 export default {
-  userId: '',
-  events: [],
+  users: [],
   userData: {
-    fullName: '',
     email: '',
     companyName: ''
   }

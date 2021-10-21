@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import {mapState, mapMutations, mapActions} from "vuex";
 import MonthCalendar from "components/MonthCalendar";
 
 export default {
@@ -25,9 +26,17 @@ export default {
   data() {
     return {
       model: null,
-      options: [
-        'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
-      ]
+      options: []
+    }
+  },
+  computed: mapState('users',['users']),
+  methods:{
+    ...mapActions('users',['getUsers'])
+  },
+  async created() {
+    await this.getUsers()
+    for (let i = 0; i < this.users.length; i++) {
+      this.options.push(this.users[i].companyName)
     }
   }
 }
