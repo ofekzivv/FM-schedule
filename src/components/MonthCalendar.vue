@@ -20,7 +20,7 @@
       no-scroll
       :day-height="100"
       hour24-format
-      @click:date2="onClickDate2"
+      @input="onModelChanged"
       @click:day2="onClickDay2"
     />
 
@@ -41,7 +41,8 @@ export default {
   data() {
     return {
       selectedDate: '',
-      test: false
+      test: false,
+      events: []
     }
   },
   components: {
@@ -49,14 +50,14 @@ export default {
     EventAdder
   },
   methods: {
+    onModelChanged (date) {
+      this.events.unshift(`Model changed: ${date}`)
+    },
     calendarNext() {
       this.$refs.calendar.next()
     },
     calendarPrev() {
       this.$refs.calendar.prev()
-    },
-    onClickDate2(data) {
-      console.log(JSON.stringify(data))
     },
     onClickDay2(data) {
       this.$q.dialog({

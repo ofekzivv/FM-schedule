@@ -1,11 +1,15 @@
 <template>
-  <q-layout view="hHh Lpr hFf">
+  <q-layout view="hHh LpR fFf">
     <q-header class="my-font">
       <q-toolbar>
 
-        <q-toolbar-title class="absolute-center english-font text-h5 text-white">
+        <q-toolbar-title class="absolute-center english-font text-h5 text-white large-screen-only">
           FLASH MEDIA SCHEDULER
           <q-icon name="bolt" size="md"/>
+        </q-toolbar-title>
+
+        <q-toolbar-title class="absolute-center english-font text-h5 text-white small-screen-only">
+          FMSCHEDULER
         </q-toolbar-title>
 
         <q-space/>
@@ -34,8 +38,8 @@
       content-class="bg-grey-1"
       :breakpoint="598"
       show-if-above
-      class="large-screen-only"
-      :width="180"
+      class="large-screen-only my-font"
+      :width="150"
     >
       <q-tabs
         v-model="tab"
@@ -94,7 +98,7 @@ const linksData = [
     title: 'לוח שנה',
     label: 'לוח שנה',
     icon: 'calendar_view_month',
-    link: 'MonthView'
+    link: '/MonthView'
   }
 ];
 

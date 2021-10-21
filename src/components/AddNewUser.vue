@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>הוסף משתמש חדש:</p>
+    <p class="text-dark">הוסף משתמש חדש:</p>
     <form @submit.prevent="submitForm()" style="max-width: 400px; margin: 0 auto">
       <div class="row q-mb-md">
         <q-input
