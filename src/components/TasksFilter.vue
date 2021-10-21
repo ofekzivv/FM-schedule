@@ -1,6 +1,6 @@
 <template>
 <div class="q-pa-lg">
-  <div class="title-filter"><h6><strong>סנן אירועים:</strong></h6></div>
+  <strong class="title-filter">סנן אירועים:</strong>
   <div class="filter-group">
     <q-option-group
       v-model="filteredGroup"
@@ -37,6 +37,8 @@ export default {
 <style scoped>
 .title-filter{
   margin-right: 7px;
+  max-height: 10px;
+  justify-content: start;
 }
 .filter-group{
   justify-content: start;
