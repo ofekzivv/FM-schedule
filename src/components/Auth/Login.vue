@@ -62,9 +62,9 @@ export default {
     }
   },
   // computed:
-  //   mapState('users', ['user']),
+  //   mapState('users', ['']),
   methods: {
-    //...mapActions('users', ['getUserInfo']),
+    // ...mapActions('users', ['']),
     ...mapActions('auth', ['loginUser']),
     isValidEmailAddress(email) {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
