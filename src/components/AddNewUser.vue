@@ -55,8 +55,15 @@ export default {
     },
     submitForm() {
       this.$refs.email.validate()
-      console.log('Submit')
-      addUser({companyName: this.formData.companyName, email: this.formData.email})
+      addUser({companyName: this.formData.companyName, email: this.formData.email}).then(() => {
+        this.$q.notify({
+          message: 'הוספת את המשתמש בהצלחה! ',
+          icon: 'person_add',
+          type: 'positive',
+        })
+        this.formData.companyName = ''
+        this.formData.email = ''
+      })
     },
   }
 }
