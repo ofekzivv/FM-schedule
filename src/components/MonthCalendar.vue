@@ -45,6 +45,7 @@ export default {
       events: []
     }
   },
+  props:['company'],
   components: {
     QCalendar,
     EventAdder
@@ -71,7 +72,9 @@ export default {
         // props forwarded to component
         // (everything except "component" and "parent" props above):
         eventDate: data.scope.timestamp.date,
-        eventTime: '00:00',
+        companyName: this.company,
+        eventMonth: data.scope.timestamp.month,
+        eventYear:data.scope.timestamp.year
 
         // ...more.props...
       }).onOk(() => {

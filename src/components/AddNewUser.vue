@@ -57,7 +57,6 @@ export default {
       this.$refs.email.validate()
       console.log('Submit')
       addUser({companyName: this.formData.companyName, email: this.formData.email})
-      this.$router.push('/MonthView')
     },
   }
 }
