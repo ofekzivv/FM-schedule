@@ -1,5 +1,5 @@
 <template>
-  <div class="my-font">
+  <div class="my-font container">
     <div class="row justify-center items-center">
       <q-btn flat label="הקודם" @click="calendarPrev"/>
       <q-separator vertical/>
@@ -94,8 +94,14 @@ export default {
 <style lang="scss">
 .q-calendar-weekly__day:hover {
   background-color: #918E8A;
-  opacity: 0.1;
+  opacity: 0.07;
   cursor: pointer;
 }
+
+.ellipsis {
+  color: var(--q-color-primary);
+}
+
+
 </style>
 

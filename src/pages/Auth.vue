@@ -10,8 +10,8 @@
         align="justify"
         narrow-indicator
       >
-        <q-tab name="login" label="Login"/>
-        <q-tab name="register" label="Register"/>
+        <q-tab name="login" label="התחברות"/>
+        <q-tab name="register" label="הרשמה"/>
       </q-tabs>
 
       <q-separator/>
