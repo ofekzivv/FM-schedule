@@ -1,7 +1,7 @@
 <template>
   <q-page class="text-center my-font">
     <h5>שלום, לירן אלמליח</h5>
-    <q-card style="max-width: 900px; margin: 0 auto">
+    <q-card style="max-width: 900px; margin: 0 auto" dark>
       <q-tabs
         v-model="tab"
         dense
