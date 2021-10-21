@@ -25,12 +25,14 @@ export default {
   methods:{
     ...mapActions('users',['getUsers', 'deleteUser']),
     removeUser() {
+      this.$q.loading.show()
       this.deleteUser(this.companyName).then(() => {
         this.$q.notify({
           type: 'negative',
           message: `המשתמש נמחק.`
         })
       }).catch(err => console.log(err))
+      this.$q.loading.hide()
     }
   },
   async created() {
