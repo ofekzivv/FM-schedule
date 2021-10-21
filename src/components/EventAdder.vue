@@ -79,7 +79,13 @@ export default {
     onOKClick() {
       this.formData.eventType = this.eventTypeSelector
       debugger
-      addEvent({name: this.formData.title,companyName: this.companyName,month: this.eventMonth,year: this.eventYear , event: this.formData })
+      addEvent({name: this.formData.title,companyName: this.companyName,month: this.eventMonth,year: this.eventYear , event: this.formData }).then(() => {
+        this.$q.notify({
+          message: 'הוספת את האירוע בהצלחה! ',
+          icon: 'event_available',
+          type: 'positive',
+        })
+      })
       this.$emit('ok')
       // or with payload: this.$emit('ok', { ... })
 
