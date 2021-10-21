@@ -3,7 +3,7 @@
     <q-header class="my-font">
       <q-toolbar>
 
-        <q-toolbar-title class="absolute-center english-font text-h5">
+        <q-toolbar-title class="absolute-center english-font text-h5 text-white">
           FLASH MEDIA SCHEDULER
           <q-icon name="bolt" size="md"/>
         </q-toolbar-title>
