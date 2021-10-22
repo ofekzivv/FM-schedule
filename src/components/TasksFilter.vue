@@ -15,9 +15,9 @@
 <script>
 //temporary
 const optionsGroups = [
-  {label: 'סרטון', color: 'yellow', value: 'סרטון'},
-  {label: 'פוסט', color: 'red', value: 'פוסט'},
-  {label: 'תמונה', color: 'blue', value: 'תמונה'},
+  {label: 'סרטון', color: 'orange', value: 'סרטון'},
+  {label: 'פוסט', color: 'blue', value: 'פוסט'},
+  {label: 'תמונה', color: 'green', value: 'תמונה'},
 ]
 
 export default {

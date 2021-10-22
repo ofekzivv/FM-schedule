@@ -34,25 +34,12 @@ function getUser(options) {
  }).catch(err => err)
 }
 
-export async function getMonthlyEvents(options){
-  return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.year}/${options.month}`).once('value')
-    .then(res => {
-      const arr = [];
-      const map = res.val();
-      for (const key in map) {
-        const item = map[key];
-        item.id = key;
-        arr.push(item);
-      }
-      return arr;
-    })
-}
 export function addEvent(options){
-  return  fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.year}/${options.month}/${options.name}`).set(options.event)
+  return  fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}`).set(options.event)
 }
 
 export async function getUserEvents(options) {
-  return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events`).once('value')
+  return await fireBaseInstance.firebase.database().ref(`users/${options}/events`).once('value')
     .then(res => {
       const arr = [];
       const map = res.val();
@@ -66,10 +53,8 @@ export async function getUserEvents(options) {
 }
 
 export async function addUser(options) {
-  debugger
   return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).set({email: options.email, companyName: options.companyName})
 }
-
 
 
 export default {

@@ -1,8 +1,8 @@
-import {getMonthlyEvents} from 'src/middleware/firebase/database'
+import firebaseInstance, {getUserEvents} from '../../middleware/firebase/database'
 
 export default {
-  getMonthlyEvents: async ({state,commit}, [companyName]) =>{
-    const monthlyEvents = await getUserMonthlyData(companyName)
-    commit('setMonthlyEvents', companyName)
+  getAllUserEvents: async ({}, companyName) =>{
+    return await firebaseInstance.getUserEvents(companyName)
+
 }
 }

@@ -1,9 +1,13 @@
 <template>
   <div class="my-font container">
     <div class="row justify-center items-center">
-      <q-btn flat label="הקודם" @click="calendarPrev"/>
-      <q-separator vertical/>
-      <q-btn flat label="הבא" @click="calendarNext"/>
+      <div class="col">
+        <q-btn color="primary" label="הוסף אירוע" class="q-ma-sm" push @click="onClickDay2"/>
+      </div>
+      <div class="row q-mr-sm">
+        <q-btn color="warning" push label="חודש קודם" @click="calendarPrev" class="q-mr-sm"/>
+        <q-btn color="warning" push label="חודש הבא" @click="calendarNext"/>
+      </div>
     </div>
     <q-separator/>
     <QCalendar
@@ -20,18 +24,19 @@
       no-scroll
       :day-height="100"
       hour24-format
-      @input="onModelChanged"
-      @click:day2="onClickDay2"
     >
       <template #day="{ timestamp }">
         <template v-for="(event, index) in getEvents(timestamp.date)">
           <q-badge
+            class="justify-center column"
+            @click="testEvent()"
             :key="index"
-            style="width: 100%; cursor: pointer; height: 16px; max-height: 16px"
+            style="width: 80%; cursor: pointer; height: 100%;"
             :class="badgeClasses(event, 'day')"
             :style="badgeStyles(event, 'day')"
           >
-            <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs"></q-icon><span class="ellipsis">{{ event.title }}</span>
+            <span class="text-subtitle1 text-bold">{{ event.title }}</span>
+            <span style="font-size: 1em;">{{ event.details }}</span>
           </q-badge>
         </template>
       </template>
@@ -49,6 +54,7 @@
 <script>
 import QCalendarTry from '@quasar/quasar-ui-qcalendar'
 import {QCalendar} from '@quasar/quasar-ui-qcalendar'
+import {mapActions, mapState} from "vuex";
 import {Dialog} from 'quasar'
 import EventAdder from "components/EventAdder";
 
@@ -111,28 +117,13 @@ function luminosity (color) {
   return 0.2126 * R + 0.7152 * G + 0.0722 * B
 }
 
-
-
 export default {
   data() {
     return {
       selectedDate: '',
       test: false,
-      events: [
-        {
-          title: '1st of the Month',
-          details: 'Everything is funny as long as it is happening to someone else',
-          date: '2021-10-23',
-          bgcolor: 'orange'
-        },
-        {
-          title: 'Sisters Birthday',
-          details: 'Buy a nice present',
-          date: '2021-10-14',
-          bgcolor: 'green',
-          icon: 'fas fa-birthday-cake'
-        }
-      ]
+      events: [],
+      companyName: ''
     }
   },
   props:['company'],
@@ -140,10 +131,16 @@ export default {
     QCalendar,
     EventAdder
   },
+
+  created() {
+    this.companyName = this.company
+    this.getAllUserEvents(this.companyName).then((res) => {
+      this.events = res
+    })
+    console.log(this.events)
+  },
   methods: {
-    getHeadDay (scope) {
-      return `${scope.days[0].date}`
-    },
+    ...mapActions('events', ['getAllUserEvents']),
     onModelChanged (date) {
       this.events.unshift(`Model changed: ${date}`)
       console.log(date)
@@ -154,18 +151,18 @@ export default {
     calendarPrev() {
       this.$refs.calendar.prev()
     },
-    onClickDay2(data) {
+    onClickDay2() {
       this.$q.dialog({
         component: EventAdder,
         parent: this,
-        eventDate: data.scope.timestamp.date,
+        eventDate: '',
         companyName: this.company,
-        eventMonth: data.scope.timestamp.month,
-        eventYear:data.scope.timestamp.year
 
         // ...more.props...
       }).onOk(() => {
-        console.log('OK')
+        this.getAllUserEvents(this.companyName).then((res) => {
+          this.events = res
+        })
       }).onCancel(() => {
         console.log('Cancel')
       }).onDismiss(() => {
@@ -244,6 +241,18 @@ export default {
         }
       }
       return events
+    },
+    testEvent() {
+      console.log('event')
+    }
+  },
+
+  watch: {
+    "this.companyName": () => {
+      this.getAllUserEvents(this.companyName).then((res) => {
+        this.events = res
+      })
+      console.log(this.events)
     }
   }
 }
@@ -251,27 +260,4 @@ export default {
 </script>
 
 <style src="@quasar/quasar-ui-qcalendar/dist/index.css"></style>
-
-<style lang="sass" scoped>
-.calendar ::v-deep .q-calendar-weekly__day .q-btn
-  border-radius: 8px
-
-.calendar ::v-deep .q-current-day .q-btn
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.12), 0 2px 4px 0 rgba(0,0,0,0.08)
-
-.calendar ::v-deep .q-current-day .q-btn .q-btn__wrapper
-  color: #027BE3
-
-.calendar ::v-deep .q-current-day .q-btn .q-btn__wrapper:before
-  background: #cce7ff
-
-.calendar ::v-deep .q-active-date .q-btn
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.12), 0 2px 4px 0 rgba(0,0,0,0.08)
-
-.calendar ::v-deep .q-active-date .q-btn .q-btn__wrapper
-  color: #027BE3
-
-.calendar ::v-deep .q-active-date .q-btn .q-btn__wrapper:before
-  background: #cce7ff
-</style>
 
