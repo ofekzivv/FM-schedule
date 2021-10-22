@@ -49,7 +49,9 @@ export default {
         eventType: '',
         title: '',
         details: '',
-        date:`${this.eventDate}`
+        date:`${this.eventDate}`,
+        bgcolor: '',
+        icon: ''
       },
     }
   },
@@ -78,8 +80,19 @@ export default {
 
     onOKClick() {
       this.formData.eventType = this.eventTypeSelector
-      debugger
-      addEvent({name: this.formData.title,companyName: this.companyName,month: this.eventMonth,year: this.eventYear , event: this.formData }).then(() => {
+      if (this.eventTypeSelector === 'סרטון') {
+        this.formData.icon = 'movie'
+        this.formData.bgcolor = 'green'
+      }
+      else if (this.eventTypeSelector === 'תמונה') {
+        this.formData.icon = 'image'
+        this.formData.bgcolor = 'orange'
+      }
+      else {
+        this.formData.icon = 'post_add'
+        this.formData.bgcolor = 'blue'
+      }
+      addEvent({name: this.formData.title, companyName: this.companyName, event: this.formData }).then(() => {
         this.$q.notify({
           message: 'הוספת את האירוע בהצלחה! ',
           icon: 'event_available',
