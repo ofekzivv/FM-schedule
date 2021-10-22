@@ -75,7 +75,7 @@ export default {
         },
         startDate:'',
         endDate:''
-      },
+      }
     }
   },
   methods: {
