@@ -3,11 +3,12 @@
     <div class="q-mt-lg items-center">
       <div class="select text-center" style="max-width: 500px; width: 80%; margin: 2em auto;">
         <p class="text-h5">בחר משתמש:</p>
-        <q-select v-model="model" :options="options" label="משתמש" />
+        <q-select v-model="companyName" :options="options" label="משתמש" :disable="companyName" />
+        <q-btn v-if="companyName" color="dark" label="החלף משתמש" class="q-ma-sm" push @click="onClickDay2"/>
       </div>
     </div>
     <div>
-    <MonthCalendar v-if="model" :company="model"/>
+    <MonthCalendar v-if="companyName" :company="companyName"/>
     </div>
   </div>
 </template>
@@ -22,7 +23,7 @@ export default {
   },
   data() {
     return {
-      model: null,
+      companyName: null,
       options: []
     }
   },

@@ -1,5 +1,5 @@
 export default {
-  userMonthlyEvents:[],
+  userEvents:[],
   companyName:'',
   event:{
     title: '',
