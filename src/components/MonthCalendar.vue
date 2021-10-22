@@ -31,7 +31,8 @@
             :class="badgeClasses(event, 'day')"
             :style="badgeStyles(event, 'day')"
           >
-            <span class="text-subtitle1 text-bold">{{ event.title }}</span>
+            <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs" size="xs"></q-icon>
+            <span class="text-subtitle1 text-bold">{{ event.title }} - </span>
             <span style="font-size: 1em;">{{ event.details }}</span>
           </q-badge>
         </template>
