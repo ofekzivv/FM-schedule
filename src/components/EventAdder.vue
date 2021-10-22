@@ -35,10 +35,10 @@
 </template>
 
 <script>
-import {addEvent} from 'src/middleware/firebase/database'
+import {mapActions} from "vuex";
 export default {
   name: "EventAdder",
-  props: ['eventDate', 'eventMonth', 'companyName', 'eventYear'],
+  props: [ 'companyName', 'eventDate'],
   data() {
     return {
       eventTypeSelector: null,
@@ -49,17 +49,15 @@ export default {
         eventType: '',
         title: '',
         details: '',
-        date:`${this.eventDate}`,
+        date: this.eventDate,
         bgcolor: '',
         icon: ''
       },
     }
   },
-  mounted() {
-    console.log(this.data['date'])
-  },
 
   methods: {
+    ...mapActions('events', ['addNewEvent']),
     // following method is REQUIRED
     // (don't change its name --> "show")
     show() {
@@ -92,7 +90,7 @@ export default {
         this.formData.icon = 'post_add'
         this.formData.bgcolor = 'blue'
       }
-      addEvent({name: this.formData.title, companyName: this.companyName, event: this.formData }).then(() => {
+      this.addNewEvent({name: this.formData.title, companyName: this.companyName, event: this.formData }).then(() => {
         this.$q.notify({
           message: 'הוספת את האירוע בהצלחה! ',
           icon: 'event_available',

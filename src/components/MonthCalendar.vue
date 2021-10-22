@@ -1,13 +1,8 @@
 <template>
   <div class="my-font container">
-    <div class="row justify-center items-center">
-      <div class="col">
-        <q-btn color="primary" label="הוסף אירוע" class="q-ma-sm" push @click="onClickDay2"/>
-      </div>
-      <div class="row q-mr-sm">
-        <q-btn color="warning" push label="חודש קודם" @click="calendarPrev" class="q-mr-sm"/>
-        <q-btn color="warning" push label="חודש הבא" @click="calendarNext"/>
-      </div>
+    <div class="row justify-center items-center q-mb-sm">
+        <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
+        <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
     </div>
     <q-separator/>
     <QCalendar
@@ -23,6 +18,7 @@
       transition-next="slide-left"
       no-scroll
       :day-height="100"
+      @click:day2="onClickDay2"
       hour24-format
     >
       <template #day="{ timestamp }">
@@ -133,11 +129,11 @@ export default {
   },
 
   created() {
+    console.log("company on created", this.company)
     this.companyName = this.company
     this.getAllUserEvents(this.companyName).then((res) => {
       this.events = res
     })
-    console.log(this.events)
   },
   methods: {
     ...mapActions('events', ['getAllUserEvents']),
@@ -151,12 +147,13 @@ export default {
     calendarPrev() {
       this.$refs.calendar.prev()
     },
-    onClickDay2() {
+    onClickDay2(data) {
+      console.log(JSON.stringify(data))
       this.$q.dialog({
         component: EventAdder,
         parent: this,
-        eventDate: '',
         companyName: this.company,
+        eventDate: data.scope.timestamp.date
 
         // ...more.props...
       }).onOk(() => {
@@ -246,13 +243,13 @@ export default {
       console.log('event')
     }
   },
-
   watch: {
-    "this.companyName": () => {
+    company(newValue) {
+      console.log("company on watch", newValue)
+      this.companyName = newValue
       this.getAllUserEvents(this.companyName).then((res) => {
         this.events = res
       })
-      console.log(this.events)
     }
   }
 }

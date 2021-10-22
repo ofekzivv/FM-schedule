@@ -34,8 +34,8 @@ function getUser(options) {
  }).catch(err => err)
 }
 
-export function addEvent(options){
-  return  fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}`).set(options.event)
+async function addEvent(options){
+  return await fireBaseInstance.firebase.database().ref(`users/${options.payload.companyName}/events/${options.payload.event.date}`).set(options.payload.event)
 }
 
 export async function getUserEvents(options) {
@@ -58,5 +58,5 @@ export async function addUser(options) {
 
 
 export default {
-  getUser, getUserEvents, deleteUserFromDb
+  getUser, getUserEvents, deleteUserFromDb, addEvent
 }
