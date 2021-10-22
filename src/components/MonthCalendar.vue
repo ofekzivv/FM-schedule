@@ -43,7 +43,6 @@
       <EventAdder/>
     </q-dialog>
 
-
   </div>
 </template>
 
