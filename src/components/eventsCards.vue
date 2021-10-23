@@ -54,7 +54,8 @@
 
 <script>
 export default {
-  name: "eventsCards"
+  name: "eventsCards",
+  props: ['eventDetails']
 }
 </script>
 

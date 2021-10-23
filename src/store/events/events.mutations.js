@@ -1,4 +1,4 @@
-export default {
+ export default {
   setCompanyName: ((state, company) => state.companyName = company),
 
   setUserEvents: ((state, userEvents) => state.userMonthlyEvents = userEvents),

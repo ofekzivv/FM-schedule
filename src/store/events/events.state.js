@@ -5,5 +5,6 @@ export default {
     title: '',
     details: '',
     type: '',
+    date:'',
   }
 }
