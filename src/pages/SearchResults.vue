@@ -1,17 +1,27 @@
 <template>
 <q-page-container>
-  <events-cards v-for="event of userEvents" :eventDetails="event"/>
+  <events-cards v-for="event of results" :eventDetails="event"/>
 </q-page-container>
 </template>
 
 <script>
 import eventsCards from "components/eventsCards";
-import {mapState, mapGetters} from 'vuex'
+import {mapGetters} from 'vuex'
 
 export default {
   name: "SearchResults",
   components:{eventsCards},
-  computed:mapState('events', ['userEvents'])
+  data(){
+    return{
+      results: []
+    }
+  },
+  methods:{
+    ...mapGetters('events',['getEventsByKeys'])
+  },
+  created() {
+    this.results = this.getEventsByKeys()
+  }
 }
 </script>
 
