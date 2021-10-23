@@ -1,12 +1,13 @@
 <template>
-  <div class="cards">
+  <div class="cards" >
     <q-card class="my-card" flat bordered>
       <q-card-section horizontal>
         <q-card-section class="q-pt-xs">
-          <div class="text-overline">פוסט</div>
-          <div class="text-h5 q-mt-sm q-mb-xs">פוסט לראש השנה</div>
+          <div class="text-overline">{{eventDetails.type}}פוסט</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{eventDetails.title}}</div>
           <div class="text-caption text-grey">
             לכתוב פוסט לכבוד ראש השנה שכלול פה מלא דברים ועכשיו אני סתם חרטטת מילים אבל זה לא משנה כי זה יהיה הפוסט
+            {{eventDetails.details}}
           </div>
         </q-card-section>
 
@@ -21,10 +22,11 @@
         </q-btn>
         <q-btn flat color="primary">
           25/10/2021
+          {{eventDetails.date}}
         </q-btn>
       </q-card-actions>
     </q-card>
-    <q-card class="my-card" flat bordered>
+<!--    <q-card class="my-card" flat bordered>
       <q-card-section horizontal>
         <q-card-section class="q-pt-xs">
           <div class="text-overline">סרטון</div>
@@ -47,7 +49,7 @@
           28/10/2021
         </q-btn>
       </q-card-actions>
-    </q-card>
+    </q-card>-->
   </div>
 
 </template>
