@@ -5,5 +5,7 @@
 
   resetCompanyName: ((state) => state.companyName = ''),
 
-  resetMonthlyEvents: ((state, events)=> state.userMonthlyEvents = events)
+  resetMonthlyEvents: ((state, events)=> state.userMonthlyEvents = events),
+
+   setSearchKeys: ((state, keys)=> Object.assign(state.searchKeys, keys)),
 }

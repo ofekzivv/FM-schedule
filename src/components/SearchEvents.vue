@@ -44,7 +44,7 @@
 <script>
 //This component is a popup search window
 //the user can search events by key like "Title"
-import {mapState, mapGetters} from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 
 export default {
   name: "SearchEvents",
@@ -65,6 +65,7 @@ export default {
   },
   computed: mapState('events',['userEvents']),
   methods: {
+    ...mapMutations('events',['setSearchKeys']),
     // following method is REQUIRED
     // (don't change its name --> "show")
     show () {
@@ -84,8 +85,7 @@ export default {
     },
 
     onOKClick () {
-      //filter the state function:
-
+      this.setSearchKeys(this.searchKeys)
 
       // on OK, it is REQUIRED to
       // emit "ok" event (with optional payload)
