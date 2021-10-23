@@ -13,25 +13,11 @@
         <q-checkbox  v-model="searchKeys.type.image" label="תמונה" />
         <q-checkbox  v-model="searchKeys.type.video" label="סרטון" />
 
-        <q-input filled v-model="searchKeys.startDate" label="סנן לפי תאריך התחלה">
+        <q-input rounded filled v-model="searchKeys.startDate" label="סנן לפי תאריך">
           <template v-slot:prepend>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy transition-show="scale" transition-hide="scale">
                 <q-date v-model="searchKeys.startDate" mask="YYYY-MM-DD">
-                  <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat/>
-                  </div>
-                </q-date>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input>
-
-        <q-input filled v-model="searchKeys.endDate" label="סנן לפי תאריך סיום">
-          <template v-slot:prepend>
-            <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-date v-model="searchKeys.endDate" mask="YYYY-MM-DD">
                   <div class="row items-center justify-end">
                     <q-btn v-close-popup label="Close" color="primary" flat/>
                   </div>
@@ -73,11 +59,11 @@ export default {
           image: false,
           video: false,
         },
-        startDate:'',
-        endDate:''
+        date: '',
       }
     }
   },
+  computed: mapState('events',['userEvents']),
   methods: {
     // following method is REQUIRED
     // (don't change its name --> "show")
@@ -98,6 +84,9 @@ export default {
     },
 
     onOKClick () {
+      //filter the state function:
+
+
       // on OK, it is REQUIRED to
       // emit "ok" event (with optional payload)
       // before hiding the QDialog
@@ -106,6 +95,9 @@ export default {
 
       // then hiding dialog
       this.hide()
+
+      //move to Search Results page:
+      this.$router.push('/searchEvents')
     },
 
     onCancelClick () {
