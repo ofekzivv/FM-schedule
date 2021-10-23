@@ -35,7 +35,7 @@ function getUser(options) {
 }
 
  function addEvent(options){
-  return  fireBaseInstance.firebase.database().ref(`users/${options.payload.companyName}/events`).push(options.payload.event)
+  return  fireBaseInstance.firebase.database().ref(`users/${options.payload.companyName}/events/${options.payload.event.date}`).push(options.payload.event)
 }
 
 export async function getUserEvents(options) {
@@ -44,9 +44,10 @@ export async function getUserEvents(options) {
       const arr = [];
       const map = res.val();
       for (const key in map) {
-        const item = map[key];
-        item.id = key;
-        arr.push(item);
+          const item = map[key];
+          for (const val in item) {
+            arr.push(item[val])
+          }
       }
       return arr;
     })

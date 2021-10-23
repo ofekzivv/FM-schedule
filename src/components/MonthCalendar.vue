@@ -17,22 +17,22 @@
       transition-prev="slide-right"
       transition-next="slide-left"
       no-scroll
-      :day-height="100"
+      :day-height="150"
       @click:day2="onClickDay2"
       hour24-format
     >
       <template #day="{ timestamp }">
         <template v-for="(event, index) in getEvents(timestamp.date)">
           <q-badge
-            class="justify-center column"
             @click="testEvent()"
             :key="index"
-            style="width: 80%; cursor: pointer; height: 100%;"
+            style="cursor: pointer; height: 30%; margin-bottom: 2px"
             :class="badgeClasses(event, 'day')"
             :style="badgeStyles(event, 'day')"
           >
             <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs" size="xs"></q-icon>
-            <span class="text-subtitle1 text-bold">{{ event.title }} - </span>
+            <span class="text-subtitle1 text-bold">{{ event.title }} </span>
+            <br/>
             <span style="font-size: 1em;">{{ event.details }}</span>
           </q-badge>
         </template>
