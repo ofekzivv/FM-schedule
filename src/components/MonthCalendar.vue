@@ -18,26 +18,26 @@
       transition-next="slide-left"
       no-scroll
       :day-height="150"
-      @click:day2="onClickDay2"
+      @click:date2="onClickDate2"
       hour24-format
     >
-      <template #day="{ timestamp }">
-        <template v-for="(event, index) in getEvents(timestamp.date)">
+      <template #day="{ timestamp }" >
+        <template v-for="(event, index) in getEvents(timestamp.date)" >
           <q-badge
-            @click="testEvent()"
             :key="index"
-            style="cursor: pointer; height: 30%; margin-bottom: 2px"
+            style="cursor: pointer; height: 50%; margin-bottom: 2px"
+            @click="testEvent(event)"
             :class="badgeClasses(event, 'day')"
             :style="badgeStyles(event, 'day')"
           >
             <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs" size="xs"></q-icon>
-            <span class="text-subtitle1 text-bold">{{ event.title }} </span>
-            <br/>
-            <span style="font-size: 1em;">{{ event.details }}</span>
+            <div class="column">
+              <span class="text-subtitle1 text-bold">{{ event.title }} </span>
+              <span style="font-size: 1em;">{{ event.details }}</span>
+            </div>
           </q-badge>
         </template>
       </template>
-
     </QCalendar>
 
     <q-dialog v-if="this.test">
@@ -53,6 +53,7 @@ import {QCalendar} from '@quasar/quasar-ui-qcalendar'
 import {mapActions, mapState} from "vuex";
 import {Dialog} from 'quasar'
 import EventAdder from "components/EventAdder";
+import EditEvent from "components/EditEvent";
 
 const reRGBA = /^\s*rgb(a)?\s*\((\s*(\d+)\s*,\s*?){2}(\d+)\s*,?\s*([01]?\.?\d*?)?\s*\)\s*$/
 
@@ -139,17 +140,13 @@ export default {
   },
   methods: {
     ...mapActions('events', ['getAllUserEvents']),
-    onModelChanged (date) {
-      this.events.unshift(`Model changed: ${date}`)
-      console.log(date)
-    },
     calendarNext() {
       this.$refs.calendar.next()
     },
     calendarPrev() {
       this.$refs.calendar.prev()
     },
-    onClickDay2(data) {
+    onClickDate2(data) {
       console.log(JSON.stringify(data))
       this.$q.dialog({
         component: EventAdder,
@@ -176,10 +173,7 @@ export default {
       const cssColor = this.isCssColor(event.bgcolor)
       const isHeader = type === 'header'
       return {
-        [`text-white bg-${event.bgcolor}`]: !cssColor,
-        'full-width': !isHeader && (!event.side || event.side === 'full'),
-        'left-side': !isHeader && event.side === 'left',
-        'right-side': !isHeader && event.side === 'right'
+        [`text-white bg-${event.bgcolor}`]: !cssColor
       }
     },
 
@@ -214,8 +208,6 @@ export default {
                   const startTime2 = QCalendarTry.parseTimestamp(events[j].date + ' ' + events[j].time)
                   const endTime2 = QCalendarTry.addToDate(startTime2, { minute: events[j].duration })
                   if (QCalendarTry.isBetweenDates(startTime, startTime2, endTime2) || QCalendarTry.isBetweenDates(endTime, startTime2, endTime2)) {
-                    events[j].side = 'left'
-                    this.events[i].side = 'right'
                     events.push(this.events[i])
                     added = true
                     break
@@ -225,7 +217,6 @@ export default {
             }
           }
           if (!added) {
-            this.events[i].side = undefined
             events.push(this.events[i])
           }
         }
@@ -241,8 +232,24 @@ export default {
       }
       return events
     },
-    testEvent() {
-      console.log('event')
+    testEvent(updateEvent) {
+      console.log('edit event: ', updateEvent)
+      this.$q.dialog({
+        component: EditEvent,
+        parent: this,
+        event: updateEvent,
+        companyName: this.company
+
+        // ...more.props...
+      }).onOk(() => {
+        this.getAllUserEvents(this.companyName).then((res) => {
+          this.events = res
+        })
+      }).onCancel(() => {
+        console.log('Cancel')
+      }).onDismiss(() => {
+        console.log('Called on OK or Cancel')
+      })
     }
   },
   watch: {

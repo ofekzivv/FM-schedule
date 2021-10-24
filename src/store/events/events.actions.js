@@ -7,5 +7,9 @@ export default {
 
   addNewEvent: async ({}, payload) => {
     await firebaseInstance.addEvent({payload})
+  },
+
+  editExistingEvent: async ({}, payload) => {
+    await firebaseInstance.editEvent({payload})
   }
 }
