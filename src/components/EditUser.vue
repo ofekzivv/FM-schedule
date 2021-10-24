@@ -31,7 +31,7 @@ export default {
     }
   },
 
-  props: ['email', 'companyName'],
+  props: ['email', 'companyName', 'userId'],
 
   methods: {
     ...mapActions('users', ['editExistingUser']),
@@ -53,7 +53,7 @@ export default {
 
     onOKClick() {
 
-      this.editExistingUser({companyName: this.companyNameInput, email: this.emailInput, oldCompanyName: this.companyName})
+      this.editExistingUser({companyName: this.companyNameInput, email: this.emailInput, userId: this.userId})
         .then(() => {
           this.$q.notify({
             message: ' ערכת את המשתמש בהצלחה! ',

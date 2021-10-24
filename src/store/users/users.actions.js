@@ -17,8 +17,8 @@ export default {
     }).catch(err => console.log(err))
   },
 
-  deleteUser: async ({commit}, companyName) => {
-    await firebaseInstance.deleteUserFromDb(companyName).then(() => {
+  deleteUser: async ({commit}, userId) => {
+    await firebaseInstance.deleteUserFromDb(userId).then(() => {
       console.log('The user was removed from actions')
     }).catch(err => console.log(err))
   }

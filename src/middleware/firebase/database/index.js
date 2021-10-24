@@ -28,8 +28,8 @@ function getUser(options) {
     })
 }
 
-function deleteUserFromDb(companyName) {
-  return fireBaseInstance.firebase.database().ref(`users/${companyName}`).remove().then(() => {
+function deleteUserFromDb(userId) {
+  return fireBaseInstance.firebase.database().ref(`users/${userId}`).remove().then(() => {
     console.log('the user was removed from db')
   }).catch(err => err)
 }
@@ -69,7 +69,7 @@ export async function addUser(options) {
 }
 
 async function editUser(options) {
-  return await fireBaseInstance.firebase.database().ref(`users/${options.oldCompanyName}`).set({
+  return await fireBaseInstance.firebase.database().ref(`users/${options.userId}`).set({
     email: options.email,
     companyName: options.companyName,
   })

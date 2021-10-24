@@ -32,8 +32,8 @@
             {{ col.value }}
           </q-td>
           <q-td>
-            <q-btn @click="editUser(props.row.companyName, props.row.email)" color="primary" icon="edit" dense class="q-ma-xs">ערוך משתמש</q-btn>
-            <q-btn @click="deleteUserButton(props.row.companyName)" color="red" icon="delete" dense class="q-ma-xs">מחק משתמש</q-btn>
+            <q-btn @click="editUser(props.row.companyName, props.row.email, props.row.id)" color="primary" icon="edit" dense class="q-ma-xs">ערוך משתמש</q-btn>
+            <q-btn @click="deleteUserButton(props.row.id)" color="red" icon="delete" dense class="q-ma-xs">מחק משתמש</q-btn>
           </q-td>
         </q-tr>
       </template>
@@ -57,6 +57,7 @@ export default {
           sortable: true
         },
         {name: 'email', align: 'center', label: 'אימייל', field: 'email', sortable: true},
+        {name: 'id', align: 'center', label: 'קוד משתמש', field: 'id  ', sortable: true},
       ],
       data: []
     }
@@ -69,9 +70,9 @@ export default {
   },
   methods: {
     ...mapActions('users', ['getUsers', 'deleteUser']),
-    deleteUserButton(companyName) {
+    deleteUserButton(userId) {
       this.$q.loading.show()
-      this.deleteUser(companyName).then(() => {
+      this.deleteUser(userId).then(() => {
         this.$q.notify({
           type: 'negative',
           message: `המשתמש נמחק.`
@@ -83,12 +84,13 @@ export default {
       this.$q.loading.hide()
     },
 
-    editUser(companyName, email) {
+    editUser(companyName, email, userId) {
       this.$q.dialog({
         component: EditUser,
         parent: this,
         companyName: companyName,
-        email: email
+        email: email,
+        userId: userId
 
         // ...more.props...
       }).onOk(() => {
