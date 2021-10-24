@@ -1,6 +1,6 @@
 <template>
 <q-page-container>
-  <events-cards v-for="event of results" :eventDetails="event"/>
+  <events-cards v-for="(index, event) of results" :eventDetails="event" :key="index"/>
 </q-page-container>
 </template>
 
