@@ -3,7 +3,7 @@
     <div class="row q-mb-md">
       <q-banner class="bg-grey-3 col">
         <template v-slot:avatar>
-          <q-icon name="account_circle" color="primary" />
+          <q-icon name="account_circle" color="primary"/>
         </template>
         התחבר לחשבון שלך
       </q-banner>
@@ -89,7 +89,8 @@ export default {
     onReset() {
       this.formData.email = null
       this.formData.password = null
-    }
+    },
+
   }
 }
 </script>

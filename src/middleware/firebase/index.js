@@ -2,13 +2,13 @@ import firebase from 'firebase/compat';
 const app = require("firebase/app")
 
 firebase.initializeApp( {
-  apiKey: "AIzaSyARqN0HgQTBN4rM8SZWSlZXaVSb-u9BjeQ",
-  authDomain: "schedulerflashdev.firebaseapp.com",
-  databaseURL: "https://schedulerflashdev-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "schedulerflashdev",
-  storageBucket: "schedulerflashdev.appspot.com",
-  messagingSenderId: "879349361966",
-  appId: "1:879349361966:web:83469432c0b33532a9debf"
+  apiKey: "AIzaSyDVMVLFSZqzGq2bvBMM3Me8pKmycGs_Pbo",
+  authDomain: "flashmediascheduler.firebaseapp.com",
+  projectId: "flashmediascheduler",
+  storageBucket: "flashmediascheduler.appspot.com",
+  messagingSenderId: "876047916440",
+  appId: "1:876047916440:web:db729ab26ef0d6ccfd5fed",
+  measurementId: "G-NB3G8ZGPNB"
 });
 
 

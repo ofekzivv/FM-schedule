@@ -44,7 +44,8 @@ export default {
     return {
       formData: {
         email: '',
-        companyName: ''
+        companyName: '',
+        generatedPassword: ''
       }
     }
   },
@@ -56,7 +57,8 @@ export default {
     submitForm() {
       this.$q.loading.show()
       this.$refs.email.validate()
-      addUser({companyName: this.formData.companyName, email: this.formData.email}).then(() => {
+      this.formData.generatedPassword = this.generatePassword()
+      addUser({companyName: this.formData.companyName, email: this.formData.email, password: this.formData.generatedPassword}).then(() => {
         this.$q.notify({
           message: 'הוספת את המשתמש בהצלחה! ',
           icon: 'person_add',
@@ -64,9 +66,18 @@ export default {
         })
         this.formData.companyName = ''
         this.formData.email = ''
+        this.formData.generatedPassword = ''
       })
       this.$q.loading.hide()
     },
+    generatePassword() {
+      let pw = ""
+      let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+      for (let i = 0; i < 10; i++) {
+        pw += characters.charAt(Math.floor(Math.random() * characters.length))
+      }
+      return pw;
+    }
   }
 }
 </script>
