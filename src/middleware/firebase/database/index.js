@@ -13,6 +13,36 @@ export async function getAllUsers() {
       return arr;
     })
 }
+export async function getAllUsersEvents(){
+  let events = [];
+  return await fireBaseInstance.firebase.database().ref('users').once('value')
+    .then(res => {
+      const arr = [];
+      const map = res.val();
+      for (const key in map) {
+        const item = map[key];
+        item.id = key;
+        arr.push(item);
+      }
+      for (let i = 0; i < arr.length; i++) {
+        let dates = arr[i].events
+        for (const date in dates) {
+          let key = dates[date]
+          for (const event in key) {
+            key[event].companyName = arr[i].companyName
+            key[event].bgcolor = undefined
+            key[event].eventKey =undefined
+            key[event].icon = undefined
+            debugger
+            events.push(key[event])
+          }
+        }
+      }
+      debugger
+      console.log(events)
+      return events
+    })
+}
 
 function getUser(options) {
   return fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).once('value')

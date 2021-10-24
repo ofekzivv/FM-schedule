@@ -117,8 +117,12 @@ const linksData = [
     label: 'לפי יום',
     icon: 'calendar_view_day',
     link: '/DayView'
-  }
-];
+  }, {
+    title: 'כל המשימות',
+    label: 'כל המשימות',
+    icon: '',
+    link: '/AllView'
+  }];
 
 export default {
   name: 'MainLayout',
