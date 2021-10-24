@@ -30,8 +30,8 @@ export default {
   methods:{
     ...mapActions('users',['getUsers'])
   },
-  async created() {
-    await this.getUsers()
+   created() {
+    this.getUsers()
     for (let i = 0; i < this.users.length; i++) {
       this.options.push(this.users[i].companyName)
     }
