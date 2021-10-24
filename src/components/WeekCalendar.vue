@@ -1,11 +1,10 @@
 <template>
-  <div class="my-font">
-    <div class="row justify-center items-center">
-      <q-btn flat label="הקודם" @click="calendarPrev" />
-      <q-separator vertical />
-      <q-btn flat label="הבא" @click="calendarNext" />
+  <div class="my-font container">
+    <div class="row justify-center items-center q-mb-sm">
+      <q-btn color="blue" push label="שבוע קודם" @click="calendarPrev" class="q-mr-xs"/>
+      <q-btn color="blue" push label="שבוע הבא" @click="calendarNext"/>
     </div>
-    <q-separator />
+    <q-separator/>
     <QCalendar
       style="width: 100%"
       ref="calendar"
@@ -14,52 +13,265 @@
       locale="he"
       animated
       short-weekday-label
+      :interval-count="0"
       transition-prev="slide-right"
       transition-next="slide-left"
       no-scroll
-      :interval-height="50"
-      :interval-minutes="30"
-      hour24-format
-      :interval-start="16"
-      :interval-count="30"
-      @click:time2="onClickTime2"
-    />
+      @click:date2="onClickDate2"
+    >
+      <template #day-header="{ timestamp }">
+        <template v-for="(event, index) in eventsMap[timestamp.date]">
+          <q-badge
+            :key="index"
+            style="cursor: pointer; margin-bottom: 2px; width: 100%; height: 15%"
+            @click="testEvent(event)"
+            class="q-mt-sm"
+            :class="badgeClasses(event, 'header')"
+            :style="badgeStyles(event, 'header')"
+          >
+            <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs" size="sm"></q-icon>
+            <div class="column">
+              <span class="text-h5 text-bold">{{ event.title }} </span>
+              <span style="font-size: 1.3em;">{{ event.details }}</span>
+            </div>
+          </q-badge>
+        </template>
+      </template>
+    </QCalendar>
+
+    <q-dialog v-if="this.test">
+      <EventAdder/>
+    </q-dialog>
+
   </div>
 </template>
 
 <script>
-import { QCalendar } from '@quasar/quasar-ui-qcalendar'
+import QCalendarTry from '@quasar/quasar-ui-qcalendar'
+import {QCalendar} from '@quasar/quasar-ui-qcalendar'
+import {mapActions, mapState} from "vuex";
+import {Dialog} from 'quasar'
 import EventAdder from "components/EventAdder";
+import EditEvent from "components/EditEvent";
+
+const reRGBA = /^\s*rgb(a)?\s*\((\s*(\d+)\s*,\s*?){2}(\d+)\s*,?\s*([01]?\.?\d*?)?\s*\)\s*$/
+
+function textToRgb(color) {
+  if (typeof color !== 'string') {
+    throw new TypeError('Expected a string')
+  }
+
+  const m = reRGBA.exec(color)
+  if (m) {
+    const rgb = {
+      r: Math.min(255, parseInt(m[2], 10)),
+      g: Math.min(255, parseInt(m[3], 10)),
+      b: Math.min(255, parseInt(m[4], 10))
+    }
+    if (m[1]) {
+      rgb.a = Math.min(1, parseFloat(m[5]))
+    }
+    return rgb
+  }
+  return hexToRgb(color)
+}
+
+function hexToRgb(hex) {
+  if (typeof hex !== 'string') {
+    throw new TypeError('Expected a string')
+  }
+
+  hex = hex.replace(/^#/, '')
+
+  if (hex.length === 3) {
+    hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2]
+  } else if (hex.length === 4) {
+    hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3]
+  }
+
+  const num = parseInt(hex, 16)
+
+  return hex.length > 6
+    ? {r: num >> 24 & 255, g: num >> 16 & 255, b: num >> 8 & 255, a: Math.round((num & 255) / 2.55)}
+    : {r: num >> 16, g: num >> 8 & 255, b: num & 255}
+}
+
+function luminosity(color) {
+  if (typeof color !== 'string' && (!color || color.r === undefined)) {
+    throw new TypeError('Expected a string or a {r, g, b} object as color')
+  }
+
+  const
+    rgb = typeof color === 'string' ? textToRgb(color) : color,
+    r = rgb.r / 255,
+    g = rgb.g / 255,
+    b = rgb.b / 255,
+    R = r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4),
+    G = g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4),
+    B = b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4)
+  return 0.2126 * R + 0.7152 * G + 0.0722 * B
+}
 
 export default {
-  data () {
+  data() {
     return {
-      selectedDate: ''
+      selectedDate: '',
+      test: false,
+      events: [],
+      companyName: '',
+      getDailyEvents: 0
     }
   },
+  props: ['company'],
   components: {
-    QCalendar
+    QCalendar,
+    EventAdder
+  },
+
+  created() {
+    console.log("company on created", this.company)
+    this.$q.loading.show()
+    this.companyName = this.company
+    this.getAllUserEvents(this.companyName).then((res) => {
+      this.events = res
+      this.$q.loading.hide()
+    })
   },
   methods: {
-    calendarNext () {
+    ...mapActions('events', ['getAllUserEvents']),
+    calendarNext() {
       this.$refs.calendar.next()
     },
-    calendarPrev () {
+    calendarPrev() {
       this.$refs.calendar.prev()
     },
-    onClickTime2(data) {
+    onClickDate2(data) {
+      console.log(JSON.stringify(data))
       this.$q.dialog({
         component: EventAdder,
         parent: this,
-        eventDate: data.scope.timestamp.date,
-        eventTime: data.scope.timestamp.time,
+        companyName: this.company,
+        eventDate: data.scope.timestamp.date
+
         // ...more.props...
       }).onOk(() => {
-        console.log('OK')
+        this.getAllUserEvents(this.companyName).then((res) => {
+          this.events = res
+        })
       }).onCancel(() => {
         console.log('Cancel')
       }).onDismiss(() => {
         console.log('Called on OK or Cancel')
+      })
+    },
+    isCssColor(color) {
+      return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/)
+    },
+
+    badgeClasses(event, type) {
+      const cssColor = this.isCssColor(event.bgcolor)
+      const isHeader = type === 'header'
+      return {
+        [`text-white bg-${event.bgcolor}`]: !cssColor
+      }
+    },
+
+    badgeStyles(event, type, timeStartPos, timeDurationHeight) {
+      const s = {}
+      if (this.isCssColor(event.bgcolor)) {
+        s['background-color'] = event.bgcolor
+        s.color = luminosity(event.bgcolor) > 0.5 ? 'black' : 'white'
+      }
+      if (timeStartPos) {
+        s.top = timeStartPos(event.time) + 'px'
+      }
+      if (timeDurationHeight) {
+        s.height = timeDurationHeight(event.duration) + 'px'
+      }
+      s['align-items'] = 'flex-start'
+      return s
+    },
+    getEvents (dt) {
+      const currentDate = QCalendarTry.parsed(dt)
+      const events = []
+      for (let i = 0; i < this.events.length; ++i) {
+        let added = false
+        const event = this.events[i]
+        if (event.date === dt) {
+          if (event.time) {
+            if (events.length > 0) {
+              // check for overlapping times
+              const startTime = QCalendarTry.parsed(event.date + ' ' + event.time)
+              const endTime = QCalendarTry.addToDate(startTime, { minute: event.duration })
+              for (let j = 0; j < events.length; ++j) {
+                if (events[j].time) {
+                  const startTime2 = QCalendarTry.parsed(events[j].date + ' ' + events[j].time)
+                  const endTime2 = QCalendarTry.addToDate(startTime2, { minute: events[j].duration })
+                  if (QCalendarTry.isBetweenDates(startTime, startTime2, endTime2) || QCalendarTry.isBetweenDates(endTime, startTime2, endTime2)) {
+                    events[j].side = 'left'
+                    event.side = 'right'
+                    events.push(event)
+                    added = true
+                    break
+                  }
+                }
+              }
+            }
+          }
+          if (!added) {
+            event.side = undefined
+            events.push(event)
+          }
+        }
+        else if (event.days) {
+          // check for overlapping dates
+          const startDate = QCalendar.parsed(event.date)
+          const endDate = QCalendar.addToDate(startDate, { day: event.days })
+          if (QCalendar.isBetweenDates(currentDate, startDate, endDate)) {
+            events.push(event)
+            added = true
+          }
+        }
+      }
+      return events
+    },
+
+    testEvent(updateEvent) {
+      console.log('edit event: ', updateEvent)
+      this.$q.dialog({
+        component: EditEvent,
+        parent: this,
+        event: updateEvent,
+        companyName: this.company
+
+        // ...more.props...
+      }).onOk(() => {
+        this.getAllUserEvents(this.companyName).then((res) => {
+          this.events = res
+        })
+      }).onCancel(() => {
+        console.log('Cancel')
+      }).onDismiss(() => {
+        console.log('Called on OK or Cancel')
+      })
+    }
+  },
+  computed: {
+    // convert the events into a map of lists keyed by date
+    eventsMap () {
+      const map = {}
+      this.events.forEach((event) => (map[event.date] = map[event.date] || []).push(event))
+      return map
+    }
+  },
+  watch: {
+    company(newValue) {
+      this.$q.loading.show()
+      console.log("company on watch", newValue)
+      this.companyName = newValue
+      this.getAllUserEvents(this.companyName).then((res) => {
+        this.events = res
+        this.$q.loading.hide()
       })
     }
   }
@@ -69,14 +281,13 @@ export default {
 
 <style src="@quasar/quasar-ui-qcalendar/dist/index.css"></style>
 
-<style lang="scss">
-
-.q-calendar-daily__day-interval:hover,
-.q-calendar-daily__day-interval--section:hover{
-  background-color: #918E8A;
-  opacity: 0.1;
-  cursor: pointer;
+<style>
+.q-calendar-daily__head {
+  height: 80vh;
 }
 
+.q-calendar-daily__intervals-head {
+  display: none;
+}
 </style>
 
