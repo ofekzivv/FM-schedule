@@ -101,10 +101,22 @@ const linksData = [
     link: '/'
   },
   {
-    title: 'לוח שנה',
-    label: 'לוח שנה',
+    title: 'לפי חודש',
+    label: 'לפי חודש',
     icon: 'calendar_view_month',
     link: '/MonthView'
+  },
+  {
+    title: 'לפי שבוע',
+    label: 'לפי שבוע',
+    icon: 'calendar_view_month',
+    link: '/WeekView'
+  },
+  {
+    title: 'לפי יום',
+    label: 'לפי יום',
+    icon: 'calendar_view_month',
+    link: '/DayView'
   }
 ];
 

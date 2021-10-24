@@ -1,6 +1,6 @@
 <template>
-  <div class="text-center q-mt-lg">
-    <div class="title-filter"><p class="text-subtitle1">סנן אירועים לפי:</p></div>
+  <div class="q-pa-lg my-font">
+    <p class="text-center text-bold">סנן אירועים: </p>
     <div class="filter-group">
       <q-option-group
         v-model="filteredGroup"
@@ -15,10 +15,9 @@
 <script>
 //temporary
 const optionsGroups = [
-  {label: 'פוסטים', color: 'yellow', value: 'חגים'},
-  {label: 'סרטונים', color: 'red', value: 'משפחה'},
-  {label: 'תמונות', color: 'blue', value: 'חברים'},
-  {label: 'מסיבות', color: 'green', value: 'מסיבות'},
+  {label: 'סרטון', color: 'orange', value: 'סרטון'},
+  {label: 'פוסט', color: 'blue', value: 'פוסט'},
+  {label: 'תמונה', color: 'green', value: 'תמונה'},
 ]
 
 export default {
@@ -35,5 +34,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
