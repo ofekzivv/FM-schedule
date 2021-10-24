@@ -10,6 +10,7 @@ const routes = [
       { path: '/searchEvents', component: ()=> import('pages/SearchResults.vue')},
       { path: '/DayView', component: ()=> import('pages/CalendarByDay.vue')},
       { path: '/WeekView', component: ()=> import('pages/CalendarByWeek.vue')},
+      { path: '/:companyName', component: ()=> import('pages/UserCalendarView.vue')},
     ]
   },
 

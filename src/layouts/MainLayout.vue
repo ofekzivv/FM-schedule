@@ -109,13 +109,13 @@ const linksData = [
   {
     title: 'לפי שבוע',
     label: 'לפי שבוע',
-    icon: 'calendar_view_month',
+    icon: 'calendar_view_week',
     link: '/WeekView'
   },
   {
     title: 'לפי יום',
     label: 'לפי יום',
-    icon: 'calendar_view_month',
+    icon: 'calendar_view_day',
     link: '/DayView'
   }
 ];
