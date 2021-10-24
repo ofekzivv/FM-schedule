@@ -1,7 +1,7 @@
 <template>
     <div class="my-font">
       <div>
-        <AllView :eventsList="this.events"/>
+        <AllView/>
       </div>
     </div>
 </template>

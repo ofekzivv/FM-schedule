@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import {getAllUsersEvents} from 'src/middleware/firebase/database';
 import {mapState,mapActions} from "vuex";
 export default {
   computed:{
