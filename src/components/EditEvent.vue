@@ -57,7 +57,7 @@ export default {
         cancel: true,
         persistent: true
       }).onOk(() => {
-        this.deleteExistingEvent({event, companyName}).then(() => {
+        this.deleteExistingEvent([event, companyName]).then(() => {
           this.$q.notify({
             message: 'האירוע נמחק בהצלחה',
             color: 'red'
@@ -106,7 +106,7 @@ export default {
         this.event.icon = 'post_add'
         this.event.bgcolor = 'blue'
       }
-      this.editExistingEvent({name: this.event.title, companyName: this.companyName, event: this.event }).then(() => {
+      this.editExistingEvent([this.event.title,this.companyName,this.event] ).then(() => {
         this.$q.notify({
           message: ' ערכת את האירוע בהצלחה! ',
           icon: 'event_available',

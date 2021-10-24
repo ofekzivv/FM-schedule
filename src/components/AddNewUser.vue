@@ -36,8 +36,7 @@
 </template>
 
 <script>
-import {addUser} from "src/middleware/firebase/database";
-import {uid} from 'quasar'
+import firebaseInstance from 'src/middleware/firebase/database'
 
 export default {
   name: "AddNewUser",
@@ -47,7 +46,6 @@ export default {
         email: '',
         companyName: '',
         generatedPassword: '',
-        id: uid()
       }
     }
   },
@@ -60,7 +58,7 @@ export default {
       this.$q.loading.show()
       this.$refs.email.validate()
       this.formData.generatedPassword = this.generatePassword()
-      addUser({companyName: this.formData.companyName, email: this.formData.email, password: this.formData.generatedPassword, id: this.formData.id}).then(() => {
+      firebaseInstance.addUser({companyName: this.formData.companyName, email: this.formData.email, password: this.formData.generatedPassword, id: this.formData.id}).then(() => {
         this.$q.notify({
           message: 'הוספת את המשתמש בהצלחה! ',
           icon: 'person_add',

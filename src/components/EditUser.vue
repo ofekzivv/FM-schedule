@@ -19,22 +19,23 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapMutations} from "vuex";
+
 
 export default {
   name: "EditUser",
-
   data() {
     return {
-      companyNameInput: this.companyName,
-      emailInput: this.email,
+        companyNameInput: this.companyName,
+        emailInput: this.email,
     }
   },
 
-  props: ['email', 'companyName', 'userId'],
+  props: ['email', 'companyName', 'id'],
 
   methods: {
-    ...mapActions('users', ['editExistingUser']),
+    ...mapMutations('users', ['setUser']),
+    ...mapActions('users', ['editExistingUser', 'deleteUser','getUser']),
     show() {
       this.$refs.dialog.show()
     },
@@ -50,10 +51,9 @@ export default {
       // when QDialog emits "hide" event
       this.$emit('hide')
     },
-
     onOKClick() {
-
-      this.editExistingUser({companyName: this.companyNameInput, email: this.emailInput, userId: this.userId})
+      const user = this.getUser(this.companyName)
+      this.editExistingUser([user,this.companyNameInput,this.emailInput])
         .then(() => {
           this.$q.notify({
             message: ' ערכת את המשתמש בהצלחה! ',

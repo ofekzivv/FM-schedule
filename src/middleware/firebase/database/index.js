@@ -1,19 +1,19 @@
 import fireBaseInstance from '../';
 
-export async function getAllUsers() {
-  return await fireBaseInstance.firebase.database().ref('users').once('value')
-    .then(res => {
-      const arr = [];
-      const map = res.val();
-      for (const key in map) {
-        const item = map[key];
-        item.id = key;
-        arr.push(item);
-      }
-      return arr;
-    })
+ async function getAllUsers() {
+    return await fireBaseInstance.firebase.database().ref('users').once('value')
+        .then(res => {
+            const arr = [];
+            const map = res.val();
+            for (const key in map) {
+                const item = map[key];
+                item.id = key;
+                arr.push(item);
+            }
+            return arr;
+        })
 }
-export async function getAllUsersEvents(){
+async function getAllUsersEvents(){
   let events = [];
   return await fireBaseInstance.firebase.database().ref('users').once('value')
     .then(res => {
@@ -45,67 +45,62 @@ export async function getAllUsersEvents(){
 }
 
 function getUser(options) {
-  return fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).once('value')
-    .then(res => {
-      const arr = [];
-      const map = res.val();
-      for (const key in map) {
-        const item = map[key];
-        item.id = key;
-        arr.push(item);
-      }
-      return arr;
-    })
+    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).once('value')
+        .then(res => {
+            const arr = [];
+            const map = res.val();
+            for (const key in map) {
+                const item = map[key];
+                item.id = key;
+                arr.push(item);
+            }
+            return arr;
+        })
 }
 
-function deleteUserFromDb(userId) {
-  return fireBaseInstance.firebase.database().ref(`users/${userId}`).remove().then(() => {
-    console.log('the user was removed from db')
-  }).catch(err => err)
+function deleteUserFromDb(companyName) {
+    return fireBaseInstance.firebase.database().ref(`users/${companyName}`).remove().then(() => {
+        console.log('the user was removed from db')
+    }).catch(err => err)
 }
 
 function addEvent(options) {
-  let eventKey = fireBaseInstance.firebase.database().ref(`users/${options.payload.companyName}/events/${options.payload.event.date}`).push(options.payload.event).key
-  return fireBaseInstance.firebase.database().ref(`users/${options.payload.companyName}/events/${options.payload.event.date}/${eventKey}`).update({'eventKey': eventKey})
+    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
+
 }
 
 function editEvent(options) {
-  return fireBaseInstance.firebase.database().ref(`users/${options.payload.companyName}/events/${options.payload.event.date}/${options.payload.event.eventKey}`).set(options.payload.event)
+    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.eventKey}`).set(options.event)
 }
 
 
-export async function getUserEvents(options) {
-  return await fireBaseInstance.firebase.database().ref(`users/${options}/events`).once('value')
-    .then(res => {
-      const arr = [];
-      const map = res.val();
-      for (const key in map) {
-        const item = map[key];
-        for (const val in item) {
-          arr.push(item[val])
-        }
-      }
-      return arr;
-    })
+export async function getUserEvents(companyName) {
+    return await fireBaseInstance.firebase.database().ref(`users/${companyName}/events`).once('value')
+        .then(res => {
+            const arr = [];
+            const map = res.val();
+            for (const key in map) {
+                const item = map[key];
+                for (const val in item) {
+                    arr.push(item[val])
+                }
+            }
+            return arr;
+        })
 }
 
-export async function addUser(options) {
-  return await fireBaseInstance.firebase.database().ref(`users/${options.id}`).set({
+ async function addUser(options) {
+  return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).set({
     email: options.email,
     companyName: options.companyName,
-    id: options.id,
     password: options.password
   })
 }
 
-async function editUser(options) {
-  return await fireBaseInstance.firebase.database().ref(`users/${options.userId}`).set({
-    email: options.email,
-    companyName: options.companyName,
-  })
+ function deleteEvent(event, companyName){
+  return fireBaseInstance.firebase.database().ref(`users/${companyName}/events/${event.title}`).remove()
 }
 
-
 export default {
-  getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, editUser
+    getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents
 }
