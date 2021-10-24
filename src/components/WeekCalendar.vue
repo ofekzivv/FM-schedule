@@ -50,7 +50,7 @@
 import QCalendarTry from '@quasar/quasar-ui-qcalendar'
 import {QCalendar} from '@quasar/quasar-ui-qcalendar'
 import {mapActions, mapState} from "vuex";
-import {Dialog} from 'quasar'
+// import {Dialog} from 'quasar'
 import EventAdder from "components/EventAdder";
 import EditEvent from "components/EditEvent";
 
