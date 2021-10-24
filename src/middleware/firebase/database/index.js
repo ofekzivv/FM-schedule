@@ -60,16 +60,18 @@ export async function getUserEvents(options) {
 }
 
 export async function addUser(options) {
-  return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).set({
+  return await fireBaseInstance.firebase.database().ref(`users/${options.id}`).set({
     email: options.email,
-    companyName: options.companyName
+    companyName: options.companyName,
+    id: options.id,
+    password: options.password
   })
 }
 
 async function editUser(options) {
   return await fireBaseInstance.firebase.database().ref(`users/${options.oldCompanyName}`).set({
     email: options.email,
-    companyName: options.companyName
+    companyName: options.companyName,
   })
 }
 
