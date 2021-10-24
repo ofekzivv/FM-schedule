@@ -11,6 +11,12 @@ export default {
     commit('setUsers', users)
   },
 
+  editExistingUser: async ({}, payload) => {
+    await firebaseInstance.editUser(payload).then(() => {
+      console.log('The user was removed from actions')
+    }).catch(err => console.log(err))
+  },
+
   deleteUser: async ({commit}, companyName) => {
     await firebaseInstance.deleteUserFromDb(companyName).then(() => {
       console.log('The user was removed from actions')

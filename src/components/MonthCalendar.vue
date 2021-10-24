@@ -1,5 +1,5 @@
 <template>
-  <div class="my-font container">
+  <div class="my-font container" id="capture">
     <div class="row justify-center items-center q-mb-sm">
       <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
       <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
@@ -54,6 +54,8 @@ import {mapActions, mapState} from "vuex";
 import {Dialog} from 'quasar'
 import EventAdder from "components/EventAdder";
 import EditEvent from "components/EditEvent";
+import VueHtmlToPaper from "vue-html-to-paper";
+
 
 const reRGBA = /^\s*rgb(a)?\s*\((\s*(\d+)\s*,\s*?){2}(\d+)\s*,?\s*([01]?\.?\d*?)?\s*\)\s*$/
 
@@ -120,13 +122,14 @@ export default {
       test: false,
       events: [],
       companyName: '',
-      getDailyEvents: 0
+      getDailyEvents: 0,
+      output: null
     }
   },
   props: ['company'],
   components: {
     QCalendar,
-    EventAdder
+    EventAdder,
   },
 
   created() {
@@ -140,6 +143,7 @@ export default {
   },
   methods: {
     ...mapActions('events', ['getAllUserEvents']),
+
     calendarNext() {
       this.$refs.calendar.next()
     },

@@ -12,8 +12,12 @@
     "@quasar/extras": "^1.0.0",
     "core-js": "^3.6.5",
     "firebase": "^9.1.3",
+    "html2canvas": "^1.3.2",
+    "jspdf": "^2.4.0",
     "quasar": "^1.0.0",
     "vue": "^2.6.14",
+    "vue-html-to-paper": "^1.4.3",
+    "vue-html2pdf": "^1.8.0",
     "vue-router": "^3.5.2",
     "vuex": "^3.6.2"
   },
