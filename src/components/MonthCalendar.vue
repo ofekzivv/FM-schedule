@@ -28,7 +28,7 @@
             style="cursor: pointer; margin-bottom: 2px; width: 100%"
             @click="testEvent(event)"
             :class="badgeClasses(event, 'day')"
-            :style="badgeStyles(event, 'day')"
+            :style="styles(event, 'day')"
           >
             <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs" size="xs"></q-icon>
             <div class="column">
@@ -177,17 +177,18 @@ export default {
       }
     },
 
-    badgeStyles(event, type, timeStartPos, timeDurationHeight) {
+    styles(event, type) {
       const s = {}
       if (this.isCssColor(event.bgcolor)) {
         s['background-color'] = event.bgcolor
         s.color = luminosity(event.bgcolor) > 0.5 ? 'black' : 'white'
       }
-      if (timeStartPos) {
-        s.top = timeStartPos(event.time) + 'px'
+
+      if(this.events.filter(e => e.date === event.date).length<3){
+        s.height = (100/ (this.events.filter(e => e.date === event.date).length)) + '%'
       }
-      if (timeDurationHeight) {
-        s.height = timeDurationHeight(event.duration) + 'px'
+      else {
+        s.height = (100 / (this.events.filter(e => e.date === event.date).length + 2)) + '%'
       }
       s['align-items'] = 'flex-start'
       return s

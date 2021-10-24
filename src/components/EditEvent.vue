@@ -26,6 +26,7 @@
       </q-card-section>
 
       <q-card-actions align="right">
+        <q-btn color="red" label="מחק אירוע" @click="deleteEvent(event, companyName)"/>
         <q-btn color="primary" label="ערוך" @click="onOKClick"/>
         <q-btn color="primary" label="ביטול" @click="onCancelClick"/>
       </q-card-actions>
@@ -47,7 +48,33 @@ export default {
   },
 
   methods: {
-    ...mapActions('events', ['editExistingEvent']),
+    ...mapActions('events', ['editExistingEvent', 'deleteExistingEvent']),
+
+    deleteEvent(event, companyName) {
+      this.$q.dialog({
+        title: 'מחיקת אירוע',
+        message: 'אתה בטוח שברצונך למחוק את האירוע?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.deleteExistingEvent({event, companyName}).then(() => {
+          this.$q.notify({
+            message: 'האירוע נמחק בהצלחה',
+            color: 'red'
+          })
+          this.$emit('ok')
+          this.$refs.dialog.hide()
+        }).catch(err => {
+          console.log(err)
+        })
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+        this.$refs.dialog.hide()
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+        this.$refs.dialog.hide()
+      })
+    },
     // following method is REQUIRED
     // (don't change its name --> "show")
     show() {
