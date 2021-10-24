@@ -11,5 +11,9 @@ export default {
 
   editExistingEvent: async ({}, payload) => {
     await firebaseInstance.editEvent({payload})
+  },
+
+  deleteExistingEvent: async ({}, payload) => {
+    await firebaseInstance.deleteEvent({payload})
   }
 }
