@@ -1,8 +1,8 @@
 <template>
   <div class="my-font container">
     <div class="row justify-center items-center q-mb-sm">
-      <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
-      <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
+      <q-btn color="blue" push label="יום קודם" @click="calendarPrev" class="q-mr-xs"/>
+      <q-btn color="blue" push label="יום הבא" @click="calendarNext"/>
     </div>
     <q-separator/>
     <QCalendar
