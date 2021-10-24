@@ -55,11 +55,12 @@
           :icon="link.icon"
           :label="link.label"/>
 
-        <TasksFilter/>
-        <q-btn class="searchBtn" label="חפש אירוע" color="primary" @click="onClickSearch()"/>
+          <TasksFilter/>
+        <q-btn class="searchBtn q-ml-lg" label="חפש אירוע" color="primary" @click="onClickSearch()"/>
         <q-dialog v-model="searchBar">
           <SearchEvents/>
         </q-dialog>
+
       </q-tabs>
 
     </q-drawer>

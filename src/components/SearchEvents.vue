@@ -1,19 +1,18 @@
 <template>
   <q-dialog ref="dialog" @hide="onDialogHide">
-    <q-card class="q-dialog-plugin">
-      <q-card-section class="q-item">
-         <strong>חיפוש אירוע</strong>
+    <q-card class="q-dialog-plugin my-font">
+      <q-card-section>
+        <p class="text-h5 text-center q-mt-md">חיפוש אירוע:</p>
       </q-card-section>
-
       <!--Search Fields-->
       <q-card-section>
-        <q-input rounded standout v-model="searchKeys.title" label="כותרת" />
-        <q-input rounded standout v-model="searchKeys.details" label="פרטים" />
-        <q-checkbox  v-model="searchKeys.type.post" label="פוסט" />
-        <q-checkbox  v-model="searchKeys.type.image" label="תמונה" />
-        <q-checkbox  v-model="searchKeys.type.video" label="סרטון" />
+        <q-input v-model="searchKeys.title" label="כותרת" class="q-mb-sm"/>
+        <q-input v-model="searchKeys.details" label="פרטים" class="q-mb-sm"/>
+        <q-checkbox v-model="searchKeys.type.post" label="פוסט" class="q-mb-sm"/>
+        <q-checkbox v-model="searchKeys.type.image" label="תמונה" class="q-mb-sm"/>
+        <q-checkbox v-model="searchKeys.type.video" label="סרטון" class="q-mb-sm"/>
 
-        <q-input rounded filled v-model="searchKeys.date" label="סנן לפי תאריך">
+        <q-input v-model="searchKeys.date" label="סנן לפי תאריך">
           <template v-slot:prepend>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -34,8 +33,8 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn color="primary" label="חיפוש" @click="onOKClick" />
-        <q-btn color="primary" label="ביטול" @click="onCancelClick" />
+        <q-btn color="primary" label="חיפוש" @click="onOKClick"/>
+        <q-btn color="primary" label="ביטול" @click="onCancelClick"/>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -52,9 +51,9 @@ export default {
     return {
       results: [],
       searchKeys: {
-        title:'',
+        title: '',
         details: '',
-        type:{
+        type: {
           post: false,
           image: false,
           video: false,
@@ -63,28 +62,28 @@ export default {
       }
     }
   },
-  computed: mapState('events',['userEvents']),
+  computed: mapState('events', ['userEvents']),
   methods: {
-    ...mapMutations('events',['setSearchKeys']),
+    ...mapMutations('events', ['setSearchKeys']),
     // following method is REQUIRED
     // (don't change its name --> "show")
-    show () {
+    show() {
       this.$refs.dialog.show()
     },
 
     // following method is REQUIRED
     // (don't change its name --> "hide")
-    hide () {
+    hide() {
       this.$refs.dialog.hide()
     },
 
-    onDialogHide () {
+    onDialogHide() {
       // required to be emitted
       // when QDialog emits "hide" event
       this.$emit('hide')
     },
 
-    onOKClick () {
+    onOKClick() {
       this.setSearchKeys(this.searchKeys)
 
       // on OK, it is REQUIRED to
@@ -100,7 +99,7 @@ export default {
       this.$router.push('/searchEvents')
     },
 
-    onCancelClick () {
+    onCancelClick() {
       // we just need to hide dialog
       this.hide()
     }
