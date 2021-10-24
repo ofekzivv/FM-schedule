@@ -1,8 +1,8 @@
 <template>
   <div class="my-font container">
     <div class="row justify-center items-center q-mb-sm">
-        <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
-        <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
+      <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
+      <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
     </div>
     <q-separator/>
     <QCalendar
@@ -21,11 +21,11 @@
       @click:date2="onClickDate2"
       hour24-format
     >
-      <template #day="{ timestamp }" >
-        <template v-for="(event, index) in getEvents(timestamp.date)" >
+      <template #day="{ timestamp }">
+        <template v-for="(event, index) in getEvents(timestamp.date)">
           <q-badge
             :key="index"
-            style="cursor: pointer; height: 50%; margin-bottom: 2px"
+            style="cursor: pointer; margin-bottom: 2px; width: 100%"
             @click="testEvent(event)"
             :class="badgeClasses(event, 'day')"
             :style="badgeStyles(event, 'day')"
@@ -57,7 +57,7 @@ import EditEvent from "components/EditEvent";
 
 const reRGBA = /^\s*rgb(a)?\s*\((\s*(\d+)\s*,\s*?){2}(\d+)\s*,?\s*([01]?\.?\d*?)?\s*\)\s*$/
 
-function textToRgb (color) {
+function textToRgb(color) {
   if (typeof color !== 'string') {
     throw new TypeError('Expected a string')
   }
@@ -77,7 +77,7 @@ function textToRgb (color) {
   return hexToRgb(color)
 }
 
-function hexToRgb (hex) {
+function hexToRgb(hex) {
   if (typeof hex !== 'string') {
     throw new TypeError('Expected a string')
   }
@@ -86,19 +86,18 @@ function hexToRgb (hex) {
 
   if (hex.length === 3) {
     hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2]
-  }
-  else if (hex.length === 4) {
+  } else if (hex.length === 4) {
     hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3]
   }
 
   const num = parseInt(hex, 16)
 
   return hex.length > 6
-    ? { r: num >> 24 & 255, g: num >> 16 & 255, b: num >> 8 & 255, a: Math.round((num & 255) / 2.55) }
-    : { r: num >> 16, g: num >> 8 & 255, b: num & 255 }
+    ? {r: num >> 24 & 255, g: num >> 16 & 255, b: num >> 8 & 255, a: Math.round((num & 255) / 2.55)}
+    : {r: num >> 16, g: num >> 8 & 255, b: num & 255}
 }
 
-function luminosity (color) {
+function luminosity(color) {
   if (typeof color !== 'string' && (!color || color.r === undefined)) {
     throw new TypeError('Expected a string or a {r, g, b} object as color')
   }
@@ -120,10 +119,11 @@ export default {
       selectedDate: '',
       test: false,
       events: [],
-      companyName: ''
+      companyName: '',
+      getDailyEvents: 0
     }
   },
-  props:['company'],
+  props: ['company'],
   components: {
     QCalendar,
     EventAdder
@@ -165,11 +165,11 @@ export default {
         console.log('Called on OK or Cancel')
       })
     },
-    isCssColor (color) {
+    isCssColor(color) {
       return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/)
     },
 
-    badgeClasses (event, type) {
+    badgeClasses(event, type) {
       const cssColor = this.isCssColor(event.bgcolor)
       const isHeader = type === 'header'
       return {
@@ -177,7 +177,7 @@ export default {
       }
     },
 
-    badgeStyles (event, type, timeStartPos, timeDurationHeight) {
+    badgeStyles(event, type, timeStartPos, timeDurationHeight) {
       const s = {}
       if (this.isCssColor(event.bgcolor)) {
         s['background-color'] = event.bgcolor
@@ -192,7 +192,7 @@ export default {
       s['align-items'] = 'flex-start'
       return s
     },
-    getEvents (dt) {
+    getEvents(dt) {
       const currentDate = QCalendarTry.parseTimestamp(dt)
       const events = []
       for (let i = 0; i < this.events.length; ++i) {
@@ -202,11 +202,11 @@ export default {
             if (events.length > 0) {
               // check for overlapping times
               const startTime = QCalendarTry.parseTimestamp(this.events[i].date + ' ' + this.events[i].time)
-              const endTime = QCalendarTry.addToDate(startTime, { minute: this.events[i].duration })
+              const endTime = QCalendarTry.addToDate(startTime, {minute: this.events[i].duration})
               for (let j = 0; j < events.length; ++j) {
                 if (events[j].time) {
                   const startTime2 = QCalendarTry.parseTimestamp(events[j].date + ' ' + events[j].time)
-                  const endTime2 = QCalendarTry.addToDate(startTime2, { minute: events[j].duration })
+                  const endTime2 = QCalendarTry.addToDate(startTime2, {minute: events[j].duration})
                   if (QCalendarTry.isBetweenDates(startTime, startTime2, endTime2) || QCalendarTry.isBetweenDates(endTime, startTime2, endTime2)) {
                     events.push(this.events[i])
                     added = true
@@ -219,11 +219,10 @@ export default {
           if (!added) {
             events.push(this.events[i])
           }
-        }
-        else if (this.events[i].days) {
+        } else if (this.events[i].days) {
           // check for overlapping dates
           const startDate = QCalendarTry.parseTimestamp(this.events[i].date)
-          const endDate = QCalendarTry.addToDate(startDate, { day: this.events[i].days })
+          const endDate = QCalendarTry.addToDate(startDate, {day: this.events[i].days})
           if (QCalendarTry.isBetweenDates(currentDate, startDate, endDate)) {
             events.push(this.events[i])
             added = true
@@ -232,6 +231,7 @@ export default {
       }
       return events
     },
+
     testEvent(updateEvent) {
       console.log('edit event: ', updateEvent)
       this.$q.dialog({
