@@ -5,9 +5,11 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') },
-      { path: '/:companyName', component: () => import('pages/CalendarByMonth.vue') },
+      { path: '/MonthView', component: () => import('pages/CalendarByMonth.vue') },
       { path: '/auth', component: () => import('pages/Auth.vue') },
       { path: '/searchEvents', component: ()=> import('pages/SearchResults.vue')},
+      { path: '/DayView', component: ()=> import('pages/CalendarByDay.vue')},
+      { path: '/WeekView', component: ()=> import('pages/CalendarByWeek.vue')},
     ]
   },
 
