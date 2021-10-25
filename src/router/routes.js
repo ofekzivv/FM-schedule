@@ -9,16 +9,7 @@ const routes = [
       {path: '/DayView', component: () => import('pages/CalendarByDay.vue')},
       {path: '/WeekView', component: () => import('pages/CalendarByWeek.vue')},
       {path: '/AllView', component: () => import('pages/AllView.vue')},
-      {
-        path: '/:companyName', component: () => import('pages/UserCalendarView.vue'),
-        children: [
-          {path: '/MonthView', component: () => import('../components/MonthCalendar.vue')},
-          {path: '/searchEvents', component: () => import('pages/SearchResults.vue')},
-          {path: '/DayView', component: () => import('../components/DayCalendar.vue')},
-          {path: '/WeekView', component: () => import('../components/WeekCalendar')},
-          {path: '/AllView', component: () => import('pages/AllView.vue')},
-        ]
-      },
+      {path: '/:companyName', component: () => import('pages/UserCalendarView.vue')},
 
     ]
   },

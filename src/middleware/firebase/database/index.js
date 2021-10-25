@@ -118,6 +118,20 @@ async function setNewEmail(options) {
   return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).update({email: options.email})
 }
 
+ export async function getCompanyNameByEmail(email) {
+   debugger
+  const res = await fireBaseInstance.firebase.database().ref(`users/`).once('value')
+   debugger
+      const map = res.val()
+      for (const x in map) {
+        const user = map[x]
+        if (user.email === email) {
+          debugger
+          return await user.companyName
+        }
+      }
+}
+
 export default {
     getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
   setNewEmail

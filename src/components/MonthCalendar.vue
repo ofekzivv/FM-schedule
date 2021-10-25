@@ -135,9 +135,14 @@ export default {
   created() {
     console.log(this.companyName)
     this.setCompanyName(this.companyName)
-    console.log("company on created", this.company)
+    if (this.$route.params.companyName) {
+      this.companyName = this.$route.params.companyName
+    }
+    else{
+      this.companyName = this.company
+    }
+    console.log("company on created", this.companyName)
     this.$q.loading.show()
-    this.companyName = this.company
     this.getAllUserEvents(this.companyName).then((res) => {
       this.events = res
       this.$q.loading.hide()
@@ -158,7 +163,7 @@ export default {
       this.$q.dialog({
         component: EventAdder,
         parent: this,
-        companyName: this.company,
+        companyName: this.companyName,
         eventDate: data.scope.timestamp.date
 
         // ...more.props...
@@ -246,7 +251,7 @@ export default {
         component: EditEvent,
         parent: this,
         event: updateEvent,
-        companyName: this.company
+        companyName: this.companyName
 
         // ...more.props...
       }).onOk(() => {

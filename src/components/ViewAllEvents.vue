@@ -1,7 +1,7 @@
 <template>
     <div class="my-font">
       <div>
-        <AllView/>
+        <AllView :company="this.$route.params.companyName"/>
       </div>
     </div>
 </template>
