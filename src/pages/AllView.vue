@@ -2,7 +2,7 @@
     <div class="q-pa-md">
       <q-table
         title="events"
-        :data="events"
+        :data="this.events"
         :columns="columns"
         row-key="name"
       />
@@ -16,7 +16,7 @@ export default {
     ...mapState('events',['usersEvents'])
   },
   name: "AllView",
-  props: [],
+  props: ['eventsList'],
   data () {
     return {
       columns: [
@@ -25,16 +25,18 @@ export default {
         { name: 'eventType', align: 'center', label: 'סוג אירוע', field: 'eventType', sortable: true },
         { name: 'details', label: 'פרטים', field: 'details', sortable: true },
       ],
-      events : ''
+      events : []
     }
   },
   methods:{
-    ...mapActions('events',['getAllUsersEvents'])
+    ...mapActions('events',['getAllUsersEvents']),
+    async getEvents(){
+      this.events = await this.getAllUsersEvents()
+      debugger
+    }
   },
   created() {
-    this.getAllUsersEvents()
-    debugger
-this.events = this.usersEvents
+    this.getEvents()
   }
 }
 

@@ -52,7 +52,7 @@ computed: mapState('users',['userData']),
       this.$emit('hide')
     },
     async onOKClick() {
-      let user = await this.getUser([this.companyName]);
+      let user = await this.getUser(this.companyName);
       await this.editExistingUser([user,this.companyNameInput,this.emailInput])
         .then(() => {
           this.$q.notify({

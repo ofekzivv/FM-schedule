@@ -7,7 +7,6 @@ export default {
   //   commit('setUserData', arr)
   // },
   getUser: async ({commit},companyName) =>{
-    debugger
     let user = await firebaseInstance.getUser(companyName);
     commit('setUser',user)
     return user
@@ -21,8 +20,9 @@ export default {
   editExistingUser: async ({commit}, [user,newCompanyName,newEmail]) => {
     if (user.companyName !== newCompanyName){
       let events = await firebaseInstance.getUserEvents(user.companyName)
-      await firebaseInstance.deleteUserFromDb(user.companyName)
+      debugger
       await firebaseInstance.addUser({companyName: newCompanyName, email: newEmail, password: user.password, events: events})
+      await firebaseInstance.deleteUserFromDb(user.companyName)
     }
     else {
       await firebaseInstance.setNewEmail({companyName: newCompanyName, email: newEmail})
