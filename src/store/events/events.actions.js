@@ -38,8 +38,6 @@ export default {
     await firebaseInstance.deleteEvent(event,companyName)
   },
   getFilteredEvents: async ({state, commit}, userEvents) => {
-    console.log(userEvents)
-
     let events = userEvents
 
     if(state.searchKeys.title !== '')
@@ -52,12 +50,8 @@ export default {
       events = events.filter(event => event.date === state.searchKeys.date)
 
     let filteredEvents = events
-    /* for(let type of state.searchKeys.eventType){
-       let eventsByType = events
-       eventsByType.filter(event => event.eventType === type)
-       filteredEvents.concat(eventsByType)
-     }*/
-    console.log(filteredEvents)
+    filteredEvents = filteredEvents.filter(event=> state.searchKeys.eventType.includes(event.eventType))
+
     return filteredEvents
   }
 }
