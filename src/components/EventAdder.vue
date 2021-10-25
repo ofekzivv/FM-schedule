@@ -9,6 +9,12 @@
 
         <q-select v-model="eventTypeSelector" :options="options" label="סוג אירוע" />
 
+        <q-file v-show="eventTypeSelector && eventTypeSelector!=='פוסט'" color="primary" v-model="formData.file" label="הוסף קובץ">
+          <template v-slot:prepend>
+            <q-icon name="attach_file" />
+          </template>
+        </q-file>
+
         <q-input filled v-model="formData.date" mask="date" :rules="['date']">
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
@@ -22,6 +28,8 @@
             </q-icon>
           </template>
         </q-input>
+
+
 
       </q-card-section>
 
@@ -50,8 +58,9 @@ export default {
         title: '',
         details: '',
         date: this.eventDate,
+        file: null,
         bgcolor: '',
-        icon: ''
+        icon: '',
       },
     }
   },
@@ -76,7 +85,7 @@ export default {
       this.$emit('hide')
     },
 
-    onOKClick() {
+    async onOKClick() {
       this.formData.eventType = this.eventTypeSelector
       if (this.eventTypeSelector === 'סרטון') {
         this.formData.icon = 'movie'
@@ -90,7 +99,7 @@ export default {
         this.formData.icon = 'post_add'
         this.formData.bgcolor = 'blue'
       }
-      this.addNewEvent([this.formData.title, this.companyName, this.formData] ).then(() => {
+      await this.addNewEvent([this.formData.title, this.companyName, this.formData]).then(() => {
         this.$q.notify({
           message: 'הוספת את האירוע בהצלחה! ',
           icon: 'event_available',

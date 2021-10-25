@@ -146,7 +146,6 @@ export default {
       this.$refs.calendar.prev()
     },
     onClickDate2(data) {
-      console.log(JSON.stringify(data))
       this.$q.dialog({
         component: EventAdder,
         parent: this,

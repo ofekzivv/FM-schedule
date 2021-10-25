@@ -1,4 +1,5 @@
 import fireBaseInstance from '../';
+import {log} from "@quasar/app/lib/helpers/logger";
 
  async function getAllUsers() {
     return await fireBaseInstance.firebase.database().ref('users').once('value')
@@ -64,9 +65,20 @@ function deleteUserFromDb(companyName) {
     }).catch(err => err)
 }
 
-function addEvent(options) {
-    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
 
+ async function addEvent(options) {
+   if (options.event.file !== null) {
+     const file = options.event.file;
+     let storageRef = fireBaseInstance.firebase.storage().ref();
+     let imageStorageRef = storageRef.child(`${options.companyName}`).child(`${options.event.date}`).child(`${file.name}`)
+     await imageStorageRef.put(file).then(() => {
+       imageStorageRef.getDownloadURL()
+         .then((url) => {
+           options.event.file = url
+           return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
+         }).catch(err => console.log(err))
+     })
+   }
 }
 
 function editEvent(options) {
