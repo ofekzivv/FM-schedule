@@ -40,7 +40,11 @@
       </template>
     </q-table>
 
-    <q-btn @click="addUser()" color="primary" icon="add" round dense push class="q-ma-lg q-pa-xs"/>
+    <q-btn @click="addUser()" color="primary" icon="add" round dense push class="q-ma-lg q-pa-xs">
+      <q-tooltip content-class="bg-grey-6" :offset="[10, 10]">
+        הוסף משתמש חדש
+      </q-tooltip>
+    </q-btn>
   </div>
 </template>
 
