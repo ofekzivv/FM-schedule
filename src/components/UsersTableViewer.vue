@@ -33,8 +33,8 @@
             {{ col.value }}
           </q-td>
           <q-td>
-            <q-btn @click="editUser(props.row.companyName, props.row.email)" color="primary" icon="edit" dense push class="q-ma-xs q-pa-xs">ערוך משתמש</q-btn>
-            <q-btn @click="deleteUserButton(props.row.companyName)" color="red" icon="delete" dense class="q-ma-xs q-pa-xs" push>מחק משתמש</q-btn>
+            <q-btn @click="editUser(props.row.companyName, props.row.email)" color="primary" icon="edit" dense push class="q-ma-xs q-pa-xs"></q-btn>
+            <q-btn @click="deleteUserButton(props.row.companyName)" color="red" icon="delete" dense class="q-ma-xs q-pa-xs" push></q-btn>
           </q-td>
         </q-tr>
       </template>
