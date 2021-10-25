@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {mapActions, mapMutations} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 
 
 export default {
@@ -32,7 +32,7 @@ export default {
   },
 
   props: ['email', 'companyName', 'id'],
-
+computed: mapState('users',['userData']),
   methods: {
     ...mapMutations('users', ['setUser']),
     ...mapActions('users', ['editExistingUser', 'deleteUser','getUser']),
@@ -51,15 +51,16 @@ export default {
       // when QDialog emits "hide" event
       this.$emit('hide')
     },
-    onOKClick() {
-      const user = this.getUser(this.companyName)
-      this.editExistingUser([user,this.companyNameInput,this.emailInput])
+    async onOKClick() {
+      let user = await this.getUser([this.companyName]);
+      await this.editExistingUser([user,this.companyNameInput,this.emailInput])
         .then(() => {
           this.$q.notify({
             message: ' ערכת את המשתמש בהצלחה! ',
             icon: 'event_available',
             type: 'warning',
           })
+
         })
       this.$emit('ok')
       // or with payload: this.$emit('ok', { ... })

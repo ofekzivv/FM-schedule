@@ -7,23 +7,25 @@ export default {
   //   commit('setUserData', arr)
   // },
   getUser: async ({commit},companyName) =>{
-    const user = await firebaseInstance.getUser(companyName);
+    debugger
+    let user = await firebaseInstance.getUser(companyName);
     commit('setUser',user)
+    return user
   },
   getUsers: async ({commit}) =>{
     const users = await firebaseInstance.getAllUsers()
     commit('setUsers', users)
+    return users
   },
 
-  editExistingUser: async ({}, [user,newCompanyName,newEmail]) => {
+  editExistingUser: async ({commit}, [user,newCompanyName,newEmail]) => {
     if (user.companyName !== newCompanyName){
-      let company = await this.getUser(user.companyName)
       let events = await firebaseInstance.getUserEvents(user.companyName)
-      await this.deleteUser(user.companyName)
-      await firebaseInstance.addUser({companyName: newCompanyName, email: newEmail, password: company.password})
-      for (const event in events) {
-        await firebaseInstance.addEvent({companyName:newCompanyName,event: event})
-      }
+      await firebaseInstance.deleteUserFromDb(user.companyName)
+      await firebaseInstance.addUser({companyName: newCompanyName, email: newEmail, password: user.password, events: events})
+    }
+    else {
+      await firebaseInstance.setNewEmail({companyName: newCompanyName, email: newEmail})
     }
   },
 

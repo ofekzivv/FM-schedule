@@ -1,4 +1,5 @@
 import fireBaseInstance from '../';
+import {log} from "@quasar/app/lib/helpers/logger";
 
  async function getAllUsers() {
     return await fireBaseInstance.firebase.database().ref('users').once('value')
@@ -44,17 +45,11 @@ async function getAllUsersEvents(){
     })
 }
 
-function getUser(options) {
-    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).once('value')
+async function getUser(companyName) {
+     return await fireBaseInstance.firebase.database().ref(`users/${companyName}`).once('value')
         .then(res => {
-            const arr = [];
-            const map = res.val();
-            for (const key in map) {
-                const item = map[key];
-                item.id = key;
-                arr.push(item);
-            }
-            return arr;
+          debugger
+            return res.val();
         })
 }
 
@@ -64,9 +59,23 @@ function deleteUserFromDb(companyName) {
     }).catch(err => err)
 }
 
-function addEvent(options) {
-    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
 
+ async function addEvent(options) {
+   if (options.event.file !== null) {
+     const file = options.event.file;
+     let storageRef = fireBaseInstance.firebase.storage().ref();
+     let imageStorageRef = storageRef.child(`${options.companyName}`).child(`${options.event.date}`).child(`${file.name}`)
+     await imageStorageRef.put(file).then(() => {
+       imageStorageRef.getDownloadURL()
+         .then((url) => {
+           options.event.file = url
+           return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
+         }).catch(err => console.log(err))
+     })
+   }
+   else {
+     return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
+   }
 }
 
 function editEvent(options) {
@@ -93,7 +102,8 @@ export async function getUserEvents(companyName) {
   return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).set({
     email: options.email,
     companyName: options.companyName,
-    password: options.password
+    password: options.password,
+    events: options.events
   })
 }
 
@@ -101,6 +111,11 @@ export async function getUserEvents(companyName) {
   return fireBaseInstance.firebase.database().ref(`users/${companyName}/events/${event.title}`).remove()
 }
 
+async function setNewEmail(options) {
+  return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).update({email: options.email})
+}
+
 export default {
-    getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents
+    getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
+  setNewEmail
 }

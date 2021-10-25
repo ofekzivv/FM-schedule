@@ -146,7 +146,6 @@ export default {
       this.$refs.calendar.prev()
     },
     onClickDate2(data) {
-      console.log(JSON.stringify(data))
       this.$q.dialog({
         component: EventAdder,
         parent: this,
@@ -157,6 +156,7 @@ export default {
       }).onOk(() => {
         this.getAllUserEvents(this.companyName).then((res) => {
           this.events = res
+          console.log(res)
         })
       }).onCancel(() => {
         console.log('Cancel')
@@ -225,9 +225,9 @@ export default {
         }
         else if (event.days) {
           // check for overlapping dates
-          const startDate = QCalendar.parsed(event.date)
-          const endDate = QCalendar.addToDate(startDate, { day: event.days })
-          if (QCalendar.isBetweenDates(currentDate, startDate, endDate)) {
+          const startDate = QCalendarTry.parsed(event.date)
+          const endDate = QCalendarTry.addToDate(startDate, { day: event.days })
+          if (QCalendarTry.isBetweenDates(currentDate, startDate, endDate)) {
             events.push(event)
             added = true
           }
