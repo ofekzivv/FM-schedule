@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import {addUser} from "src/middleware/firebase/database";
+import firebaseInstance from 'src/middleware/firebase/database'
 
 export default {
   name: "AddNewUser",
@@ -45,7 +45,7 @@ export default {
       formData: {
         email: '',
         companyName: '',
-        generatedPassword: ''
+        generatedPassword: '',
       }
     }
   },
@@ -58,7 +58,7 @@ export default {
       this.$q.loading.show()
       this.$refs.email.validate()
       this.formData.generatedPassword = this.generatePassword()
-      addUser({companyName: this.formData.companyName, email: this.formData.email, password: this.formData.generatedPassword}).then(() => {
+      firebaseInstance.addUser({companyName: this.formData.companyName, email: this.formData.email, password: this.formData.generatedPassword, id: this.formData.id}).then(() => {
         this.$q.notify({
           message: 'הוספת את המשתמש בהצלחה! ',
           icon: 'person_add',
@@ -67,6 +67,7 @@ export default {
         this.formData.companyName = ''
         this.formData.email = ''
         this.formData.generatedPassword = ''
+        this.formData.id = ''
       })
       this.$q.loading.hide()
     },

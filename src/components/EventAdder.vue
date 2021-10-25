@@ -90,7 +90,7 @@ export default {
         this.formData.icon = 'post_add'
         this.formData.bgcolor = 'blue'
       }
-      this.addNewEvent({name: this.formData.title, companyName: this.companyName, event: this.formData }).then(() => {
+      this.addNewEvent([this.formData.title, this.companyName, this.formData] ).then(() => {
         this.$q.notify({
           message: 'הוספת את האירוע בהצלחה! ',
           icon: 'event_available',

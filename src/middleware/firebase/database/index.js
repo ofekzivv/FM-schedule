@@ -1,6 +1,6 @@
 import fireBaseInstance from '../';
 
-export async function getAllUsers() {
+ async function getAllUsers() {
     return await fireBaseInstance.firebase.database().ref('users').once('value')
         .then(res => {
             const arr = [];
@@ -12,6 +12,36 @@ export async function getAllUsers() {
             }
             return arr;
         })
+}
+async function getAllUsersEvents(){
+  let events = [];
+  return await fireBaseInstance.firebase.database().ref('users').once('value')
+    .then(res => {
+      const arr = [];
+      const map = res.val();
+      for (const key in map) {
+        const item = map[key];
+        item.id = key;
+        arr.push(item);
+      }
+      for (let i = 0; i < arr.length; i++) {
+        let dates = arr[i].events
+        for (const date in dates) {
+          let key = dates[date]
+          for (const event in key) {
+            key[event].companyName = arr[i].companyName
+            key[event].bgcolor = undefined
+            key[event].eventKey =undefined
+            key[event].icon = undefined
+            debugger
+            events.push(key[event])
+          }
+        }
+      }
+      debugger
+      console.log(events)
+      return events
+    })
 }
 
 function getUser(options) {
@@ -35,17 +65,17 @@ function deleteUserFromDb(companyName) {
 }
 
 function addEvent(options) {
-    let eventKey = fireBaseInstance.firebase.database().ref(`users/${options.payload.companyName}/events/${options.payload.event.date}`).push(options.payload.event).key
-    return fireBaseInstance.firebase.database().ref(`users/${options.payload.companyName}/events/${options.payload.event.date}/${eventKey}`).update({'eventKey': eventKey})
+    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
+
 }
 
 function editEvent(options) {
-    return fireBaseInstance.firebase.database().ref(`users/${options.payload.companyName}/events/${options.payload.event.date}/${options.payload.event.eventKey}`).set(options.payload.event)
+    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.eventKey}`).set(options.event)
 }
 
 
-export async function getUserEvents(options) {
-    return await fireBaseInstance.firebase.database().ref(`users/${options}/events`).once('value')
+export async function getUserEvents(companyName) {
+    return await fireBaseInstance.firebase.database().ref(`users/${companyName}/events`).once('value')
         .then(res => {
             const arr = [];
             const map = res.val();
@@ -59,14 +89,18 @@ export async function getUserEvents(options) {
         })
 }
 
-export async function addUser(options) {
-    return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).set({
-        email: options.email,
-        companyName: options.companyName
-    })
+ async function addUser(options) {
+  return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).set({
+    email: options.email,
+    companyName: options.companyName,
+    password: options.password
+  })
 }
 
+ function deleteEvent(event, companyName){
+  return fireBaseInstance.firebase.database().ref(`users/${companyName}/events/${event.title}`).remove()
+}
 
 export default {
-    getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent
+    getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents
 }

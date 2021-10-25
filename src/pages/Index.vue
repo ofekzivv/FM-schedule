@@ -11,8 +11,8 @@
         narrow-indicator
       >
         <q-tab name="todayEvents" label="משימות להיום"/>
+        <q-tab name="allUsers" label="כל המשתמשים"/>
         <q-tab name="addNewUser" label="הוספת משתמש חדש"/>
-        <q-tab name="deleteUser" label="מחיקת משתמש"/>
       </q-tabs>
 
       <q-separator/>
@@ -22,13 +22,14 @@
           <eventsCards/>
         </q-tab-panel>
 
+        <q-tab-panel name="allUsers">
+          <UsersTableViewer/>
+        </q-tab-panel>
+
         <q-tab-panel name="addNewUser">
           <AddNewUser/>
         </q-tab-panel>
 
-        <q-tab-panel name="deleteUser">
-          <DeleteUser/>
-        </q-tab-panel>
       </q-tab-panels>
     </q-card>
   </q-page>
@@ -36,16 +37,15 @@
 
 <script>
 import AddNewUser from "components/AddNewUser";
-import DeleteUser from "components/DeleteUser";
 import EventsCards from "components/eventsCards";
 import EventAdder from "components/EventAdder";
 import eventsCards from "components/eventsCards";
+import UsersTableViewer from "components/UsersTableViewer";
 
 export default {
   name: 'PageIndex',
   components: {
-    DeleteUser,
-    EventAdder, EventsCards, AddNewUser, eventsCards
+    EventAdder, EventsCards, AddNewUser, eventsCards, UsersTableViewer
   },
   data() {
     return {

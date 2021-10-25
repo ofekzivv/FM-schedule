@@ -1,5 +1,6 @@
 export default {
   userEvents:[],
+  usersEvents:[],
   companyName:'',
   searchKeys: {
     title:'',

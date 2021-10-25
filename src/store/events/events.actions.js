@@ -1,19 +1,23 @@
-import firebaseInstance, {getUserEvents} from '../../middleware/firebase/database'
+import firebaseInstance from 'src/middleware/firebase/database'
 
 export default {
   getAllUserEvents: async ({}, companyName) => {
     return await firebaseInstance.getUserEvents(companyName)
   },
+  getAllUsersEvents: async ({commit}) =>{
+    const events =  await firebaseInstance.getAllUsersEvents()
+  commit('setAllUsersEvents', events)
+},
 
-  addNewEvent: async ({}, payload) => {
-    await firebaseInstance.addEvent({payload})
+  addNewEvent: async ({},[title,companyName,event]) => {
+    await firebaseInstance.addEvent({title,companyName,event})
   },
 
-  editExistingEvent: async ({}, payload) => {
-    await firebaseInstance.editEvent({payload})
+  editExistingEvent: async ({},[name, companyName, event]) => {
+    await firebaseInstance.editEvent([name, companyName, event])
   },
 
-  deleteExistingEvent: async ({}, payload) => {
-    await firebaseInstance.deleteEvent({payload})
+  deleteExistingEvent: async ({},[event, companyName]) => {
+    await firebaseInstance.deleteEvent(event,companyName)
   }
 }
