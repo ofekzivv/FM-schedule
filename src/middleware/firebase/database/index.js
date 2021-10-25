@@ -82,6 +82,7 @@ function editEvent(options) {
 export async function getUserEvents(companyName) {
     return await fireBaseInstance.firebase.database().ref(`users/${companyName}/events`).once('value')
         .then(res => {
+          console.log(`${companyName} in index db`)
             const arr = [];
             const map = res.val();
             for (const key in map) {

@@ -13,7 +13,7 @@
 </template>
 
 <script>
-//temporary
+import {mapActions, mapState} from "vuex";
 const optionsGroups = [
   {label: 'סרטון', color: 'orange', value: 'סרטון'},
   {label: 'פוסט', color: 'blue', value: 'פוסט'},
@@ -22,7 +22,7 @@ const optionsGroups = [
 
 export default {
   name: "TasksFilter",
-  props: ['items'],
+  computed: mapState('events', ['']),
   data() {
     return {
       //will be in the state
