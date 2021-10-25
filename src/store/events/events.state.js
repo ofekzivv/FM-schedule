@@ -5,17 +5,13 @@ export default {
   searchKeys: {
     title:'',
     details: '',
-    type:{
-      post: false,
-      image: false,
-      video: false,
-    },
+    eventType:[],
     date: '',
   },
   event:{
     title: '',
     details: '',
-    type: '',
+    eventType: '',
     date:'',
   }
 }

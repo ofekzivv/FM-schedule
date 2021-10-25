@@ -50,7 +50,7 @@
 <script>
 import QCalendarTry from '@quasar/quasar-ui-qcalendar'
 import {QCalendar} from '@quasar/quasar-ui-qcalendar'
-import {mapActions, mapState} from "vuex";
+import {mapActions, mapState, mapMutations} from "vuex";
 import {Dialog} from 'quasar'
 import EventAdder from "components/EventAdder";
 import EditEvent from "components/EditEvent";
@@ -133,6 +133,8 @@ export default {
   },
 
   created() {
+    console.log(this.companyName)
+    this.setCompanyName(this.companyName)
     console.log("company on created", this.company)
     this.$q.loading.show()
     this.companyName = this.company
@@ -142,6 +144,7 @@ export default {
     })
   },
   methods: {
+    ...mapMutations('events',['setCompanyName']),
     ...mapActions('events', ['getAllUserEvents']),
 
     calendarNext() {
