@@ -6,7 +6,7 @@
       </q-card-section>
 
       <q-card-section>
-        <div class="select text-center q-gutter-sm" style="max-width: 500px; width: 80%; margin: 1em auto;">
+        <div class="select text-center q-gutter-sm" style="max-width: 600px; width: 80%; margin: 1em auto;">
         <q-select v-model="companyName" :options="options" label="שם חברה"/>
         <q-input  v-model="searchKeys.title" label="כותרת"/>
         <q-input  v-model="searchKeys.details" label="פרטים"/>
@@ -30,26 +30,32 @@
         </div>
       </q-card-section>
 
+      <q-card-actions align="right" style="max-width: 600px; width: 80%; margin: 1em auto;">
+        <q-btn color="primary" label="חיפוש" @click="onOKClick"/>
+        <q-btn color="primary" label="ביטול" @click="onCancelClick"/>
+      </q-card-actions>
+
       <!--Results Section-->
-      <q-card-section v-if="results">
-        <q-card dark bordered class="bg-grey-9 my-card" v-for="(event,index) of results">
+      <q-card-section v-if="results" style="max-width: 600px; width: 80%; margin: 1em auto;">
+        <q-card
+          :class="{ 'bg-blue': event.bgcolor === 'blue', 'bg-green': event.bgcolor === 'green', 'bg-orange': event.bgcolor === 'orange' }"
+          dark
+          bordered
+          class="my-card q-ma-sm"
+          v-for="(event,index) of results">
           <q-card-section>
-            <div class="text-h6">{{ event.title }}</div>
+            <div class="text-h6">{{ event.title }} </div>
             <div class="text-subtitle2">{{ event.date }}</div>
           </q-card-section>
 
           <q-separator dark inset />
 
-          <q-card-section>
+          <q-card-section class="text-center">
             {{event.details}}
           </q-card-section>
         </q-card>
       </q-card-section>
 
-      <q-card-actions align="right">
-        <q-btn color="primary" label="חיפוש" @click="onOKClick"/>
-        <q-btn color="primary" label="ביטול" @click="onCancelClick"/>
-      </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
