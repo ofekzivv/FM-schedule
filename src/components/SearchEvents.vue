@@ -1,26 +1,20 @@
 <template>
   <q-dialog ref="dialog" @hide="onDialogHide">
-    <q-card class="q-dialog-plugin">
+    <q-card class="q-dialog-plugin my-font">
       <q-card-section class="q-item text-center">
-        <strong >חיפוש אירוע</strong>
+        <p class="text-h5">חיפוש אירוע: </p>
       </q-card-section>
 
       <q-card-section>
-        <div class="select text-center" style="max-width: 500px; width: 80%; margin: 2em auto;">
-          <p class="text-h5">בחר משתמש:</p>
-          <q-select v-model="companyName" :options="options" label="משתמש"/>
-        </div>
-      </q-card-section>
-
-      <!--Search Fields-->
-      <q-card-section>
-        <q-input rounded standout v-model="searchKeys.title" label="כותרת"/>
-        <q-input rounded standout v-model="searchKeys.details" label="פרטים"/>
+        <div class="select text-center q-gutter-sm" style="max-width: 600px; width: 80%; margin: 1em auto;">
+        <q-select v-model="companyName" :options="options" label="שם חברה"/>
+        <q-input  v-model="searchKeys.title" label="כותרת"/>
+        <q-input  v-model="searchKeys.details" label="פרטים"/>
         <q-checkbox v-model="searchKeys.eventType.post" label="פוסט"/>
         <q-checkbox v-model="searchKeys.eventType.image" label="תמונה"/>
         <q-checkbox v-model="searchKeys.eventType.video" label="סרטון"/>
 
-        <q-input rounded filled v-model="searchKeys.date" label="סנן לפי תאריך">
+        <q-input   v-model="searchKeys.date" label="סנן לפי תאריך">
           <template v-slot:prepend>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -33,28 +27,35 @@
             </q-icon>
           </template>
         </q-input>
+        </div>
       </q-card-section>
 
+      <q-card-actions align="right" style="max-width: 600px; width: 80%; margin: 1em auto;">
+        <q-btn color="primary" label="חיפוש" @click="onOKClick"/>
+        <q-btn color="primary" label="ביטול" @click="onCancelClick"/>
+      </q-card-actions>
+
       <!--Results Section-->
-      <q-card-section v-if="results">
-        <q-card dark bordered class="bg-grey-9 my-card" v-for="(event,index) of results">
+      <q-card-section v-if="results" style="max-width: 600px; width: 80%; margin: 1em auto;">
+        <q-card
+          :class="{ 'bg-blue': event.bgcolor === 'blue', 'bg-green': event.bgcolor === 'green', 'bg-orange': event.bgcolor === 'orange' }"
+          dark
+          bordered
+          class="my-card q-ma-sm"
+          v-for="(event,index) of results">
           <q-card-section>
-            <div class="text-h6">{{ event.title }}</div>
+            <div class="text-h6">{{ event.title }} </div>
             <div class="text-subtitle2">{{ event.date }}</div>
           </q-card-section>
 
           <q-separator dark inset />
 
-          <q-card-section>
+          <q-card-section class="text-center">
             {{event.details}}
           </q-card-section>
         </q-card>
       </q-card-section>
 
-      <q-card-actions align="right">
-        <q-btn color="primary" label="חיפוש" @click="onOKClick"/>
-        <q-btn color="primary" label="ביטול" @click="onCancelClick"/>
-      </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
