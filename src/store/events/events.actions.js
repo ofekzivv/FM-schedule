@@ -50,7 +50,8 @@ export default {
       events = events.filter(event => event.date === state.searchKeys.date)
 
     let filteredEvents = events
-    filteredEvents = filteredEvents.filter(event=> state.searchKeys.eventType.includes(event.eventType))
+    if(state.searchKeys.eventType.length >0)
+      filteredEvents = filteredEvents.filter(event=> state.searchKeys.eventType.includes(event.eventType))
 
     return filteredEvents
   }
