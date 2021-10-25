@@ -1,26 +1,20 @@
 <template>
   <q-dialog ref="dialog" @hide="onDialogHide">
-    <q-card class="q-dialog-plugin">
+    <q-card class="q-dialog-plugin my-font">
       <q-card-section class="q-item text-center">
-        <strong >חיפוש אירוע</strong>
+        <p class="text-h5">חיפוש אירוע: </p>
       </q-card-section>
 
       <q-card-section>
-        <div class="select text-center" style="max-width: 500px; width: 80%; margin: 2em auto;">
-          <p class="text-h5">בחר משתמש:</p>
-          <q-select v-model="companyName" :options="options" label="משתמש"/>
-        </div>
-      </q-card-section>
-
-      <!--Search Fields-->
-      <q-card-section>
-        <q-input rounded standout v-model="searchKeys.title" label="כותרת"/>
-        <q-input rounded standout v-model="searchKeys.details" label="פרטים"/>
+        <div class="select text-center q-gutter-sm" style="max-width: 500px; width: 80%; margin: 1em auto;">
+        <q-select v-model="companyName" :options="options" label="שם חברה"/>
+        <q-input  v-model="searchKeys.title" label="כותרת"/>
+        <q-input  v-model="searchKeys.details" label="פרטים"/>
         <q-checkbox v-model="searchKeys.eventType.post" label="פוסט"/>
         <q-checkbox v-model="searchKeys.eventType.image" label="תמונה"/>
         <q-checkbox v-model="searchKeys.eventType.video" label="סרטון"/>
 
-        <q-input rounded filled v-model="searchKeys.date" label="סנן לפי תאריך">
+        <q-input   v-model="searchKeys.date" label="סנן לפי תאריך">
           <template v-slot:prepend>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -33,6 +27,7 @@
             </q-icon>
           </template>
         </q-input>
+        </div>
       </q-card-section>
 
       <!--Results Section-->

@@ -118,9 +118,9 @@ const linksData = [
     icon: 'calendar_view_day',
     link: '/DayView'
   }, {
-    title: 'כל המשימות',
-    label: 'כל המשימות',
-    icon: '',
+    title: 'כל האירועים',
+    label: 'כל האירועים',
+    icon: 'task',
     link: '/AllView'
   }];
 

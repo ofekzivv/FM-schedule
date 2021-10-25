@@ -1,12 +1,14 @@
 <template>
+     <div class="constrain my-font">
+       <p class="text-center text-h5 q-mt-md">טבלת אירועים:</p>
     <div class="q-pa-md">
       <q-table
-        title="events"
         :data="this.events"
         :columns="columns"
         row-key="name"
       />
     </div>
+   </div>
 </template>
 
 <script>
@@ -20,10 +22,11 @@ export default {
   data () {
     return {
       columns: [
-        { name: 'date', align: 'center', label: 'תאריך', field: 'date' , sortable: true },
-        { name: 'title', required: true, label: 'אירוע', align: 'center', field: 'title' , sortable: true},
-        { name: 'eventType', align: 'center', label: 'סוג אירוע', field: 'eventType', sortable: true },
-        { name: 'details', label: 'פרטים', field: 'details', sortable: true },
+        { name: 'date', align: 'center', label: 'תאריך', field: 'date' , sortable: true, headerClasses: 'bg-primary text-white', headerStyle: 'font-size: 1em; font-weight: bold',classes: 'bg-grey-2 ellipsis',
+          style: 'max-width: 100px;',},
+        { name: 'title', required: true, label: 'שם אירוע', align: 'center', field: 'title' , sortable: true, headerClasses: 'bg-primary text-white', headerStyle: 'font-size: 1em; font-weight: bold'},
+        { name: 'eventType', align: 'center', label: 'סוג אירוע', field: 'eventType', sortable: true, headerClasses: 'bg-primary text-white', headerStyle: 'font-size: 1em; font-weight: bold' },
+        { name: 'details', label: 'פרטים', field: 'details',align: 'center', sortable: true, headerClasses: 'bg-primary text-white', headerStyle: 'font-size: 1em; font-weight: bold' },
       ],
       events : []
     }
