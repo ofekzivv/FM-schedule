@@ -5,7 +5,6 @@
       <q-card-section class="q-gutter-lg">
 
         <q-input
-          outlined
           v-model="formData.companyName"
           class="col"
           label="שם החברה"
@@ -14,7 +13,6 @@
         />
 
         <q-input
-          outlined
           v-model="formData.email"
           ref="email"
           class="col"

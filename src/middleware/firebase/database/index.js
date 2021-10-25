@@ -61,14 +61,14 @@ function deleteUserFromDb(companyName) {
      const file = options.event.file;
      let storageRef = fireBaseInstance.firebase.storage().ref();
      let imageStorageRef = storageRef.child(`${options.companyName}`).child(`${options.event.date}`).child(`${file.name}`)
-     await imageStorageRef.put(file).then(() => {
-       imageStorageRef.getDownloadURL()
-         .then((url) => {
-           options.event.file = url
-           return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
-         }).catch(err => console.log(err))
-     })
+     await imageStorageRef.put(file)
+     await imageStorageRef.getDownloadURL()
+       .then((url) => {
+         options.event.file = url
+       }).catch(err => console.log(err))
+     return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
    }
+
    else {
      return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
    }
