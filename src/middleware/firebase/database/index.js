@@ -45,17 +45,11 @@ async function getAllUsersEvents(){
     })
 }
 
-function getUser(options) {
-    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).once('value')
+async function getUser(companyName) {
+     return await fireBaseInstance.firebase.database().ref(`users/${companyName}`).once('value')
         .then(res => {
-            const arr = [];
-            const map = res.val();
-            for (const key in map) {
-                const item = map[key];
-                item.id = key;
-                arr.push(item);
-            }
-            return arr;
+          debugger
+            return res.val();
         })
 }
 
@@ -105,7 +99,8 @@ export async function getUserEvents(companyName) {
   return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).set({
     email: options.email,
     companyName: options.companyName,
-    password: options.password
+    password: options.password,
+    events: options.events
   })
 }
 
@@ -113,6 +108,11 @@ export async function getUserEvents(companyName) {
   return fireBaseInstance.firebase.database().ref(`users/${companyName}/events/${event.title}`).remove()
 }
 
+async function setNewEmail(options) {
+  return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).update({email: options.email})
+}
+
 export default {
-    getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents
+    getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
+  setNewEmail
 }

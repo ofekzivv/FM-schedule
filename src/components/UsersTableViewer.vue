@@ -32,7 +32,7 @@
             {{ col.value }}
           </q-td>
           <q-td>
-            <q-btn @click="editUser(props.row.companyName, props.row.email, props.row.id)" color="primary" icon="edit" dense class="q-ma-xs">ערוך משתמש</q-btn>
+            <q-btn @click="editUser(props.row.companyName, props.row.email, props.row.password)" color="primary" icon="edit" dense class="q-ma-xs">ערוך משתמש</q-btn>
             <q-btn @click="deleteUserButton(props.row.companyName)" color="red" icon="delete" dense class="q-ma-xs">מחק משתמש</q-btn>
           </q-td>
         </q-tr>
@@ -49,7 +49,7 @@ export default {
       columns: [
         {name: 'companyName', required: true, label: 'שם חברה', align: 'center', field: row => row.companyName, format: val => `${val}`, sortable: true},
         {name: 'email', align: 'center', label: 'אימייל', field: 'email', sortable: true},
-        {name: 'id', align: 'center', label: 'קוד משתמש', field: 'id', sortable: true},
+        {name: 'password', align: 'center', label: 'סיסמא', field: 'password', sortable: true},
       ],
       data: []
     }

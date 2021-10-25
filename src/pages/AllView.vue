@@ -33,6 +33,7 @@ export default {
   },
   created() {
     this.getAllUsersEvents()
+    debugger
 this.events = this.usersEvents
   }
 }
