@@ -1,11 +1,12 @@
 <template>
   <div class="q-pa-md">
     <q-table
-        title="רשימת משתמשים"
+      flat
         :dense="$q.screen.lt.md"
         :data="data"
         :columns="columns"
         row-key="name"
+        style="border: 1px solid #E6E6E6; border-radius: 30px"
     >
       <template v-slot:header="props">
         <q-tr :props="props">
@@ -16,7 +17,7 @@
           >
             {{ col.label }}
           </q-th>
-          <q-th>עריכה / מחיקה</q-th>
+          <q-th class="bg-primary text-white" style="font-size: 1em; font-weight: bold">עריכה / מחיקה</q-th>
         </q-tr>
       </template>
 
@@ -32,30 +33,45 @@
             {{ col.value }}
           </q-td>
           <q-td>
-            <q-btn @click="editUser(props.row.companyName, props.row.email, props.row.password)" color="primary" icon="edit" dense class="q-ma-xs">ערוך משתמש</q-btn>
-            <q-btn @click="deleteUserButton(props.row.companyName)" color="red" icon="delete" dense class="q-ma-xs">מחק משתמש</q-btn>
+            <q-btn @click="editUser(props.row.companyName, props.row.email)" color="primary" icon="edit" dense push class="q-ma-xs q-pa-xs">ערוך משתמש</q-btn>
+            <q-btn @click="deleteUserButton(props.row.companyName)" color="red" icon="delete" dense class="q-ma-xs q-pa-xs" push>מחק משתמש</q-btn>
           </q-td>
         </q-tr>
       </template>
     </q-table>
+
+    <q-btn @click="addUser()" color="primary" icon="add" round dense push class="q-ma-lg q-pa-xs"/>
   </div>
 </template>
 
 <script>
 import EditUser from "components/EditUser";
+import AddNewUser from "components/AddNewUser";
 export default {
   data() {
     return {
       columns: [
-        {name: 'companyName', required: true, label: 'שם חברה', align: 'center', field: row => row.companyName, format: val => `${val}`, sortable: true},
-        {name: 'email', align: 'center', label: 'אימייל', field: 'email', sortable: true},
-        {name: 'password', align: 'center', label: 'סיסמא', field: 'password', sortable: true},
+        {
+          name: 'companyName',
+          required: true,
+          label: 'שם חברה',
+          align: 'center',
+          field: row => row.companyName,
+          format: val => `${val}`,
+          sortable: true,
+          classes: 'bg-grey-2 ellipsis',
+          style: 'max-width: 100px;',
+          headerClasses: 'bg-primary text-white',
+          headerStyle: 'font-size: 1em; font-weight: bold'
+        },
+        {name: 'email', align: 'center', label: 'אימייל', field: 'email', sortable: true, headerClasses: 'bg-primary text-white', headerStyle: 'font-size: 1em; font-weight: bold'},
+        {name: 'password', align: 'center', label: 'סיסמא', field: 'password', sortable: true, headerClasses: 'bg-primary text-white', headerStyle: 'font-size: 1em; font-weight: bold'},
       ],
       data: []
     }
   },
   components: {
-    EditUser
+    EditUser, AddNewUser
   },
   computed: {
     ...mapState('users', ["users"])
@@ -76,16 +92,36 @@ export default {
       this.$q.loading.hide()
     },
 
-    editUser(companyName) {
+    editUser(companyName, email) {
       this.$q.dialog({
         component: EditUser,
         parent: this,
-        companyName
+        companyName,
+        email
 
         // ...more.props...
       }).onOk(() => {
         this.$q.loading.show()
-        this.getUser(companyName).then(() => {
+        this.getUsers().then(() => {
+          this.data = this.users
+          this.$q.loading.hide()
+        }).catch(err => console.log(err))
+      }).onCancel(() => {
+        console.log('Cancel')
+      }).onDismiss(() => {
+        console.log('Called on OK or Cancel')
+      })
+    },
+
+    addUser() {
+      this.$q.dialog({
+        component: AddNewUser,
+        parent: this,
+
+        // ...more.props...
+      }).onOk(() => {
+        this.$q.loading.show()
+        this.getUsers().then(() => {
           this.data = this.users
           this.$q.loading.hide()
         }).catch(err => console.log(err))

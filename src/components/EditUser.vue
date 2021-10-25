@@ -60,6 +60,7 @@ computed: mapState('users',['userData']),
             icon: 'event_available',
             type: 'warning',
           })
+
         })
       this.$emit('ok')
       // or with payload: this.$emit('ok', { ... })

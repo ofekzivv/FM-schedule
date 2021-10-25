@@ -1,8 +1,9 @@
 <template>
-  <div>
-    <p class="text-dark">הוסף משתמש חדש:</p>
-    <form @submit.prevent="submitForm()" style="max-width: 400px; margin: 0 auto">
-      <div class="row q-mb-md">
+  <q-dialog ref="dialog" @hide="onDialogHide" style="height: 100%">
+    <q-card class="q-dialog-plugin my-font">
+      <p class="text-h5 text-center q-mt-md">הוסף משתמש:</p>
+      <q-card-section class="q-gutter-lg">
+
         <q-input
           outlined
           v-model="formData.companyName"
@@ -11,8 +12,7 @@
           lazy-rules
           :rules="[val => val.length >=2 || 'Please enter at least 2 characters.']"
         />
-      </div>
-      <div class="row q-mb-md">
+
         <q-input
           outlined
           v-model="formData.email"
@@ -22,17 +22,15 @@
           lazy-rules
           :rules="[val => isValidEmailAddress(val) || 'Please enter a valid email address.']"
         />
-      </div>
-      <div class="row q-mb-md">
-        <q-space/>
-        <q-btn
-          :disable="!formData.email || !formData.companyName"
-          label="הוסף משתמש"
-          type="submit"
-          color="primary"/>
-      </div>
-    </form>
-  </div>
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn color="primary" label="הוסף משתמש" @click="onOKClick"/>
+        <q-btn color="primary" label="ביטול" @click="onCancelClick"/>
+      </q-card-actions>
+
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
@@ -50,11 +48,22 @@ export default {
     }
   },
   methods: {
-    isValidEmailAddress(email) {
-      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(String(email).toLowerCase());
+    show() {
+      this.$refs.dialog.show()
     },
-    submitForm() {
+
+    // following method is REQUIRED
+    // (don't change its name --> "hide")
+    hide() {
+      this.$refs.dialog.hide()
+    },
+
+    onDialogHide() {
+      // required to be emitted
+      // when QDialog emits "hide" event
+      this.$emit('hide')
+    },
+    async onOKClick() {
       this.$q.loading.show()
       this.$refs.email.validate()
       this.formData.generatedPassword = this.generatePassword()
@@ -70,6 +79,21 @@ export default {
         this.formData.id = ''
       })
       this.$q.loading.hide()
+      this.$emit('ok')
+      // or with payload: this.$emit('ok', { ... })
+
+      // then hiding dialog
+      this.hide()
+    },
+
+    onCancelClick() {
+      // we just need to hide dialog
+      this.hide()
+    },
+
+    isValidEmailAddress(email) {
+      const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(String(email).toLowerCase());
     },
     generatePassword() {
       let pw = ""

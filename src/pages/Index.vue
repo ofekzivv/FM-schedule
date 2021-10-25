@@ -1,7 +1,7 @@
 <template>
   <q-page class="text-center my-font">
     <h5>שלום, לירן אלמליח</h5>
-    <q-card style="max-width: 900px; margin: 0 auto">
+    <q-card flat style="max-width: 900px; margin: 0 auto">
       <q-tabs
         v-model="tab"
         dense
@@ -12,7 +12,6 @@
       >
         <q-tab name="todayEvents" label="משימות להיום"/>
         <q-tab name="allUsers" label="כל המשתמשים"/>
-        <q-tab name="addNewUser" label="הוספת משתמש חדש"/>
       </q-tabs>
 
       <q-separator/>
@@ -24,10 +23,6 @@
 
         <q-tab-panel name="allUsers">
           <UsersTableViewer/>
-        </q-tab-panel>
-
-        <q-tab-panel name="addNewUser">
-          <AddNewUser/>
         </q-tab-panel>
 
       </q-tab-panels>
@@ -49,7 +44,7 @@ export default {
   },
   data() {
     return {
-      tab: 'todayEvents'
+      tab: 'allUsers'
     }
   }
 }
