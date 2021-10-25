@@ -73,6 +73,9 @@ function deleteUserFromDb(companyName) {
          }).catch(err => console.log(err))
      })
    }
+   else {
+     return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
+   }
 }
 
 function editEvent(options) {
