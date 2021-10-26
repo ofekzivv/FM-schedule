@@ -51,7 +51,7 @@
 <script>
 import QCalendarTry from '@quasar/quasar-ui-qcalendar'
 import {QCalendar} from '@quasar/quasar-ui-qcalendar'
-import {mapActions, mapState, mapMutations} from "vuex";
+import {mapActions, mapState, mapMutations, mapGetters} from "vuex";
 import {Dialog} from 'quasar'
 import EventAdder from "components/EventAdder";
 import EditEvent from "components/EditEvent";
@@ -150,7 +150,12 @@ export default {
       this.$q.loading.hide()
     })
   },
-  computed: mapState('events',['toggleFilter','companyName']),
+  computed:{
+    ...mapState('events',['toggleFilter','companyName','userEvents']),
+    ...mapGetters({
+
+    })
+  },
   methods: {
     ...mapMutations('events',['setCompanyName']),
 
@@ -184,7 +189,6 @@ export default {
     isCssColor(color) {
       return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/)
     },
-
     badgeClasses(event, type) {
       const cssColor = this.isCssColor(event.bgcolor)
       const isHeader = type === 'header'
@@ -192,7 +196,6 @@ export default {
         [`text-white bg-${event.bgcolor}`]: !cssColor
       }
     },
-
     styles(event, type) {
       const s = {}
       if (this.isCssColor(event.bgcolor)) {
@@ -212,20 +215,20 @@ export default {
     getEvents(dt){
       const currentDate = QCalendarTry.parseTimestamp(dt)
       const events = []
-      for (let i = 0; i < this.events.length; ++i) {
+      for (let i = 0; i < this.userEvents.length; ++i) {
         let added = false
-        if (this.events[i].date === dt) {
-          if (this.events[i].time) {
+        if (this.userEvents[i].date === dt) {
+          if (this.userEvents[i].time) {
             if (events.length > 0) {
               // check for overlapping times
-              const startTime = QCalendarTry.parseTimestamp(this.events[i].date + ' ' + this.events[i].time)
-              const endTime = QCalendarTry.addToDate(startTime, {minute: this.events[i].duration})
+              const startTime = QCalendarTry.parseTimestamp(this.userEvents[i].date + ' ' + this.userEvents[i].time)
+              const endTime = QCalendarTry.addToDate(startTime, {minute: this.userEvents[i].duration})
               for (let j = 0; j < events.length; ++j) {
                 if (events[j].time) {
                   const startTime2 = QCalendarTry.parseTimestamp(events[j].date + ' ' + events[j].time)
                   const endTime2 = QCalendarTry.addToDate(startTime2, {minute: events[j].duration})
                   if (QCalendarTry.isBetweenDates(startTime, startTime2, endTime2) || QCalendarTry.isBetweenDates(endTime, startTime2, endTime2)) {
-                    events.push(this.events[i])
+                    events.push(this.userEvents[i])
                     added = true
                     break
                   }
@@ -234,14 +237,14 @@ export default {
             }
           }
           if (!added) {
-            events.push(this.events[i])
+            events.push(this.userEvents[i])
           }
-        } else if (this.events[i].days) {
+        } else if (this.userEvents[i].days) {
           // check for overlapping dates
-          const startDate = QCalendarTry.parseTimestamp(this.events[i].date)
-          const endDate = QCalendarTry.addToDate(startDate, {day: this.events[i].days})
+          const startDate = QCalendarTry.parseTimestamp(this.userEvents[i].date)
+          const endDate = QCalendarTry.addToDate(startDate, {day: this.userEvents[i].days})
           if (QCalendarTry.isBetweenDates(currentDate, startDate, endDate)) {
-            events.push(this.events[i])
+            events.push(this.userEvents[i])
             added = true
           }
         }
@@ -267,6 +270,11 @@ export default {
       }).onDismiss(() => {
         console.log('Called on OK or Cancel')
       })
+    },
+    async getFiltered(dt){
+      this.events = this.userEvents
+      console.log(this.events)
+      return this.getEvents(dt)
     }
   },
   watch: {
