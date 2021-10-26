@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import eventsCards from "components/eventsCards";
+import EventsCards from "components/EventsCards";
 import {mapGetters, mapState, mapActions} from 'vuex'
 
 export default {
   name: "SearchResults",
-  components:{eventsCards},
+  components:{EventsCards},
   computed: mapState('events',['userEvents','companyName']),
   data(){
     return{

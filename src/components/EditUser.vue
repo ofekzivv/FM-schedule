@@ -7,6 +7,27 @@
         <q-input v-model="companyNameInput" label="שם חברה"/>
 
         <q-input v-model="emailInput" label="אימייל"/>
+
+        <q-img class="text-center" :src="logo" alt="logo" width="150px">
+          <q-btn icon="edit" label="שנה תמונה"/>
+        </q-img>
+
+        <q-file v-model="logoInput" label="בחר לוגו חברה">
+          <template v-slot:append>
+            <q-icon name="attach_file"/>
+          </template>
+        </q-file>
+
+        <div class="form__field">
+          <p class="text-grey-8" style="font-size: 16px">בחר צבע לחברה: </p>
+          <v-swatches
+            v-model="colorInput"
+            popover-x="center"
+            swatches="text-advanced"
+            show-fallback
+            fallback-input-type="color"
+          ></v-swatches>
+        </div>
       </q-card-section>
 
       <q-card-actions align="right">
@@ -20,18 +41,25 @@
 
 <script>
 import {mapActions, mapMutations, mapState} from "vuex";
+import VSwatches from 'vue-swatches'
+
 
 
 export default {
   name: "EditUser",
+  components: {
+    VSwatches
+  },
   data() {
     return {
         companyNameInput: this.companyName,
         emailInput: this.email,
+      colorInput: this.color,
+      logoInput: this.logo
     }
   },
 
-  props: ['email', 'companyName', 'id'],
+  props: ['email', 'companyName', 'logo', 'color' ],
 computed: mapState('users',['userData']),
   methods: {
     ...mapMutations('users', ['setUser']),

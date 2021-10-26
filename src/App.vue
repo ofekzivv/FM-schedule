@@ -4,6 +4,7 @@
   </div>
 </template>
 <script>
+import 'vue-swatches/dist/vue-swatches.css'
 import {mapActions, mapState} from "vuex";
 
 export default {
