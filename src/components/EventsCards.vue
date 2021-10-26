@@ -1,24 +1,12 @@
 <template>
-  <div class="q-pa-md items-center q-gutter-md">
+  <div class="q-pa-md row items-start q-gutter-md">
     <q-card
-      v-for="dailyEvent in dailyEvents"
-      :style="{background : dailyEvent.bgcolor}"
-      class="text-white bg-blue"
-      style="max-width: 500px; "
+      class="my-card text-white"
+      style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%)"
     >
-      <q-card-section>
-        {{dailyEvent.bgcolor}}
-        <p class="text-subtitle1 text-bold">שם חברה:</p>
-        {{dailyEvent.companyName}}
+      <q-card-section v-for="(dailyEvent,index) in dailyEvents" :key="index">
+       {{dailyEvent}}
       </q-card-section>
-      <q-separator/>
-      <q-card-section >
-        <p class="text-subtitle1 text-bold">{{dailyEvent.title}}</p>
-        <p>{{dailyEvent.details}}</p>
-        <q-img v-show="dailyEvent.files" :src="dailyEvent.files" width="150px"/>
-      </q-card-section>
-
-
     </q-card>
   </div>
 </template>
@@ -30,7 +18,7 @@ export default {
   name: "EventsCards",
   data(){
     return{
-    dailyEvents : '',
+    dailyEvents : ''
     }
   },
   methods: {

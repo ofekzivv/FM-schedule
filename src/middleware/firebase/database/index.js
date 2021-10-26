@@ -98,7 +98,9 @@ export async function getUserEvents(companyName) {
 }
 async function addAdmin(options) {
   return await fireBaseInstance.firebase.database().ref(`admins/${options.companyName}`).set({
-
+    email: options.email,
+    companyName: options.companyName,
+    password: options.password,
   })
 }
 async function addUser(options) {
