@@ -19,7 +19,5 @@ export default  {
     return filteredEvents
   },
 
-  getEventsByType: ({state}, wantedTypes) => {
-
-  },
+  getUsersEvents: state => state.userEvents
 }

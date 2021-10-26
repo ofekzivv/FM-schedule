@@ -18,13 +18,15 @@
 
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="todayEvents">
-          <eventsCards/>
+          <EventsCards/>
         </q-tab-panel>
 
         <q-tab-panel name="allUsers">
           <UsersTableViewer/>
         </q-tab-panel>
-
+        <q-tab-panel name="allAdmins">
+          <AdminsTableViewer/>
+        </q-tab-panel>
       </q-tab-panels>
     </q-card>
   </q-page>
@@ -32,15 +34,14 @@
 
 <script>
 import AddNewUser from "components/AddNewUser";
-import EventsCards from "components/eventsCards";
 import EventAdder from "components/EventAdder";
-import eventsCards from "components/eventsCards";
+import EventsCards from "components/EventsCards";
 import UsersTableViewer from "components/UsersTableViewer";
-
+import AdminsTableViewer from "components/AdminTableViewer";
 export default {
   name: 'PageIndex',
   components: {
-    EventAdder, EventsCards, AddNewUser, eventsCards, UsersTableViewer
+    EventAdder, EventsCards, AddNewUser,  UsersTableViewer, AdminsTableViewer
   },
   data() {
     return {

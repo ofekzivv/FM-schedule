@@ -24,6 +24,7 @@ export default {
         { name: 'title', required: true, label: 'אירוע', align: 'center', field: 'title' , sortable: true},
         { name: 'eventType', align: 'center', label: 'סוג אירוע', field: 'eventType', sortable: true },
         { name: 'details',align:'center', label: 'פרטים', field: 'details', sortable: true },
+        { name: 'companyName',align:'center', label: 'שם חברה', field: 'companyName', sortable: true },
       ],
       events : []
     }
@@ -32,7 +33,7 @@ export default {
     ...mapActions('events',['getAllUsersEvents','getAllUserEvents']),
     async getEvents(){
       if (!this.$route.params.companyName) {
-        this.events = await this.getAllUsersEvents()
+        this.events = await this.getAllUsersEvents('')
       }
       else{
         this.events = await this.getAllUserEvents(this.$route.params.companyName)

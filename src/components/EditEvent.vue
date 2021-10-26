@@ -7,7 +7,7 @@
 
         <q-input v-model="event.details" label="פרטים"/>
 
-        <q-select v-model="event.eventType" :options="options" label="סוג אירוע" />
+        <q-select v-model="event.eventType" :options="options" label="סוג אירוע"/>
 
         <q-input filled v-model="event.date" mask="date" :rules="['date']">
           <template v-slot:append>
@@ -15,14 +15,13 @@
               <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                 <q-date v-model="event.date">
                   <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat />
+                    <q-btn v-close-popup label="Close" color="primary" flat/>
                   </div>
                 </q-date>
               </q-popup-proxy>
             </q-icon>
           </template>
         </q-input>
-
       </q-card-section>
 
       <q-card-actions align="right">
@@ -37,8 +36,9 @@
 
 <script>
 import {mapActions} from "vuex";
+
 export default {
-  props: [ 'event', 'companyName'],
+  props: ['event', 'companyName'],
   data() {
     return {
       options: [
@@ -97,16 +97,14 @@ export default {
       if (this.event.eventType === 'סרטון') {
         this.event.icon = 'movie'
         this.event.bgcolor = 'green'
-      }
-      else if (this.event.eventType === 'תמונה') {
+      } else if (this.event.eventType === 'תמונה') {
         this.event.icon = 'image'
         this.event.bgcolor = 'orange'
-      }
-      else {
+      } else {
         this.event.icon = 'post_add'
         this.event.bgcolor = 'blue'
       }
-      this.editExistingEvent([this.event.title,this.companyName,this.event] ).then(() => {
+      this.editExistingEvent([this.event.title, this.companyName, this.event]).then(() => {
         this.$q.notify({
           message: ' ערכת את האירוע בהצלחה! ',
           icon: 'event_available',

@@ -1,13 +1,13 @@
 <template>
   <q-dialog ref="dialog" @hide="onDialogHide" style="height: 100%">
     <q-card class="q-dialog-plugin my-font">
-      <p class="text-h5 text-center q-mt-md">הוסף משתמש:</p>
+      <p class="text-h5 text-center q-mt-md">הוסף אדמין:</p>
       <q-card-section class="q-gutter-lg">
 
         <q-input
           v-model="formData.companyName"
           class="col"
-          label="שם החברה"
+          label="שם"
           lazy-rules
           :rules="[val => val.length >=2 || 'Please enter at least 2 characters.']"
         />
@@ -20,23 +20,13 @@
           lazy-rules
           :rules="[val => isValidEmailAddress(val) || 'Please enter a valid email address.']"
         />
-
-        <q-file v-model="formData.profilePic" label="בחר לוגו חברה">
-          <template v-slot:append>
-            <q-icon name="attach_file"/>
-          </template>
-        </q-file>
-
-        <div class="form__field">
-          <p class="text-grey-8" style="font-size: 16px">בחר צבע לחברה: </p>
-          <v-swatches
-            v-model="formData.companyColor"
-            popover-x="center"
-            swatches="text-advanced"
-            show-fallback
-            fallback-input-type="color"
-          ></v-swatches>
-        </div>
+        <q-input
+          v-model="formData.password"
+          class="col"
+          label="סיסמא"
+          lazy-rules
+          :rules="[val => val.length >=6 || 'Please enter at least 6 characters.']"
+        />
       </q-card-section>
 
       <q-card-actions align="right">
@@ -50,21 +40,15 @@
 
 <script>
 import firebaseInstance from 'src/middleware/firebase/database'
-import VSwatches from 'vue-swatches'
-
 
 export default {
-  components: {VSwatches},
-  name: "AddNewUser",
+  name: "AddNewAdmin",
   data() {
     return {
-
       formData: {
         email: '',
         companyName: '',
-        generatedPassword: '',
-        profilePic: null,
-        companyColor: '#000000'
+        password: ''
       }
     }
   },
@@ -88,18 +72,16 @@ export default {
       this.$q.loading.show()
       this.$refs.email.validate()
       this.formData.generatedPassword = this.generatePassword()
-      firebaseInstance.addUser({
-        companyName: this.formData.companyName,
-        email: this.formData.email,
-        password: this.formData.generatedPassword,
-        logo: this.formData.profilePic,
-        color: this.formData.companyColor
-      }).then(() => {
+      firebaseInstance.addAdmin({companyName: this.formData.companyName, email: this.formData.email, password: this.formData.generatedPassword}).then(() => {
         this.$q.notify({
           message: 'הוספת את המשתמש בהצלחה! ',
           icon: 'person_add',
           type: 'positive',
         })
+        this.formData.companyName = ''
+        this.formData.email = ''
+        this.formData.generatedPassword = ''
+        this.formData.id = ''
       })
       this.$q.loading.hide()
       this.$emit('ok')

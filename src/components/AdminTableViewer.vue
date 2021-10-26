@@ -4,12 +4,10 @@
 
 <script>
 export default {
-  name: "eventsCards",
-  props: ['eventDetails']
+  name: "AdminTableViewer"
 }
 </script>
 
 <style scoped>
-
 
 </style>

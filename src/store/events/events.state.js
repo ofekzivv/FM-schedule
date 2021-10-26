@@ -2,7 +2,7 @@ export default {
   userEvents:[],
   usersEvents:[],
   companyName:'',
-  toggleFilter: [],
+  toggleFilter: ['סרטון','תמונה' ,'פוסט'],
   searchKeys: {
     title:'',
     details: '',

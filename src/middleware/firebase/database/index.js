@@ -29,10 +29,6 @@ async function getAllUsersEvents(){
         for (const date in dates) {
           let key = dates[date]
           for (const event in key) {
-            key[event].companyName = arr[i].companyName
-            key[event].bgcolor = undefined
-            key[event].eventKey =undefined
-            key[event].icon = undefined
             events.push(key[event])
           }
         }
@@ -41,7 +37,12 @@ async function getAllUsersEvents(){
       return events
     })
 }
-
+function getUserPassword(companyName) {
+  return fireBaseInstance.firebase.database().ref(`users/${companyName}`).once('value')
+    .then(res => {
+      return res.val().password
+    })
+}
 async function getUser(companyName) {
      return await fireBaseInstance.firebase.database().ref(`users/${companyName}`).once('value')
         .then(res => {
@@ -56,22 +57,23 @@ function deleteUserFromDb(companyName) {
 }
 
 
- async function addEvent(options) {
-   if (options.event.file) {
-     const file = options.event.file;
-     let storageRef = fireBaseInstance.firebase.storage().ref();
-     let imageStorageRef = storageRef.child(`${options.companyName}`).child(`${options.event.date}`).child(`${file.name}`)
-     await imageStorageRef.put(file)
-     await imageStorageRef.getDownloadURL()
-       .then((url) => {
-         options.event.file = url
-       }).catch(err => console.log(err))
-     return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
-   }
-
-   else {
-     return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
-   }
+async function addEvent(options) {
+  if (options.event.files) {
+    let fileLinks = []
+    for (let file of options.event.files) {
+      let storageRef = fireBaseInstance.firebase.storage().ref();
+      let imageStorageRef = storageRef.child(`${file.name}`)
+      await imageStorageRef.put(file)
+      await imageStorageRef.getDownloadURL()
+        .then((url) => {
+          fileLinks.push(url)
+        }).catch(err => console.log(err))
+    }
+    options.event.files = fileLinks
+    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
+  } else {
+    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
+  }
 }
 
 function editEvent(options) {
@@ -94,12 +96,29 @@ export async function getUserEvents(companyName) {
             return arr;
         })
 }
-
- async function addUser(options) {
+async function addAdmin(options) {
+  return await fireBaseInstance.firebase.database().ref(`admins/${options.companyName}`).set({
+    email: options.email,
+    companyName: options.companyName,
+    password: options.password,
+  })
+}
+async function addUser(options) {
+  let file = options.logo
+  let storageRef = fireBaseInstance.firebase.storage().ref();
+  let imageStorageRef = storageRef.child(`${file.name}`)
+  await imageStorageRef.put(file)
+  await imageStorageRef.getDownloadURL()
+    .then((url) => {
+      file = url;
+    }).catch(err => console.log(err))
+  options.logo = file
   return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).set({
     email: options.email,
     companyName: options.companyName,
     password: options.password,
+    logo: options.logo,
+    color: options.color
   }).then(async () => {
     if(options.events) {
       for (let i = 0; i < options.events.length; i++) {
@@ -132,7 +151,15 @@ async function setNewEmail(options) {
       }
 }
 
+async function getUserColorFb(companyName) {
+  return await fireBaseInstance.firebase.database().ref(`users/${companyName}`).get().then(snapshot => {
+    let color = snapshot.val()
+    return color.color
+  })
+
+  }
+
 export default {
     getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
-  setNewEmail
+  setNewEmail, addAdmin, getUserColorFb
 }

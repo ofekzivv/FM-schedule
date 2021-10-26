@@ -9,7 +9,15 @@
 
         <q-select v-model="eventTypeSelector" :options="options" label="סוג אירוע" />
 
-        <q-file v-show="eventTypeSelector && eventTypeSelector!=='פוסט'" color="primary" v-model="formData.file" label="הוסף קובץ">
+        <q-file
+          v-show="eventTypeSelector && eventTypeSelector!=='פוסט'"
+          color="primary"
+          v-model="formData.files"
+          label="הוסף קובץ"
+          counter
+          multiple
+          use-chips
+        >
           <template v-slot:prepend>
             <q-icon name="attach_file" />
           </template>
@@ -58,7 +66,7 @@ export default {
         title: '',
         details: '',
         date: this.eventDate,
-        file: null,
+        files: null,
         bgcolor: '',
         icon: '',
       },
@@ -66,7 +74,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('events', ['addNewEvent']),
+    ...mapActions('events', ['addNewEvent', 'getUserColor']),
     // following method is REQUIRED
     // (don't change its name --> "show")
     show() {
@@ -86,18 +94,18 @@ export default {
     },
 
     async onOKClick() {
+      await this.getUserColor(this.companyName).then(res => {
+        this.formData.bgcolor = res
+      })
       this.formData.eventType = this.eventTypeSelector
       if (this.eventTypeSelector === 'סרטון') {
         this.formData.icon = 'movie'
-        this.formData.bgcolor = 'green'
       }
       else if (this.eventTypeSelector === 'תמונה') {
         this.formData.icon = 'image'
-        this.formData.bgcolor = 'orange'
       }
       else {
         this.formData.icon = 'post_add'
-        this.formData.bgcolor = 'blue'
       }
       await this.addNewEvent([this.formData.title, this.companyName, this.formData]).then(() => {
         this.$q.notify({
