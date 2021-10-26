@@ -1,7 +1,8 @@
 <template>
   <div class="q-pa-md items-center q-gutter-md">
     <q-card
-      v-for="dailyEvent in dailyEvents"
+      v-for="(dailyEvent,index) in dailyEvents"
+      :key="index"
       :style="{background : dailyEvent.bgcolor}"
       class="text-white"
       style="max-width: 500px; "
