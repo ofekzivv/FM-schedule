@@ -5,7 +5,6 @@
       <q-card-section class="q-gutter-lg">
 
         <q-input
-          outlined
           v-model="formData.companyName"
           class="col"
           label="שם החברה"
@@ -14,7 +13,6 @@
         />
 
         <q-input
-          outlined
           v-model="formData.email"
           ref="email"
           class="col"
@@ -67,7 +65,7 @@ export default {
       this.$q.loading.show()
       this.$refs.email.validate()
       this.formData.generatedPassword = this.generatePassword()
-      firebaseInstance.addUser({companyName: this.formData.companyName, email: this.formData.email, password: this.formData.generatedPassword, events: ''}).then(() => {
+      firebaseInstance.addUser({companyName: this.formData.companyName, email: this.formData.email, password: this.formData.generatedPassword}).then(() => {
         this.$q.notify({
           message: 'הוספת את המשתמש בהצלחה! ',
           icon: 'person_add',

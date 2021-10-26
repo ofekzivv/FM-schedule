@@ -55,7 +55,7 @@
           :icon="link.icon"
           :label="link.label"/>
 
-          <TasksFilter/>
+<!--          <TasksFilter/>-->
         <q-btn class="searchBtn q-ml-lg" label="חפש אירוע" color="primary" @click="onClickSearch()"/>
         <q-dialog v-model="searchBar">
           <SearchEvents/>
@@ -118,9 +118,9 @@ const linksData = [
     icon: 'calendar_view_day',
     link: '/DayView'
   }, {
-    title: 'כל המשימות',
-    label: 'כל המשימות',
-    icon: '',
+    title: 'כל האירועים',
+    label: 'כל האירועים',
+    icon: 'task',
     link: '/AllView'
   }];
 

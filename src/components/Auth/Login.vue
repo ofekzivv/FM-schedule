@@ -51,6 +51,7 @@
 <script>
 import {mapActions, mapState} from "vuex";
 import {LocalStorage} from "quasar";
+import {getCompanyNameByEmail} from 'src/middleware/firebase/database'
 
 export default {
   data() {
@@ -58,7 +59,8 @@ export default {
       formData: {
         email: '',
         password: ''
-      }
+      },
+      email:''
     }
   },
   // computed:
@@ -70,12 +72,12 @@ export default {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(String(email).toLowerCase());
     },
-    submitForm() {
+     submitForm() {
       this.$refs.email.validate()
       this.$refs.password.validate()
       if (!this.$refs.email.hasError && !this.$refs.password.hasError) {
         this.loginUser(this.formData)
-          .then(userId => {
+          .then(async() => {
             //this.getUserInfo(userId)
             this.$q.notify({
               color: 'green-4',
@@ -83,6 +85,8 @@ export default {
               icon: 'cloud_done',
               message: 'Logged in'
             })
+            this.email = await getCompanyNameByEmail(this.formData.email)
+            await this.$router.push(`/${this.email}`)
           }).catch(err => console.log(err))
       }
     },

@@ -1,5 +1,6 @@
 <template>
   <div class="my-font container" id="capture">
+    <TasksFilter :company="companyName"/>
     <div class="row justify-center items-center q-mb-sm">
       <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
       <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
@@ -50,11 +51,12 @@
 <script>
 import QCalendarTry from '@quasar/quasar-ui-qcalendar'
 import {QCalendar} from '@quasar/quasar-ui-qcalendar'
-import {mapActions, mapState} from "vuex";
+import {mapActions, mapState, mapMutations} from "vuex";
 import {Dialog} from 'quasar'
 import EventAdder from "components/EventAdder";
 import EditEvent from "components/EditEvent";
 import VueHtmlToPaper from "vue-html-to-paper";
+import TasksFilter from "components/TasksFilter";
 
 
 const reRGBA = /^\s*rgb(a)?\s*\((\s*(\d+)\s*,\s*?){2}(\d+)\s*,?\s*([01]?\.?\d*?)?\s*\)\s*$/
@@ -129,19 +131,29 @@ export default {
   props: ['company'],
   components: {
     QCalendar,
-    EventAdder,
+    EventAdder,TasksFilter
   },
 
   created() {
-    console.log("company on created", this.company)
+    console.log(this.companyName)
+    this.setCompanyName(this.companyName)
+    if (this.$route.params.companyName) {
+      this.companyName = this.$route.params.companyName
+    }
+    else{
+      this.companyName = this.company
+    }
+    console.log("company on created", this.companyName)
     this.$q.loading.show()
-    this.companyName = this.company
     this.getAllUserEvents(this.companyName).then((res) => {
       this.events = res
       this.$q.loading.hide()
     })
   },
+  computed: mapState('events',['toggleFilter','companyName']),
   methods: {
+    ...mapMutations('events',['setCompanyName']),
+
     ...mapActions('events', ['getAllUserEvents']),
 
     calendarNext() {
@@ -155,7 +167,7 @@ export default {
       this.$q.dialog({
         component: EventAdder,
         parent: this,
-        companyName: this.company,
+        companyName: this.companyName,
         eventDate: data.scope.timestamp.date
 
         // ...more.props...
@@ -197,7 +209,7 @@ export default {
       s['align-items'] = 'flex-start'
       return s
     },
-    getEvents(dt) {
+    getEvents(dt){
       const currentDate = QCalendarTry.parseTimestamp(dt)
       const events = []
       for (let i = 0; i < this.events.length; ++i) {
@@ -243,7 +255,7 @@ export default {
         component: EditEvent,
         parent: this,
         event: updateEvent,
-        companyName: this.company
+        companyName: this.companyName
 
         // ...more.props...
       }).onOk(() => {
@@ -266,7 +278,7 @@ export default {
         this.events = res
         this.$q.loading.hide()
       })
-    }
+    },
   }
 }
 
