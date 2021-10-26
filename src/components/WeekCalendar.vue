@@ -141,8 +141,8 @@ export default {
     console.log("company on created", this.company)
     this.$q.loading.show()
     this.companyName = this.company
-    this.getAllUserEvents(this.companyName).then((res) => {
-      this.events = res
+    this.getAllUserEvents(this.companyName).then(() => {
+      this.events = this.userEvents
       this.$q.loading.hide()
     })
   },
@@ -305,9 +305,8 @@ export default {
       this.$q.loading.show()
       console.log("company on watch", newValue)
       this.companyName = newValue
-      this.getAllUserEvents(this.companyName).then((res) => {
-        this.setUserEvents(res)
-        this.events = res
+      this.getAllUserEvents(this.companyName).then(() => {
+        this.events = this.userEvents
         this.$q.loading.hide()
       })
     }
