@@ -24,6 +24,7 @@ export default {
         { name: 'title', required: true, label: 'אירוע', align: 'center', field: 'title' , sortable: true},
         { name: 'eventType', align: 'center', label: 'סוג אירוע', field: 'eventType', sortable: true },
         { name: 'details',align:'center', label: 'פרטים', field: 'details', sortable: true },
+        { name: 'companyName',align:'center', label: 'שם חברה', field: 'companyName', sortable: true },
       ],
       events : []
     }

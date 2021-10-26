@@ -63,12 +63,12 @@
 <script>
 //This component is a popup search window
 //the user can search events by key like "Title"
-import eventsCards from "components/eventsCards";
+import EventsCards from "components/EventsCards";
 import {mapState, mapMutations, mapActions, mapGetters} from 'vuex'
 
 export default {
   name: "SearchEvents",
-  components: {eventsCards},
+  components: {EventsCards},
   data() {
     return {
       results: [],
