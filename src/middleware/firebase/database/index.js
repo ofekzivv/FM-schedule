@@ -29,6 +29,10 @@ async function getAllUsersEvents(){
         for (const date in dates) {
           let key = dates[date]
           for (const event in key) {
+            key[event].companyName = arr[i].companyName
+            key[event].bgcolor = undefined
+            key[event].eventKey =undefined
+            key[event].icon = undefined
             events.push(key[event])
           }
         }
@@ -97,9 +101,7 @@ export async function getUserEvents(companyName) {
         })
 }
 async function addAdmin(options) {
-  return await fireBaseInstance.firebase.database().ref(`admins/${options.companyName}`).set({
-
-  })
+  return await fireBaseInstance.firebase.database().ref(`admins/${options.companyName}`)
 }
 async function addUser(options) {
   let file = options.logo

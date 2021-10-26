@@ -72,10 +72,9 @@ export default {
       this.$q.loading.show()
       this.$refs.email.validate()
       this.formData.generatedPassword = this.generatePassword()
-      debugger
       firebaseInstance.addAdmin({companyName: this.formData.companyName, email: this.formData.email, password: this.formData.generatedPassword}).then(() => {
         this.$q.notify({
-          message: 'הוספת את האדמין בהצלחה! ',
+          message: 'הוספת את המשתמש בהצלחה! ',
           icon: 'person_add',
           type: 'positive',
         })

@@ -1,16 +1,13 @@
 import firebaseInstance from 'src/middleware/firebase/database'
 
 export default {
-  getAllUserEvents: async ({commit}, companyName) => {
-    await firebaseInstance.getUserEvents(companyName).then(res => {
-      commit('setUserEvents', res)
-    })
+  getAllUserEvents: async ({}, companyName) => {
+    return await firebaseInstance.getUserEvents(companyName)
   },
   getAllUsersEvents: async ({commit}, daily) =>{
     const events =  await firebaseInstance.getAllUsersEvents()
     commit('setAllUsersEvents', events)
     let sortedEvents = [events[0]]
-    debugger
     let dailyEvents = []
     for (let i = 1; i < events.length; i++) {
       if (events[i].date === new Date().toISOString().slice(0, 10).toString()){

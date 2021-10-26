@@ -1,10 +1,5 @@
 <template>
   <div class="my-font container">
-    <q-btn class="searchBtn q-ml-lg" label="חפש אירוע" color="primary" @click="onClickSearch()"/>
-    <q-dialog v-model="searchBar">
-      <SearchEvents/>
-    </q-dialog>
-    <TasksFilter :company="companyName"/>
     <div class="row justify-center items-center q-mb-sm">
       <q-btn color="blue" push label="שבוע קודם" @click="calendarPrev" class="q-mr-xs"/>
       <q-btn color="blue" push label="שבוע הבא" @click="calendarNext"/>
@@ -58,8 +53,6 @@ import {mapActions, mapState} from "vuex";
 // import {Dialog} from 'quasar'
 import EventAdder from "components/EventAdder";
 import EditEvent from "components/EditEvent";
-import TasksFilter from "components/TasksFilter";
-import SearchEvents from "components/SearchEvents";
 
 const reRGBA = /^\s*rgb(a)?\s*\((\s*(\d+)\s*,\s*?){2}(\d+)\s*,?\s*([01]?\.?\d*?)?\s*\)\s*$/
 
@@ -126,16 +119,13 @@ export default {
       test: false,
       events: [],
       companyName: '',
-      getDailyEvents: 0,
-      searchBar: false,
+      getDailyEvents: 0
     }
   },
   props: ['company'],
   components: {
     QCalendar,
-    EventAdder,
-    SearchEvents,
-    TasksFilter
+    EventAdder
   },
 
   created() {
@@ -264,39 +254,13 @@ export default {
       }).onDismiss(() => {
         console.log('Called on OK or Cancel')
       })
-    },
-    onClickSearch(){
-      this.$q.dialog({
-        component: SearchEvents,
-
-        // optional if you want to have access to
-        // Router, Vuex store, and so on, in your
-        // custom component:
-        parent: this, // becomes child of this Vue node
-                      // ("this" points to your Vue component)
-                      // (prop was called "root" in < 1.1.0 and
-                      // still works, but recommending to switch
-                      // to the more appropriate "parent" name)
-
-        // props forwarded to component
-        // (everything except "component" and "parent" props above):
-        text: 'something',
-        // ...more.props...
-      }).onOk(() => {
-        console.log('OK')
-      }).onCancel(() => {
-        console.log('Cancel')
-      }).onDismiss(() => {
-        console.log('Called on OK or Cancel')
-      })
-    },
+    }
   },
   computed: {
-    ...mapState('events',['userEvents']),
     // convert the events into a map of lists keyed by date
     eventsMap () {
       const map = {}
-      this.userEvents.forEach((event) => (map[event.date] = map[event.date] || []).push(event))
+      this.events.forEach((event) => (map[event.date] = map[event.date] || []).push(event))
       return map
     }
   },

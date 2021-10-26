@@ -2,18 +2,17 @@
   <q-dialog ref="dialog" @hide="onDialogHide" style="height: 100%">
     <q-card class="q-dialog-plugin my-font">
       <p class="text-h5 text-center q-mt-md">ערוך משתמש:</p>
-      <q-card-section class="q-gutter-lg text-center">
+      <q-card-section class="q-gutter-lg">
 
         <q-input v-model="companyNameInput" label="שם חברה"/>
 
         <q-input v-model="emailInput" label="אימייל"/>
 
-        <q-img v-show="!changeImg" class="text-center" :src="logo" alt="logo" width="150px">
-          <q-btn flat icon="edit" label="שנה תמונה" @click="changeImg = true"/>
+        <q-img class="text-center" :src="logo" alt="logo" width="150px">
+          <q-btn icon="edit" label="שנה תמונה"/>
         </q-img>
 
-
-        <q-file v-show="changeImg" v-model="logoInput" label="שנה לוגו חברה">
+        <q-file v-model="logoInput" label="בחר לוגו חברה">
           <template v-slot:append>
             <q-icon name="attach_file"/>
           </template>
@@ -53,9 +52,8 @@ export default {
   },
   data() {
     return {
-      changeImg: false,
-      companyNameInput: this.companyName,
-      emailInput: this.email,
+        companyNameInput: this.companyName,
+        emailInput: this.email,
       colorInput: this.color,
       logoInput: this.logo
     }
@@ -83,7 +81,7 @@ computed: mapState('users',['userData']),
     },
     async onOKClick() {
       let user = await this.getUser(this.companyName);
-      await this.editExistingUser([user,this.companyNameInput,this.emailInput, this.logoInput, this.colorInput])
+      await this.editExistingUser([user,this.companyNameInput,this.emailInput])
         .then(() => {
           this.$q.notify({
             message: ' ערכת את המשתמש בהצלחה! ',
