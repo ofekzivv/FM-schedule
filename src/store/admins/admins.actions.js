@@ -3,24 +3,21 @@ import firebaseInstance from '../../middleware/firebase/database'
 
 export default {
   getAdmin: async ({commit}, companyName) => {
+    debugger
     let admin = await firebaseInstance.getAdmin(companyName);
     commit('setAdmin', admin)
     return admin
   },
 
   getAdmins: async ({commit}) =>{
-    debugger
     const admins = await firebaseInstance.getAllAdmins()
     commit('setAdmins', admins)
     return admins
   },
 
-  editExistingAdmin: async ({commit}, [newCompanyName, newEmail,password]) => {
-      await firebaseInstance.updateAdmin({
-        companyName: newCompanyName,
-        email: newEmail,
-        password: password,
-      })
+  editExistingAdmin: async ({commit}, [name,newName, email,password]) => {
+      await firebaseInstance.deleteAdminFromDb(name)
+          await firebaseInstance.addAdmin({companyName: newName, email, password})
   },
   deleteAdmin: async ({commit}, name) => {
     await firebaseInstance.deleteAdminFromDb(name).then(() =>{

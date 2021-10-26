@@ -8,7 +8,7 @@
 
         <q-input v-model="emailInput" label="אימייל"/>
 
-        <q-input v-model="emailInput" label="אימייל"/>
+        <q-input v-model="passwordInput" label="סיסמא"/>
       </q-card-section>
 
       <q-card-actions align="right">
@@ -54,8 +54,9 @@ export default {
       this.$emit('hide')
     },
     async onOKClick() {
-      let admin = await this.getAdmin(this.companyName);
-      await this.editExistingAdmin([admin,this.companyNameInput,this.emailInput])
+      debugger
+      await this.getAdmin(this.companyName);
+      await this.editExistingAdmin([this.companyName,this.companyNameInput,this.emailInput,this.passwordInput])
         .then(() => {
           this.$q.notify({
             message: ' ערכת את האדמין בהצלחה! ',

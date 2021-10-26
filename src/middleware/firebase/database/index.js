@@ -161,7 +161,6 @@ async function getUserColorFb(companyName) {
 async function getAllAdmins() {
   return await fireBaseInstance.firebase.database().ref('admins').once('value')
     .then(res => {
-      debugger
       const arr = [];
       const map = res.val();
       for (const key in map) {
@@ -172,19 +171,27 @@ async function getAllAdmins() {
       return arr;
     })
 }
-function deleteAdminFromDb(name) {
-  return fireBaseInstance.firebase.database().ref(`admins/${name}`).remove().then(() => {
+async function deleteAdminFromDb(name) {
+   return await fireBaseInstance.firebase.database().ref(`admins/${name}`).remove().then(() => {
     console.log('the user was removed from db')
   }).catch(err => err)
 }
-function updateAdmin(admin) {
-  return fireBaseInstance.firebase.database().ref(`admins/${admin.name}`).set({
+async function updateAdmin(origName,admin) {
+   debugger
+  return await fireBaseInstance.firebase.database().ref(`admins/${admin.name}`).set({
     companyName: admin.companyName,
     email: admin.email,
     password: admin.password
+  }).then(async ()=>{
+    await this.deleteUserFromDb(origName)
   })
+}
+function getAdmin(name){
+   return fireBaseInstance.firebase.database().ref(`admins/${name}`).get().then((res)=> {
+     return res.val()
+   })
 }
 export default {
     getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
-  setNewEmail, getAllAdmins, updateAdmin, deleteAdminFromDb, addAdmin, getUserColorFb
+  setNewEmail, getAllAdmins, updateAdmin, deleteAdminFromDb, addAdmin, getUserColorFb, getAdmin
 }
