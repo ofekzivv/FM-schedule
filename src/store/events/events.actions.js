@@ -70,7 +70,7 @@ export default {
     return filteredEvents
   },
 
-  FilterByToggle: ({state, commit}) => {
+  FilterByToggle: ({state, commit},all) => {
     let filteredEvents = []
     if (all !== 'all') {
       filteredEvents = state.userEvents.filter(event => state.toggleFilter
