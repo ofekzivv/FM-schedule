@@ -119,7 +119,6 @@ export default {
       const userEvents = await this.getAllUserEvents(this.companyName)
 
       let res = await this.getFilteredEvents(userEvents)
-      debugger
       console.log(res)
       this.results = res
       console.log(` this.results = ${this.results}`)

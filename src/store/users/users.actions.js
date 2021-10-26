@@ -20,7 +20,6 @@ export default {
   editExistingUser: async ({commit}, [user,newCompanyName,newEmail]) => {
     if (user.companyName !== newCompanyName){
       let events = await firebaseInstance.getUserEvents(user.companyName)
-      debugger
       await firebaseInstance.addUser({companyName: newCompanyName, email: newEmail, password: user.password, events: events})
       await firebaseInstance.deleteUserFromDb(user.companyName)
     }

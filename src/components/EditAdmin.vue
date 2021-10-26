@@ -54,7 +54,6 @@ export default {
       this.$emit('hide')
     },
     async onOKClick() {
-      debugger
       await this.getAdmin(this.companyName);
       await this.editExistingAdmin([this.companyName,this.companyNameInput,this.emailInput,this.passwordInput])
         .then(() => {

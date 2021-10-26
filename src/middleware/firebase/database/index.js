@@ -34,7 +34,6 @@ async function getAllUsersEvents(){
         }
       }
       console.log(events)
-      debugger
       return events
     })
 }
@@ -146,14 +145,11 @@ async function getUserColorFb(companyName) {
 }
 
  export async function getCompanyNameByEmail(email) {
-   debugger
   const res = await fireBaseInstance.firebase.database().ref(`users/`).once('value')
-   debugger
       const map = res.val()
       for (const x in map) {
         const user = map[x]
         if (user.email === email) {
-          debugger
           return await user.companyName
         }
       }
@@ -177,7 +173,6 @@ async function deleteAdminFromDb(name) {
   }).catch(err => err)
 }
 async function updateAdmin(origName,admin) {
-   debugger
   return await fireBaseInstance.firebase.database().ref(`admins/${admin.name}`).set({
     companyName: admin.companyName,
     email: admin.email,

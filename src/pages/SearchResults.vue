@@ -29,7 +29,6 @@ export default {
   },
   created() {
     this.getAllUserEvents(this.companyName).then((userEvents) =>{
-      debugger;
       console.log(userEvents)
       this.results = this.getEventsByKeys(userEvents)
       console.log(this.results)

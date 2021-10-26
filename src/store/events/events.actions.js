@@ -17,7 +17,6 @@ export default {
       dailyEvents.push(events[0])
     }
     for (let i = 1; i < events.length; i++) {
-      debugger
       if (events[i].date === new Date().toISOString().slice(0, 10).toString()){
         dailyEvents.push(events[i])
       }

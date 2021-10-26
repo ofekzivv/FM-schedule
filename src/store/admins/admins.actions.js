@@ -3,7 +3,6 @@ import firebaseInstance from '../../middleware/firebase/database'
 
 export default {
   getAdmin: async ({commit}, companyName) => {
-    debugger
     let admin = await firebaseInstance.getAdmin(companyName);
     commit('setAdmin', admin)
     return admin
