@@ -16,12 +16,11 @@ import fireBaseInstance from '../';
 async function getAllUsersEvents(){
   let events = [];
   return await fireBaseInstance.firebase.database().ref('users').once('value')
-    .then(res => {
+    .then(async res => {
       const arr = [];
       const map = res.val();
       for (const key in map) {
         const item = map[key];
-        item.id = key;
         arr.push(item);
       }
       for (let i = 0; i < arr.length; i++) {
@@ -29,11 +28,13 @@ async function getAllUsersEvents(){
         for (const date in dates) {
           let key = dates[date]
           for (const event in key) {
+            key[event].companyName = arr[i].companyName
             events.push(key[event])
           }
         }
       }
       console.log(events)
+      debugger
       return events
     })
 }
@@ -98,9 +99,7 @@ export async function getUserEvents(companyName) {
 }
 async function addAdmin(options) {
   return await fireBaseInstance.firebase.database().ref(`admins/${options.companyName}`).set({
-    email: options.email,
-    companyName: options.companyName,
-    password: options.password,
+
   })
 }
 async function addUser(options) {
@@ -151,15 +150,7 @@ async function setNewEmail(options) {
       }
 }
 
-async function getUserColorFb(companyName) {
-  return await fireBaseInstance.firebase.database().ref(`users/${companyName}`).get().then(snapshot => {
-    let color = snapshot.val()
-    return color.color
-  })
-
-  }
-
 export default {
     getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
-  setNewEmail, addAdmin, getUserColorFb
+  setNewEmail, addAdmin
 }

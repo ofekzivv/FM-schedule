@@ -24,9 +24,7 @@
         <q-tab-panel name="allUsers">
           <UsersTableViewer/>
         </q-tab-panel>
-        <q-tab-panel name="allAdmins">
-          <AdminsTableViewer/>
-        </q-tab-panel>
+
       </q-tab-panels>
     </q-card>
   </q-page>
@@ -37,11 +35,11 @@ import AddNewUser from "components/AddNewUser";
 import EventAdder from "components/EventAdder";
 import EventsCards from "components/EventsCards";
 import UsersTableViewer from "components/UsersTableViewer";
-import AdminsTableViewer from "components/AdminTableViewer";
+
 export default {
   name: 'PageIndex',
   components: {
-    EventAdder, EventsCards, AddNewUser,  UsersTableViewer, AdminsTableViewer
+    EventAdder, EventsCards, AddNewUser,  UsersTableViewer
   },
   data() {
     return {
