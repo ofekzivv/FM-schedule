@@ -7,7 +7,6 @@
       style="max-width: 500px; "
     >
       <q-card-section>
-        {{dailyEvent}}
         {{dailyEvent.bgcolor}}
         <p class="text-subtitle1 text-bold">שם חברה:</p>
         {{dailyEvent.companyName}}
@@ -31,7 +30,7 @@ export default {
   name: "EventsCards",
   data(){
     return{
-    dailyEvents : ''
+    dailyEvents : '',
     }
   },
   methods: {
