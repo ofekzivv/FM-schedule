@@ -151,7 +151,15 @@ async function setNewEmail(options) {
       }
 }
 
+async function getUserColorFb(companyName) {
+  return await fireBaseInstance.firebase.database().ref(`users/${companyName}`).get().then(snapshot => {
+    let color = snapshot.val()
+    return color.color
+  })
+
+  }
+
 export default {
     getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
-  setNewEmail, addAdmin
+  setNewEmail, addAdmin, getUserColorFb
 }
