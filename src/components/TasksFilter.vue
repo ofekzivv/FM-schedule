@@ -52,6 +52,9 @@ export default {
       console.log(this.userEvents)
     },
   },
+  created() {
+    this.changeFilter()
+  }
 }
 </script>
 

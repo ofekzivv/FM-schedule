@@ -4,7 +4,7 @@
       class="my-card text-white"
       style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%)"
     >
-      <q-card-section v-for="dailyEvent in dailyEvents">
+      <q-card-section v-for="(dailyEvent,index) in dailyEvents" :key="index">
        {{dailyEvent}}
       </q-card-section>
     </q-card>
