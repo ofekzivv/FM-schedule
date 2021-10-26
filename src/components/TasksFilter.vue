@@ -17,9 +17,9 @@
 import {mapActions, mapState, mapMutations} from "vuex";
 
 const optionsGroups = [
-  {label: 'סרטון', color: 'orange', value: 'סרטון'},
+  {label: 'סרטון', color: 'green', value: 'סרטון'},
   {label: 'פוסט', color: 'blue', value: 'פוסט'},
-  {label: 'תמונה', color: 'green', value: 'תמונה'},
+  {label: 'תמונה', color: 'orange', value: 'תמונה'},
 ]
 
 export default {

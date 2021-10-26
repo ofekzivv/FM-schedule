@@ -54,13 +54,6 @@
           :name="link.title"
           :icon="link.icon"
           :label="link.label"/>
-
-<!--          <TasksFilter/>-->
-        <q-btn class="searchBtn q-ml-lg" label="חפש אירוע" color="primary" @click="onClickSearch()"/>
-        <q-dialog v-model="searchBar">
-          <SearchEvents/>
-        </q-dialog>
-
       </q-tabs>
 
     </q-drawer>
@@ -90,7 +83,6 @@
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
 import TasksFilter from "components/TasksFilter";
-import SearchEvents from "components/SearchEvents";
 import {mapActions, mapState} from "vuex";
 
 const linksData = [
@@ -126,12 +118,12 @@ const linksData = [
 
 export default {
   name: 'MainLayout',
-  components: {EssentialLink, TasksFilter, SearchEvents},
+  components: {EssentialLink, TasksFilter},
   data() {
     return {
       essentialLinks: linksData,
       tab: 'Home',
-      searchBar: false,
+
     }
   },
   computed:{
@@ -141,31 +133,6 @@ export default {
     ...mapActions('auth', ['logoutUser']),
     logout() {
       this.logoutUser()
-    },
-    onClickSearch(){
-      this.$q.dialog({
-        component: SearchEvents,
-
-        // optional if you want to have access to
-        // Router, Vuex store, and so on, in your
-        // custom component:
-        parent: this, // becomes child of this Vue node
-                      // ("this" points to your Vue component)
-                      // (prop was called "root" in < 1.1.0 and
-                      // still works, but recommending to switch
-                      // to the more appropriate "parent" name)
-
-        // props forwarded to component
-        // (everything except "component" and "parent" props above):
-        text: 'something',
-        // ...more.props...
-      }).onOk(() => {
-        console.log('OK')
-      }).onCancel(() => {
-        console.log('Cancel')
-      }).onDismiss(() => {
-        console.log('Called on OK or Cancel')
-      })
     },
   },
 

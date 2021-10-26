@@ -1,5 +1,9 @@
 <template>
   <div class="my-font container" id="capture">
+    <q-btn class="searchBtn q-ml-lg" label="חפש אירוע" color="primary" @click="onClickSearch()"/>
+    <q-dialog v-model="searchBar">
+      <SearchEvents/>
+    </q-dialog>
     <TasksFilter :company="companyName"/>
     <div class="row justify-center items-center q-mb-sm">
       <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
@@ -57,7 +61,7 @@ import EventAdder from "components/EventAdder";
 import EditEvent from "components/EditEvent";
 import VueHtmlToPaper from "vue-html-to-paper";
 import TasksFilter from "components/TasksFilter";
-
+import SearchEvents from "components/SearchEvents";
 
 const reRGBA = /^\s*rgb(a)?\s*\((\s*(\d+)\s*,\s*?){2}(\d+)\s*,?\s*([01]?\.?\d*?)?\s*\)\s*$/
 
@@ -125,13 +129,14 @@ export default {
       events: [],
       companyName: '',
       getDailyEvents: 0,
-      output: null
+      output: null,
+      searchBar: false,
     }
   },
   props: ['company'],
   components: {
     QCalendar,
-    EventAdder,TasksFilter
+    EventAdder,TasksFilter, SearchEvents
   },
 
   created() {
@@ -275,7 +280,32 @@ export default {
       this.events = this.userEvents
       console.log(this.events)
       return this.getEvents(dt)
-    }
+    },
+    onClickSearch(){
+      this.$q.dialog({
+        component: SearchEvents,
+
+        // optional if you want to have access to
+        // Router, Vuex store, and so on, in your
+        // custom component:
+        parent: this, // becomes child of this Vue node
+                      // ("this" points to your Vue component)
+                      // (prop was called "root" in < 1.1.0 and
+                      // still works, but recommending to switch
+                      // to the more appropriate "parent" name)
+
+        // props forwarded to component
+        // (everything except "component" and "parent" props above):
+        text: 'something',
+        // ...more.props...
+      }).onOk(() => {
+        console.log('OK')
+      }).onCancel(() => {
+        console.log('Cancel')
+      }).onDismiss(() => {
+        console.log('Called on OK or Cancel')
+      })
+    },
   },
   watch: {
     company(newValue) {
