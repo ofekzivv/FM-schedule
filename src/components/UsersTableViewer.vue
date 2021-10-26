@@ -52,7 +52,7 @@
         </q-tr>
       </template>
     </q-table>
-
+    <AdminTableViewer/>
     <q-btn @click="addUser()" color="primary"  push class="q-ma-sm q-pa-xs">
       הוסף משתמש חדש
     </q-btn>
@@ -65,7 +65,7 @@
 <script>
 import EditUser from "components/EditUser";
 import AddNewUser from "components/AddNewUser";
-
+import AdminTableViewer from "components/AdminTableViewer";
 export default {
   data() {
     return {
@@ -106,7 +106,7 @@ export default {
     }
   },
   components: {
-    EditUser, AddNewUser
+    EditUser, AddNewUser, AdminTableViewer
   },
   computed: {
     ...mapState('users', ["users"])
@@ -198,7 +198,6 @@ export default {
 }
 
 import {mapActions, mapState} from "vuex";
-import EventAdder from "components/EventAdder";
 import AddNewAdmin from "components/AddNewAdmin";
 </script>
 

@@ -30,7 +30,7 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn color="primary" label="הוסף משתמש" @click="onOKClick"/>
+        <q-btn color="primary" label="הוסף אדמין" @click="onOKClick"/>
         <q-btn color="primary" label="ביטול" @click="onCancelClick"/>
       </q-card-actions>
 
@@ -71,17 +71,15 @@ export default {
     async onOKClick() {
       this.$q.loading.show()
       this.$refs.email.validate()
-      this.formData.generatedPassword = this.generatePassword()
-      firebaseInstance.addAdmin({companyName: this.formData.companyName, email: this.formData.email, password: this.formData.generatedPassword}).then(() => {
+      firebaseInstance.addAdmin({companyName: this.formData.companyName, email: this.formData.email, password: this.formData.password}).then(() => {
         this.$q.notify({
-          message: 'הוספת את המשתמש בהצלחה! ',
+          message: 'הוספת את האדמין בהצלחה! ',
           icon: 'person_add',
           type: 'positive',
         })
         this.formData.companyName = ''
         this.formData.email = ''
-        this.formData.generatedPassword = ''
-        this.formData.id = ''
+        this.formData.password = ''
       })
       this.$q.loading.hide()
       this.$emit('ok')
@@ -100,14 +98,6 @@ export default {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(String(email).toLowerCase());
     },
-    generatePassword() {
-      let pw = ""
-      let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
-      for (let i = 0; i < 10; i++) {
-        pw += characters.charAt(Math.floor(Math.random() * characters.length))
-      }
-      return pw;
-    }
   }
 }
 </script>

@@ -99,7 +99,9 @@ export async function getUserEvents(companyName) {
 }
 async function addAdmin(options) {
   return await fireBaseInstance.firebase.database().ref(`admins/${options.companyName}`).set({
-
+    email: options.email,
+    companyName: options.companyName,
+    password: options.password,
   })
 }
 async function addUser(options) {
@@ -156,8 +158,33 @@ async function getUserColorFb(companyName) {
         }
       }
 }
-
+async function getAllAdmins() {
+  return await fireBaseInstance.firebase.database().ref('admins').once('value')
+    .then(res => {
+      debugger
+      const arr = [];
+      const map = res.val();
+      for (const key in map) {
+        const item = map[key];
+        item.id = key;
+        arr.push(item);
+      }
+      return arr;
+    })
+}
+function deleteAdminFromDb(name) {
+  return fireBaseInstance.firebase.database().ref(`admins/${name}`).remove().then(() => {
+    console.log('the user was removed from db')
+  }).catch(err => err)
+}
+function updateAdmin(admin) {
+  return fireBaseInstance.firebase.database().ref(`admins/${admin.name}`).set({
+    companyName: admin.companyName,
+    email: admin.email,
+    password: admin.password
+  })
+}
 export default {
     getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
-  setNewEmail, addAdmin, getUserColorFb
+  setNewEmail, getAllAdmins, updateAdmin, deleteAdminFromDb, addAdmin, getUserColorFb
 }
