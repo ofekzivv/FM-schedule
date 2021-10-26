@@ -140,7 +140,7 @@ export default {
   },
 
   created() {
-    console.log(this.companyName)
+    console.log('company in created', this.companyName)
     this.setCompanyName(this.companyName)
     if (this.$route.params.companyName) {
       this.companyName = this.$route.params.companyName
@@ -157,9 +157,6 @@ export default {
   },
   computed:{
     ...mapState('events',['toggleFilter','companyName','userEvents']),
-    ...mapGetters({
-
-    })
   },
   methods: {
     ...mapMutations('events',['setCompanyName']),
@@ -312,8 +309,8 @@ export default {
       this.$q.loading.show()
       console.log("company on watch", newValue)
       this.companyName = newValue
-      this.getAllUserEvents(this.companyName).then((res) => {
-        this.events = res
+      this.getAllUserEvents(this.companyName).then(() => {
+        this.events = this.userEvents
         this.$q.loading.hide()
       })
     },
