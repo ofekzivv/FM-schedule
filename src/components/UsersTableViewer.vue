@@ -54,6 +54,11 @@
         הוסף משתמש חדש
       </q-tooltip>
     </q-btn>
+    <q-btn @click="addAdmin()" color="blue" icon="add" round dense push class="q-ma-lg q-pa-xs">
+      <q-tooltip content-class="bg-grey-6" :offset="[10, 10]">
+        הוסף אדמין חדש
+      </q-tooltip>
+    </q-btn>
   </div>
 </template>
 
@@ -163,6 +168,24 @@ export default {
       }).onDismiss(() => {
         console.log('Called on OK or Cancel')
       })
+    },
+    addAdmin() {
+      this.$q.dialog({
+        component: AddNewAdmin,
+        parent: this,
+
+        // ...more.props...
+      }).onOk(() => {
+        this.$q.loading.show()
+        this.getUsers().then(() => {
+          this.data = this.users
+          this.$q.loading.hide()
+        }).catch(err => console.log(err))
+      }).onCancel(() => {
+        console.log('Cancel')
+      }).onDismiss(() => {
+        console.log('Called on OK or Cancel')
+      })
     }
   },
   created() {
@@ -176,6 +199,7 @@ export default {
 
 import {mapActions, mapState} from "vuex";
 import EventAdder from "components/EventAdder";
+import AddNewAdmin from "components/AddNewAdmin";
 </script>
 
 <style scoped>
