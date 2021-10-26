@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       companyName: null,
-      options: []
+      options: ['כל המשתמשים']
     }
   },
   computed: mapState('users',['users']),

@@ -9,6 +9,7 @@ export default {
     })
   },
   getAllUsersEvents: async ({commit}, daily) =>{
+    debugger
     const events =  await firebaseInstance.getAllUsersEvents()
     commit('setAllUsersEvents', events)
     let sortedEvents = [events[0]]
@@ -70,12 +71,20 @@ export default {
     return filteredEvents
   },
 
-  FilterByToggle: ({state, commit}) => {
+  FilterByToggle: ({state, commit}, all) => {
+    debugger
     let filteredEvents = []
-    filteredEvents = state.userEvents.filter(event=> state.toggleFilter
-      .includes(event.eventType))
-    console.log(filteredEvents)
-    commit('setUserEvents', filteredEvents)
+    if (all !== 'all') {
+      filteredEvents = state.userEvents.filter(event => state.toggleFilter
+        .includes(event.eventType))
+      console.log(filteredEvents)
+      commit('setUserEvents', filteredEvents)
+    }
+    else{
+      filteredEvents = state.usersEvents.filter(event => state.toggleFilter
+        .includes(event.eventType))
+      commit('setUserEvents', filteredEvents)
+    }
   },
 
   getUserColor: async ({},companyName) => {

@@ -143,26 +143,33 @@ export default {
 
   created() {
     console.log(this.companyName)
-    this.setCompanyName(this.companyName)
-    if (this.$route.params.companyName) {
-      this.companyName = this.$route.params.companyName
+    if (this.companyName !== 'כל המשתמשים') {
+      this.setCompanyName(this.companyName)
+      if (this.$route.params.companyName) {
+        this.companyName = this.$route.params.companyName
+      } else {
+        this.companyName = this.company
+      }
+      this.$q.loading.show()
+      this.getAllUserEvents(this.companyName).then(() => {
+        this.events = this.userEvents
+        this.$q.loading.hide()
+      })
     }
-    else{
-      this.companyName = this.company
+    else {
+      this.getAllUsersEvents('').then(()=>{
+        this.events = this.usersEvents
+        this.$q.loading.hide()
+      })
     }
-    this.$q.loading.show()
-    this.getAllUserEvents(this.companyName).then(() => {
-      this.events = this.userEvents
-      this.$q.loading.hide()
-    })
   },
   computed:{
-    ...mapState('events',['toggleFilter','companyName','userEvents']),
+    ...mapState('events',['toggleFilter','companyName','userEvents','usersEvents']),
   },
   methods: {
     ...mapMutations('events',['setCompanyName','setUserEvents']),
 
-    ...mapActions('events', ['getAllUserEvents']),
+    ...mapActions('events', ['getAllUserEvents','getAllUsersEvents']),
 
     calendarNext() {
       this.$refs.calendar.next()
@@ -305,11 +312,20 @@ export default {
       this.$q.loading.show()
       console.log("company on watch", newValue)
       this.companyName = newValue
-      this.getAllUserEvents(this.companyName).then(() => {
-        this.events = this.userEvents
-        this.$q.loading.hide()
-      })
-    },
+      debugger
+      if (newValue !== 'כל המשתמשים') {
+        this.getAllUserEvents(this.companyName).then(() => {
+            this.events = this.userEvents
+            this.$q.loading.hide()
+          })
+      }
+      else{
+        this.getAllUsersEvents('').then(()=> {
+          this.events = this.usersEvents
+          this.$q.loading.hide()
+        })
+      }
+    }
   }
 }
 

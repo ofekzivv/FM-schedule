@@ -36,14 +36,21 @@ export default {
   methods: {
 
     ...mapMutations('events', ['setToggleFilter','setUserEvents']),
-    ...mapActions('events', ['getAllUserEvents', 'FilterByToggle']),
+    ...mapActions('events', ['getAllUserEvents', 'FilterByToggle','getAllUsersEvents']),
 
     async changeFilter() {
-      await this.setToggleFilter(this.filteredGroup)
-      console.log(this.company)
-      await this.getAllUserEvents(this.company)
-      console.log(this.userEvents)
-      await this.FilterByToggle()
+      if (this.company !== "כל המשתמשים") {
+        await this.setToggleFilter(this.filteredGroup)
+        console.log(this.company)
+        await this.getAllUserEvents(this.company)
+        console.log(this.userEvents)
+        await this.FilterByToggle('')
+      }
+      else {
+        await this.setToggleFilter(this.filteredGroup)
+        await this.getAllUsersEvents('')
+        await this.FilterByToggle('all')
+      }
     },
   },
   created() {

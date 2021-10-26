@@ -148,7 +148,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions('events', ['getAllUserEvents']),
+    ...mapActions('events', ['getAllUserEvents','getAllUsersEvents']),
     ...mapMutations('events',['setUserEvents']),
     calendarNext() {
       this.$refs.calendar.next()
@@ -306,10 +306,18 @@ export default {
       this.$q.loading.show()
       console.log("company on watch", newValue)
       this.companyName = newValue
-      this.getAllUserEvents(this.companyName).then(() => {
-        this.events = this.userEvents
-        this.$q.loading.hide()
-      })
+      if (newValue !== 'כל המשתמשים') {
+        this.getAllUserEvents(this.companyName).then(() => {
+          this.events = this.userEvents
+          this.$q.loading.hide()
+        })
+      }
+      else{
+        this.getAllUsersEvents('').then(()=> {
+          this.events = this.usersEvents
+          this.$q.loading.hide()
+        })
+      }
     }
   }
 }
