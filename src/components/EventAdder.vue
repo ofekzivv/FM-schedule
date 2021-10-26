@@ -100,15 +100,12 @@ export default {
       this.formData.eventType = this.eventTypeSelector
       if (this.eventTypeSelector === 'סרטון') {
         this.formData.icon = 'movie'
-        this.formData.bgcolor = 'green'
       }
       else if (this.eventTypeSelector === 'תמונה') {
         this.formData.icon = 'image'
-        this.formData.bgcolor = 'orange'
       }
       else {
         this.formData.icon = 'post_add'
-        this.formData.bgcolor = 'blue'
       }
       await this.addNewEvent([this.formData.title, this.companyName, this.formData]).then(() => {
         this.$q.notify({

@@ -49,6 +49,14 @@ export default {
 
 <style scoped>
 
+.q-card {
+  cursor: pointer;
+}
+
+.q-img {
+  transition: ease-in 0.3s;
+}
+
 .q-img:hover {
   transform: scale(1.5);
   overflow: visible;
