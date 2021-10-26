@@ -37,7 +37,11 @@
             <img :src="props.row.logo" alt="לוגו חברה" width="50px"/>
           </q-td>
           <q-td>
-            <q-icon name="circle" :style="{color: props.row.color}" size="md" />
+            <q-icon name="circle" :style="{color: props.row.color}" size="md" >
+              <q-tooltip content-class="bg-grey-6" :offset="[10, 10]">
+               {{props.row.color}}
+              </q-tooltip>
+            </q-icon>
           </q-td>
           <q-td>
             <q-btn @click="editUser(props.row.companyName, props.row.email, props.row.logo, props.row.color)" color="primary" icon="edit" dense push
@@ -49,15 +53,11 @@
       </template>
     </q-table>
 
-    <q-btn @click="addUser()" color="primary" icon="add" round dense push class="q-ma-lg q-pa-xs">
-      <q-tooltip content-class="bg-grey-6" :offset="[10, 10]">
-        הוסף משתמש חדש
-      </q-tooltip>
+    <q-btn @click="addUser()" color="primary"  push class="q-ma-sm q-pa-xs">
+      הוסף משתמש חדש
     </q-btn>
-    <q-btn @click="addAdmin()" color="blue" icon="add" round dense push class="q-ma-lg q-pa-xs">
-      <q-tooltip content-class="bg-grey-6" :offset="[10, 10]">
-        הוסף אדמין חדש
-      </q-tooltip>
+    <q-btn @click="addAdmin()" color="blue"  push class="q-ma-sm q-pa-xs">
+      הוסף אדמין
     </q-btn>
   </div>
 </template>

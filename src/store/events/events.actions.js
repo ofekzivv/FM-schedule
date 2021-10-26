@@ -67,5 +67,9 @@ export default {
       .includes(event.eventType))
     console.log(filteredEvents)
     commit('setUserEvents', filteredEvents)
-  }
+  },
+
+  getUserColor: async ({},companyName) => {
+    return await firebaseInstance.getUserColorFb(companyName).then(res => {return res})
+  },
 }
