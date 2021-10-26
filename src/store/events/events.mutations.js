@@ -3,7 +3,7 @@ export default {
 
   setCompanyName: ((state, company) => state.companyName = company),
 
-  setUserEvents: ((state, userEvents) => state.userMonthlyEvents = userEvents),
+  setUserEvents: ((state, userEvents) => state.userEvents = userEvents),
 
   resetCompanyName: ((state) => state.companyName = ''),
 

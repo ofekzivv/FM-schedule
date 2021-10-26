@@ -17,43 +17,43 @@
 import {mapActions, mapState, mapMutations} from "vuex";
 
 const optionsGroups = [
-  {label: 'סרטון', color: 'orange', value: 'סרטון'},
+  {label: 'סרטון', color: 'green', value: 'סרטון'},
   {label: 'פוסט', color: 'blue', value: 'פוסט'},
-  {label: 'תמונה', color: 'green', value: 'תמונה'},
+  {label: 'תמונה', color: 'orange', value: 'תמונה'},
 ]
 
 export default {
   name: "TasksFilter",
   props: ['company'],
-  computed: mapState('events', ['toggleFilter', 'userEvents', 'companyName']),
-  methods: {
-
-    ...mapMutations('events', ['setToggleFilter']),
-
-    ...mapActions('events', ['getAllUserEvents', 'FilterByToggle']),
-
-    changeFilter() {
-      console.log(this.companyName)
-      console.log(this.userEvents)
-      this.setToggleFilter(this.filteredGroup)
-      this.FilterByToggle()
-      console.log(this.userEvents)
-    },
-  },
+  computed: mapState('events', ['toggleFilter', 'userEvents']),
   data() {
     return {
       //will be in the state
       options: optionsGroups,
-      filteredGroup: [],
-      company: this.companyName,
+      filteredGroup: ['סרטון','תמונה' ,'פוסט'],
     }
+  },
+  methods: {
+
+    ...mapMutations('events', ['setToggleFilter','setUserEvents']),
+
+    ...mapActions('events', ['getAllUserEvents', 'FilterByToggle']),
+
+    async changeFilter() {
+      await this.setToggleFilter(this.filteredGroup)
+
+      console.log(this.companyName)
+      let userEvents = await this.getAllUserEvents(this.company)
+      console.log(userEvents)
+
+      await this.setUserEvents(userEvents)
+
+      await this.FilterByToggle()
+      console.log(this.userEvents)
+    },
   },
   created() {
-  },
-  watch: {
-    company(newValue){
-      console.log(newValue)
-    }
+    this.changeFilter()
   }
 }
 </script>

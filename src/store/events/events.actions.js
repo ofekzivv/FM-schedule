@@ -61,9 +61,11 @@ export default {
     return filteredEvents
   },
 
-  FilterByToggle: async ({state, commit}) => {
+  FilterByToggle: ({state, commit}) => {
     let filteredEvents = []
-    filteredEvents = state.userEvents.filter(event=> state.toggleFilter.includes(event.eventType))
+    filteredEvents = state.userEvents.filter(event=> state.toggleFilter
+      .includes(event.eventType))
+    console.log(filteredEvents)
     commit('setUserEvents', filteredEvents)
   }
 }
