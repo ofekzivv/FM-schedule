@@ -7,14 +7,14 @@
       class="text-white"
     >
       <q-card-section>
-        <p class="text-h6 text-bold">{{dailyEvent.companyName}}</p>
+        <p class="text-h6 text-bold">{{ dailyEvent.companyName }}</p>
       </q-card-section>
       <q-separator/>
-      <q-card-section >
-        <p class="text-subtitle1 text-bold">{{dailyEvent.title}}</p>
-        <p>{{dailyEvent.details}}</p>
+      <q-card-section>
+        <p class="text-subtitle1 text-bold">{{ dailyEvent.title }}</p>
+        <p>{{ dailyEvent.details }}</p>
         <div class="image-flex">
-        <q-img v-for="(image, index) of dailyEvent.files" :key="index" v-show="dailyEvent.files" :src="image" max-width="250px" @click="showDialog(image)" alt="index"/>
+          <q-img v-for="(image, index) of dailyEvent.files" :key="index" v-show="dailyEvent.files" :src="image" @click="showDialog(image)" alt="index"/>
         </div>
       </q-card-section>
 
@@ -25,13 +25,17 @@
 
 <script>
 import {mapActions} from "vuex";
+import ImageViewer from "components/ImageViewer";
 
 export default {
   name: "EventsCards",
-  data(){
-    return{
-    dailyEvents : '',
+  data() {
+    return {
+      dailyEvents: '',
     }
+  },
+  components: {
+    ImageViewer
   },
   methods: {
     ...mapActions('events', ['getAllUsersEvents', 'getAllUserEvents']),
@@ -41,17 +45,21 @@ export default {
     },
 
     showDialog(image) {
-      console.log(image)
       this.$q.dialog({
-        title: 'Alert',
-        message: '<img :src=`image` alt="image">',
-        html: true
+        component: ImageViewer,
+
+        // optional if you want to have access to
+        // Router, Vuex store, and so on, in your
+        // custom component:
+        parent: this,
+        image
+        // ...more.props...
       }).onOk(() => {
-        // console.log('OK')
+        console.log('OK')
       }).onCancel(() => {
-        // console.log('Cancel')
+        console.log('Cancel')
       }).onDismiss(() => {
-        // console.log('I am triggered on both OK and Cancel')
+        console.log('Called on OK or Cancel')
       })
     }
   },
@@ -68,7 +76,6 @@ export default {
 .constrain {
   display: flex;
   flex-wrap: wrap;
-  width: 960px;
 }
 
 .q-card {
