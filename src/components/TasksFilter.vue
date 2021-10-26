@@ -36,20 +36,14 @@ export default {
   methods: {
 
     ...mapMutations('events', ['setToggleFilter','setUserEvents']),
-
     ...mapActions('events', ['getAllUserEvents', 'FilterByToggle']),
 
     async changeFilter() {
       await this.setToggleFilter(this.filteredGroup)
-
-      console.log(this.companyName)
-      let userEvents = await this.getAllUserEvents(this.company)
-      console.log(userEvents)
-
-      await this.setUserEvents(userEvents)
-
-      await this.FilterByToggle()
+      console.log(this.company)
+      await this.getAllUserEvents(this.company)
       console.log(this.userEvents)
+      await this.FilterByToggle()
     },
   },
   created() {

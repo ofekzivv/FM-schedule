@@ -150,7 +150,6 @@ export default {
     else{
       this.companyName = this.company
     }
-    console.log("company on created", this.companyName)
     this.$q.loading.show()
     this.getAllUserEvents(this.companyName).then(() => {
       this.events = this.userEvents

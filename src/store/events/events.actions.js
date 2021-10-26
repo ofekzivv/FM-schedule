@@ -4,6 +4,8 @@ export default {
   getAllUserEvents: async ({commit}, companyName) => {
     await firebaseInstance.getUserEvents(companyName).then(res => {
       commit('setUserEvents', res)
+      console.log('result actions: ', res)
+      return res
     })
   },
   getAllUsersEvents: async ({commit}, daily) =>{
