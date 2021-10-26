@@ -1,20 +1,19 @@
 import fireBaseInstance from '../';
 
-async function getAllUsers() {
-  return await fireBaseInstance.firebase.database().ref('users').once('value')
-    .then(res => {
-      const arr = [];
-      const map = res.val();
-      for (const key in map) {
-        const item = map[key];
-        item.id = key;
-        arr.push(item);
-      }
-      return arr;
-    })
+ async function getAllUsers() {
+    return await fireBaseInstance.firebase.database().ref('users').once('value')
+        .then(res => {
+            const arr = [];
+            const map = res.val();
+            for (const key in map) {
+                const item = map[key];
+                item.id = key;
+                arr.push(item);
+            }
+            return arr;
+        })
 }
-
-async function getAllUsersEvents() {
+async function getAllUsersEvents(){
   let events = [];
   return await fireBaseInstance.firebase.database().ref('users').once('value')
     .then(res => {
@@ -30,10 +29,6 @@ async function getAllUsersEvents() {
         for (const date in dates) {
           let key = dates[date]
           for (const event in key) {
-            key[event].companyName = arr[i].companyName
-            key[event].bgcolor = undefined
-            key[event].eventKey = undefined
-            key[event].icon = undefined
             events.push(key[event])
           }
         }
@@ -42,18 +37,23 @@ async function getAllUsersEvents() {
       return events
     })
 }
-
-async function getUser(companyName) {
-  return await fireBaseInstance.firebase.database().ref(`users/${companyName}`).once('value')
+function getUserPassword(companyName) {
+  return fireBaseInstance.firebase.database().ref(`users/${companyName}`).once('value')
     .then(res => {
-      return res.val();
+      return res.val().password
     })
+}
+async function getUser(companyName) {
+     return await fireBaseInstance.firebase.database().ref(`users/${companyName}`).once('value')
+        .then(res => {
+            return res.val();
+        })
 }
 
 function deleteUserFromDb(companyName) {
-  return fireBaseInstance.firebase.database().ref(`users/${companyName}`).remove().then(() => {
-    console.log('the user was removed from db')
-  }).catch(err => err)
+    return fireBaseInstance.firebase.database().ref(`users/${companyName}`).remove().then(() => {
+        console.log('the user was removed from db')
+    }).catch(err => err)
 }
 
 
@@ -77,30 +77,34 @@ async function addEvent(options) {
 }
 
 function editEvent(options) {
-  return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.eventKey}`).set(options.event)
+    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.eventKey}`).set(options.event)
 }
 
 
 export async function getUserEvents(companyName) {
-  return await fireBaseInstance.firebase.database().ref(`users/${companyName}/events`).once('value')
-    .then(res => {
-      console.log(`${companyName} in index db`)
-      const arr = [];
-      const map = res.val();
-      for (const key in map) {
-        const item = map[key];
-        for (const val in item) {
-          arr.push(item[val])
-        }
-      }
-      return arr;
-    })
+    return await fireBaseInstance.firebase.database().ref(`users/${companyName}/events`).once('value')
+        .then(res => {
+          console.log(`${companyName} in index db`)
+            const arr = [];
+            const map = res.val();
+            for (const key in map) {
+                const item = map[key];
+                for (const val in item) {
+                    arr.push(item[val])
+                }
+            }
+            return arr;
+        })
 }
+async function addAdmin(options) {
+  return await fireBaseInstance.firebase.database().ref(`admins/${options.companyName}`).set({
 
+  })
+}
 async function addUser(options) {
   let file = options.logo
   let storageRef = fireBaseInstance.firebase.storage().ref();
-  let imageStorageRef = storageRef.child(`${options.password}`).child('logo').child('companyLogo')
+  let imageStorageRef = storageRef.child(`${file.name}`)
   await imageStorageRef.put(file)
   await imageStorageRef.getDownloadURL()
     .then((url) => {
@@ -114,16 +118,16 @@ async function addUser(options) {
     logo: options.logo,
     color: options.color
   }).then(async () => {
-    if (options.events) {
+    if(options.events) {
       for (let i = 0; i < options.events.length; i++) {
-        await this.addEvent({companyName: options.companyName, event: options.events[i]})
-      }
+          await this.addEvent({companyName: options.companyName, event: options.events[i]})
+        }
     }
   })
 
-}
+   }
 
-function deleteEvent(event, companyName) {
+ function deleteEvent(event, companyName){
   return fireBaseInstance.firebase.database().ref(`users/${companyName}/events/${event.title}`).remove()
 }
 
@@ -131,28 +135,21 @@ async function setNewEmail(options) {
   return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).update({email: options.email})
 }
 
-async function getUserColor(companyName) {
-  return await fireBaseInstance.firebase.database().ref(`users/${companyName}`).get().then((snapshot) => {
-    let color = snapshot.val()
-    return color.color
-  })
-}
-
-export async function getCompanyNameByEmail(email) {
-  debugger
+ export async function getCompanyNameByEmail(email) {
+   debugger
   const res = await fireBaseInstance.firebase.database().ref(`users/`).once('value')
-  debugger
-  const map = res.val()
-  for (const x in map) {
-    const user = map[x]
-    if (user.email === email) {
-      debugger
-      return await user.companyName
-    }
-  }
+   debugger
+      const map = res.val()
+      for (const x in map) {
+        const user = map[x]
+        if (user.email === email) {
+          debugger
+          return await user.companyName
+        }
+      }
 }
 
 export default {
-  getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
-  setNewEmail, getUserColor
+    getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
+  setNewEmail, addAdmin
 }

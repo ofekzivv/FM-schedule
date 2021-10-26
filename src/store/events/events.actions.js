@@ -10,6 +10,7 @@ export default {
     const events =  await firebaseInstance.getAllUsersEvents()
     commit('setAllUsersEvents', events)
     let sortedEvents = [events[0]]
+    debugger
     let dailyEvents = []
     for (let i = 1; i < events.length; i++) {
       if (events[i].date === new Date().toISOString().slice(0, 10).toString()){
