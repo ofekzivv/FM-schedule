@@ -14,7 +14,7 @@
         <p class="text-subtitle1 text-bold">{{dailyEvent.title}}</p>
         <p>{{dailyEvent.details}}</p>
         <div class="image-flex">
-        <q-img v-for="(image, index) of dailyEvent.files" v-show="dailyEvent.files" :src="image" max-width="250px" @click="showDialog(image)" alt="index"/>
+        <q-img v-for="(image, index) of dailyEvent.files" :key="index" v-show="dailyEvent.files" :src="image" max-width="250px" @click="showDialog(image)" alt="index"/>
         </div>
       </q-card-section>
 
