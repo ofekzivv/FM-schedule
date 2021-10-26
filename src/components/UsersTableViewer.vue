@@ -2,21 +2,23 @@
   <div class="q-pa-md">
     <q-table
       flat
-        :dense="$q.screen.lt.md"
-        :data="data"
-        :columns="columns"
-        row-key="name"
-        style="border: 1px solid #E6E6E6; border-radius: 30px"
+      :dense="$q.screen.lt.md"
+      :data="data"
+      :columns="columns"
+      row-key="name"
+      style="border: 1px solid #E6E6E6; border-radius: 30px"
     >
       <template v-slot:header="props">
         <q-tr :props="props">
           <q-th
-              v-for="col in props.cols"
-              :key="col.name"
-              :props="props"
+            v-for="col in props.cols"
+            :key="col.name"
+            :props="props"
           >
             {{ col.label }}
           </q-th>
+          <q-th class="bg-primary text-white" style="font-size: 1em; font-weight: bold">לוגו חברה</q-th>
+          <q-th class="bg-primary text-white" style="font-size: 1em; font-weight: bold">צבע חברה</q-th>
           <q-th class="bg-primary text-white" style="font-size: 1em; font-weight: bold">עריכה / מחיקה</q-th>
         </q-tr>
       </template>
@@ -24,17 +26,24 @@
 
       <template v-slot:body="props">
         <q-tr :props="props">
-
           <q-td
-              v-for="col in props.cols"
-              :key="col.name"
-              :props="props"
+            v-for="col in props.cols"
+            :key="col.name"
+            :props="props"
           >
             {{ col.value }}
           </q-td>
           <q-td>
-            <q-btn @click="editUser(props.row.companyName, props.row.email)" color="primary" icon="edit" dense push class="q-ma-xs q-pa-xs"></q-btn>
-            <q-btn @click="deleteUserButton(props.row.companyName)" color="red" icon="delete" dense class="q-ma-xs q-pa-xs" push></q-btn>
+            <img :src="props.row.logo" alt="לוגו חברה" width="50px"/>
+          </q-td>
+          <q-td>
+            <q-icon name="circle" :style="{color: props.row.color}" size="md" />
+          </q-td>
+          <q-td>
+            <q-btn @click="editUser(props.row.companyName, props.row.email, props.row.logo, props.row.color)" color="primary" icon="edit" dense push
+                   class="q-ma-xs q-pa-xs"></q-btn>
+            <q-btn @click="deleteUserButton(props.row.companyName)" color="red" icon="delete" dense
+                   class="q-ma-xs q-pa-xs" push></q-btn>
           </q-td>
         </q-tr>
       </template>
@@ -51,6 +60,7 @@
 <script>
 import EditUser from "components/EditUser";
 import AddNewUser from "components/AddNewUser";
+
 export default {
   data() {
     return {
@@ -68,8 +78,24 @@ export default {
           headerClasses: 'bg-primary text-white',
           headerStyle: 'font-size: 1em; font-weight: bold'
         },
-        {name: 'email', align: 'center', label: 'אימייל', field: 'email', sortable: true, headerClasses: 'bg-primary text-white', headerStyle: 'font-size: 1em; font-weight: bold'},
-        {name: 'password', align: 'center', label: 'סיסמא', field: 'password', sortable: true, headerClasses: 'bg-primary text-white', headerStyle: 'font-size: 1em; font-weight: bold'},
+        {
+          name: 'email',
+          align: 'center',
+          label: 'אימייל',
+          field: 'email',
+          sortable: true,
+          headerClasses: 'bg-primary text-white',
+          headerStyle: 'font-size: 1em; font-weight: bold'
+        },
+        {
+          name: 'password',
+          align: 'center',
+          label: 'סיסמא',
+          field: 'password',
+          sortable: true,
+          headerClasses: 'bg-primary text-white',
+          headerStyle: 'font-size: 1em; font-weight: bold'
+        },
       ],
       data: []
     }
@@ -81,7 +107,7 @@ export default {
     ...mapState('users', ["users"])
   },
   methods: {
-    ...mapActions('users', ['getUser','getUsers', 'deleteUser']),
+    ...mapActions('users', ['getUser', 'getUsers', 'deleteUser']),
     deleteUserButton(companyName) {
       this.$q.loading.show()
       this.deleteUser(companyName).then(() => {
@@ -90,18 +116,21 @@ export default {
           message: `המשתמש נמחק.`
         })
         this.getUsers().then(() =>
-            this.data = this.users
+          this.data = this.users
         ).catch(err => console.log(err))
       }).catch(err => console.log(err))
       this.$q.loading.hide()
     },
 
-    editUser(companyName, email) {
+    editUser(companyName, email, logo, color) {
       this.$q.dialog({
         component: EditUser,
         parent: this,
         companyName,
-        email
+        email,
+        logo,
+        color
+
 
         // ...more.props...
       }).onOk(() => {

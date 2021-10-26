@@ -19,6 +19,7 @@
     "vue-html-to-paper": "^1.4.3",
     "vue-html2pdf": "^1.8.0",
     "vue-router": "^3.5.2",
+    "vue-swatches": "^2.1.1",
     "vuex": "^3.6.2"
   },
   "devDependencies": {

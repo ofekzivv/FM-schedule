@@ -9,7 +9,15 @@
 
         <q-select v-model="eventTypeSelector" :options="options" label="סוג אירוע" />
 
-        <q-file v-show="eventTypeSelector && eventTypeSelector!=='פוסט'" color="primary" v-model="formData.file" label="הוסף קובץ">
+        <q-file
+          v-show="eventTypeSelector && eventTypeSelector!=='פוסט'"
+          color="primary"
+          v-model="formData.files"
+          label="הוסף קובץ"
+          counter
+          multiple
+          use-chips
+        >
           <template v-slot:prepend>
             <q-icon name="attach_file" />
           </template>
@@ -58,7 +66,7 @@ export default {
         title: '',
         details: '',
         date: this.eventDate,
-        file: null,
+        files: null,
         bgcolor: '',
         icon: '',
       },
