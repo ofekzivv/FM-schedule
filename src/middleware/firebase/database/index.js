@@ -146,6 +146,7 @@ async function getUserColorFb(companyName) {
 
  export async function getCompanyNameByEmail(email) {
   const res = await fireBaseInstance.firebase.database().ref(`users/`).once('value')
+
       const map = res.val()
       for (const x in map) {
         const user = map[x]

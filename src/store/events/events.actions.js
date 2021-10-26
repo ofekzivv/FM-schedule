@@ -2,14 +2,12 @@ import firebaseInstance from 'src/middleware/firebase/database'
 
 export default {
   getAllUserEvents: async ({commit}, companyName) => {
-    await firebaseInstance.getUserEvents(companyName).then(res => {
+    let res = await firebaseInstance.getUserEvents(companyName)
       commit('setUserEvents', res)
-      console.log('result actions: ', res)
+      //console.log('result actions: ', res)
       return res
-    })
   },
   getAllUsersEvents: async ({commit}, daily) =>{
-    debugger
     const events =  await firebaseInstance.getAllUsersEvents()
     commit('setAllUsersEvents', events)
     let sortedEvents = [events[0]]
@@ -18,6 +16,7 @@ export default {
       dailyEvents.push(events[0])
     }
     for (let i = 1; i < events.length; i++) {
+
       if (events[i].date === new Date().toISOString().slice(0, 10).toString()){
         dailyEvents.push(events[i])
       }
@@ -71,8 +70,7 @@ export default {
     return filteredEvents
   },
 
-  FilterByToggle: ({state, commit}, all) => {
-    debugger
+  FilterByToggle: ({state, commit}) => {
     let filteredEvents = []
     if (all !== 'all') {
       filteredEvents = state.userEvents.filter(event => state.toggleFilter
