@@ -17,11 +17,11 @@ export default {
     return users
   },
 
-  editExistingUser: async ({commit}, [user,newCompanyName,newEmail]) => {
+  editExistingUser: async ({commit}, [user,newCompanyName,newEmail, newLogo, newColor]) => {
     if (user.companyName !== newCompanyName){
       let events = await firebaseInstance.getUserEvents(user.companyName)
       debugger
-      await firebaseInstance.addUser({companyName: newCompanyName, email: newEmail, password: user.password, events: events})
+      await firebaseInstance.addUser({companyName: newCompanyName, email: newEmail, password: user.password, events: events, color: newColor})
       await firebaseInstance.deleteUserFromDb(user.companyName)
     }
     else {
@@ -33,5 +33,11 @@ export default {
     await firebaseInstance.deleteUserFromDb(companyName).then(() => {
       console.log('The user was removed from actions')
     }).catch(err => console.log(err))
+  },
+
+  getUserColor: async ({}, companyName ) => {
+    return await firebaseInstance.getUserColor(companyName).then(res => {
+      return res
+    })
   }
 }

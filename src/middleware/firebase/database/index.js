@@ -100,7 +100,7 @@ export async function getUserEvents(companyName) {
 async function addUser(options) {
   let file = options.logo
   let storageRef = fireBaseInstance.firebase.storage().ref();
-  let imageStorageRef = storageRef.child(`${file.name}`)
+  let imageStorageRef = storageRef.child(`${options.password}`).child('logo').child('companyLogo')
   await imageStorageRef.put(file)
   await imageStorageRef.getDownloadURL()
     .then((url) => {
@@ -131,6 +131,13 @@ async function setNewEmail(options) {
   return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).update({email: options.email})
 }
 
+async function getUserColor(companyName) {
+  return await fireBaseInstance.firebase.database().ref(`users/${companyName}`).get().then((snapshot) => {
+    let color = snapshot.val()
+    return color.color
+  })
+}
+
 export async function getCompanyNameByEmail(email) {
   debugger
   const res = await fireBaseInstance.firebase.database().ref(`users/`).once('value')
@@ -147,5 +154,5 @@ export async function getCompanyNameByEmail(email) {
 
 export default {
   getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
-  setNewEmail
+  setNewEmail, getUserColor
 }
