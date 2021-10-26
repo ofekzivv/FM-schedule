@@ -140,7 +140,7 @@ export default {
   },
 
   created() {
-    console.log('company in created', this.companyName)
+    console.log(this.companyName)
     this.setCompanyName(this.companyName)
     if (this.$route.params.companyName) {
       this.companyName = this.$route.params.companyName
@@ -159,7 +159,7 @@ export default {
     ...mapState('events',['toggleFilter','companyName','userEvents']),
   },
   methods: {
-    ...mapMutations('events',['setCompanyName']),
+    ...mapMutations('events',['setCompanyName','setUserEvents']),
 
     ...mapActions('events', ['getAllUserEvents']),
 
@@ -273,11 +273,6 @@ export default {
         console.log('Called on OK or Cancel')
       })
     },
-    async getFiltered(dt){
-      this.events = this.userEvents
-      console.log(this.events)
-      return this.getEvents(dt)
-    },
     onClickSearch(){
       this.$q.dialog({
         component: SearchEvents,
@@ -309,8 +304,9 @@ export default {
       this.$q.loading.show()
       console.log("company on watch", newValue)
       this.companyName = newValue
-      this.getAllUserEvents(this.companyName).then(() => {
-        this.events = this.userEvents
+      this.getAllUserEvents(this.companyName).then((res) => {
+        this.setUserEvents(res)
+        this.events = res
         this.$q.loading.hide()
       })
     },
