@@ -1,8 +1,10 @@
 import firebaseInstance from 'src/middleware/firebase/database'
 
 export default {
-  getAllUserEvents: async ({}, companyName) => {
-    return await firebaseInstance.getUserEvents(companyName)
+  getAllUserEvents: async ({commit}, companyName) => {
+    await firebaseInstance.getUserEvents(companyName).then(res => {
+      commit('setUserEvents', res)
+    })
   },
   getAllUsersEvents: async ({commit}, daily) =>{
     const events =  await firebaseInstance.getAllUsersEvents()
@@ -46,6 +48,7 @@ export default {
   deleteExistingEvent: async ({},[event, companyName]) => {
     await firebaseInstance.deleteEvent(event,companyName)
   },
+
   getFilteredEvents: async ({state, commit}, userEvents) => {
     let events = userEvents
 
@@ -61,6 +64,7 @@ export default {
     let filteredEvents = events
     if(state.searchKeys.eventType.length >0)
       filteredEvents = filteredEvents.filter(event=> state.searchKeys.eventType.includes(event.eventType))
+
 
     return filteredEvents
   },

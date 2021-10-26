@@ -16,7 +16,7 @@
       <q-card-section >
         <p class="text-subtitle1 text-bold">{{dailyEvent.title}}</p>
         <p>{{dailyEvent.details}}</p>
-        <q-img v-show="dailyEvent.files" :src="dailyEvent.files" width="250px"/>
+        <q-img v-for="image of dailyEvent.files" v-show="dailyEvent.files" :src="image" width="250px"/>
       </q-card-section>
 
 
@@ -38,6 +38,7 @@ export default {
     ...mapActions('events', ['getAllUsersEvents', 'getAllUserEvents']),
     async getDailyEvents() {
       this.dailyEvents = await this.getAllUsersEvents('daily')
+      console.log('dailyEvents: ', this.dailyEvents)
     }
   },
   created() {
