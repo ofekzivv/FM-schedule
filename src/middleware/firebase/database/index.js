@@ -136,6 +136,13 @@ async function setNewEmail(options) {
   return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).update({email: options.email})
 }
 
+async function getUserColorFb(companyName) {
+  return await fireBaseInstance.firebase.database().ref(`users/${companyName}`).get().then(snapshot => {
+    let color = snapshot.val()
+    return color.color
+  })
+}
+
  export async function getCompanyNameByEmail(email) {
    debugger
   const res = await fireBaseInstance.firebase.database().ref(`users/`).once('value')
@@ -152,5 +159,5 @@ async function setNewEmail(options) {
 
 export default {
     getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
-  setNewEmail, addAdmin
+  setNewEmail, addAdmin, getUserColorFb
 }
