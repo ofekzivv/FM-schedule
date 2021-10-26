@@ -10,6 +10,7 @@
       <q-btn color="blue" push label="שבוע הבא" @click="calendarNext"/>
     </div>
     <q-separator/>
+
     <QCalendar
       style="width: 100%"
       ref="calendar"

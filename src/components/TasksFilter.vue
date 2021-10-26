@@ -1,6 +1,6 @@
 <template>
-  <div class="q-pa-lg my-font">
-    <p class="text-center text-bold">סנן אירועים: </p>
+  <div class="q-pa-lg my-font ">
+    <p class="text-bold">סנן אירועים: </p>
     <div class="filter-group">
       <q-option-group
         v-model="filteredGroup"

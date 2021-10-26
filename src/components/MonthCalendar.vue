@@ -1,11 +1,13 @@
 <template>
-  <div class="my-font container" id="capture">
-    <q-btn class="searchBtn q-ml-lg" label="חפש אירוע" color="primary" @click="onClickSearch()"/>
-    <q-dialog v-model="searchBar">
-      <SearchEvents/>
-    </q-dialog>
-    <TasksFilter :company="companyName"/>
+  <div class="my-font container" id="capture" style="position: relative">
+
+      <TasksFilter :company="companyName"/>
     <div class="row justify-center items-center q-mb-sm">
+      <q-btn push class="searchBtn q-mr-lg" label="חפש אירוע" color="primary" @click="onClickSearch()"/>
+      <q-dialog v-model="searchBar">
+        <SearchEvents/>
+      </q-dialog>
+
       <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
       <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
     </div>
@@ -151,7 +153,7 @@ export default {
     console.log("company on created", this.companyName)
     this.$q.loading.show()
     this.getAllUserEvents(this.companyName).then(() => {
-      this.events = this.getAllUserEvents()
+      this.events = this.userEvents
       this.$q.loading.hide()
     })
   },
