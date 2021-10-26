@@ -1,5 +1,6 @@
 <template>
   <div class="my-font container" id="capture">
+    <TasksFilter :company="companyName"/>
     <div class="row justify-center items-center q-mb-sm">
       <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
       <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
@@ -55,6 +56,7 @@ import {Dialog} from 'quasar'
 import EventAdder from "components/EventAdder";
 import EditEvent from "components/EditEvent";
 import VueHtmlToPaper from "vue-html-to-paper";
+import TasksFilter from "components/TasksFilter";
 
 
 const reRGBA = /^\s*rgb(a)?\s*\((\s*(\d+)\s*,\s*?){2}(\d+)\s*,?\s*([01]?\.?\d*?)?\s*\)\s*$/
@@ -129,7 +131,7 @@ export default {
   props: ['company'],
   components: {
     QCalendar,
-    EventAdder,
+    EventAdder,TasksFilter
   },
 
   created() {
@@ -148,8 +150,10 @@ export default {
       this.$q.loading.hide()
     })
   },
+  computed: mapState('events',['toggleFilter','companyName']),
   methods: {
     ...mapMutations('events',['setCompanyName']),
+
     ...mapActions('events', ['getAllUserEvents']),
 
     calendarNext() {
@@ -205,7 +209,7 @@ export default {
       s['align-items'] = 'flex-start'
       return s
     },
-    getEvents(dt) {
+    getEvents(dt){
       const currentDate = QCalendarTry.parseTimestamp(dt)
       const events = []
       for (let i = 0; i < this.events.length; ++i) {
@@ -274,7 +278,7 @@ export default {
         this.events = res
         this.$q.loading.hide()
       })
-    }
+    },
   }
 }
 

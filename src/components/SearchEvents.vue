@@ -42,7 +42,7 @@
           dark
           bordered
           class="my-card q-ma-sm"
-          v-for="(event,index) of results">
+          v-for="(event,index) of results" :key="index">
           <q-card-section>
             <div class="text-h6">{{ event.title }} </div>
             <div class="text-subtitle2">{{ event.date }}</div>

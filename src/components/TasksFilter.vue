@@ -7,13 +7,15 @@
         :options="options"
         color="options.color"
         type="toggle"
+        @input="changeFilter()"
       />
     </div>
   </div>
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
+import {mapActions, mapState, mapMutations} from "vuex";
+
 const optionsGroups = [
   {label: 'סרטון', color: 'orange', value: 'סרטון'},
   {label: 'פוסט', color: 'blue', value: 'פוסט'},
@@ -22,12 +24,35 @@ const optionsGroups = [
 
 export default {
   name: "TasksFilter",
-  computed: mapState('events', ['']),
+  props: ['company'],
+  computed: mapState('events', ['toggleFilter', 'userEvents', 'companyName']),
+  methods: {
+
+    ...mapMutations('events', ['setToggleFilter']),
+
+    ...mapActions('events', ['getAllUserEvents', 'FilterByToggle']),
+
+    changeFilter() {
+      console.log(this.companyName)
+      console.log(this.userEvents)
+      this.setToggleFilter(this.filteredGroup)
+      this.FilterByToggle()
+      console.log(this.userEvents)
+    },
+  },
   data() {
     return {
       //will be in the state
       options: optionsGroups,
       filteredGroup: [],
+      company: this.companyName,
+    }
+  },
+  created() {
+  },
+  watch: {
+    company(newValue){
+      console.log(newValue)
     }
   }
 }

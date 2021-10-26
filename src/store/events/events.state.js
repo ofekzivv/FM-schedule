@@ -2,6 +2,7 @@ export default {
   userEvents:[],
   usersEvents:[],
   companyName:'',
+  toggleFilter: [],
   searchKeys: {
     title:'',
     details: '',
