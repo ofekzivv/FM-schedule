@@ -75,6 +75,7 @@ export default {
 
   methods: {
     ...mapActions('events', ['addNewEvent']),
+    ...mapActions('users', ['getUserColor']),
     // following method is REQUIRED
     // (don't change its name --> "show")
     show() {
@@ -94,18 +95,18 @@ export default {
     },
 
     async onOKClick() {
+      await this.getUserColor(this.companyName).then(res => {
+        this.formData.bgcolor = res
+      })
       this.formData.eventType = this.eventTypeSelector
       if (this.eventTypeSelector === 'סרטון') {
         this.formData.icon = 'movie'
-        this.formData.bgcolor = 'green'
       }
       else if (this.eventTypeSelector === 'תמונה') {
         this.formData.icon = 'image'
-        this.formData.bgcolor = 'orange'
       }
       else {
         this.formData.icon = 'post_add'
-        this.formData.bgcolor = 'blue'
       }
       await this.addNewEvent([this.formData.title, this.companyName, this.formData]).then(() => {
         this.$q.notify({

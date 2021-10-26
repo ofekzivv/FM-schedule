@@ -17,8 +17,8 @@
           >
             {{ col.label }}
           </q-th>
-          <q-th class="bg-primary text-white" style="font-size: 1em; font-weight: bold">לוגו חברה</q-th>
-          <q-th class="bg-primary text-white" style="font-size: 1em; font-weight: bold">צבע חברה</q-th>
+          <q-th class="bg-primary text-white" style="font-size: 1em; font-weight: bold">לוגו</q-th>
+          <q-th class="bg-primary text-white" style="font-size: 1em; font-weight: bold">צבע</q-th>
           <q-th class="bg-primary text-white" style="font-size: 1em; font-weight: bold">עריכה / מחיקה</q-th>
         </q-tr>
       </template>
@@ -34,10 +34,14 @@
             {{ col.value }}
           </q-td>
           <q-td>
-            <img :src="props.row.logo" alt="לוגו חברה" width="50px"/>
+            <img :src="props.row.logo" alt="לוגו חברה" width="80px"/>
           </q-td>
           <q-td>
-            <q-icon name="circle" :style="{color: props.row.color}" size="md" />
+            <q-icon name="circle" :style="{color: props.row.color}" size="md">
+              <q-tooltip>
+                {{ props.row.color }}
+              </q-tooltip>
+            </q-icon>
           </q-td>
           <q-td>
             <q-btn @click="editUser(props.row.companyName, props.row.email, props.row.logo, props.row.color)" color="primary" icon="edit" dense push
@@ -159,8 +163,8 @@ export default {
         // ...more.props...
       }).onOk(() => {
         this.$q.loading.show()
-        this.getUsers().then(() => {
-          this.data = this.users
+        this.getUsers().then((users) => {
+          this.data = users
           this.$q.loading.hide()
         }).catch(err => console.log(err))
       }).onCancel(() => {
