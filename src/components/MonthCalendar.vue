@@ -260,7 +260,7 @@ export default {
     },
 
     testEvent(updateEvent) {
-      console.log('edit event: ', updateEvent)
+      console.log(updateEvent)
       this.$q.dialog({
         component: EditEvent,
         parent: this,

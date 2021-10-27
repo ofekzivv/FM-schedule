@@ -12,9 +12,22 @@
       <q-separator/>
       <q-card-section>
         <p class="text-subtitle1 text-bold">{{ dailyEvent.title }}</p>
-        <p>{{ dailyEvent.details }}</p>
-        <div class="image-flex">
-          <q-img v-for="(image, index) of dailyEvent.files" :key="index" v-show="dailyEvent.files" :src="image" @click="showDialog(image)" alt="index"/>
+        <p style="overflow: hidden; word-wrap: break-word;">{{ dailyEvent.details }}</p>
+        <div class="image-flex" v-if="dailyEvent.eventType !== 'פוסט'">
+          <q-video
+            v-if="dailyEvent.eventType === 'סרטון'"
+            v-for="(video, index) of dailyEvent.files"
+            :key="index"
+            :src="video.url"
+          />
+          <q-img
+            v-if="dailyEvent.eventType === 'תמונה'"
+            v-for="(image, index) of dailyEvent.files"
+            :key="index" v-show="dailyEvent.files"
+            :src="image.url"
+            @click="showDialog(image.url)"
+            alt="index"
+          />
         </div>
       </q-card-section>
 
@@ -76,19 +89,22 @@ export default {
 .constrain {
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
 }
 
 .q-card {
   cursor: pointer;
   height: auto;
   width: 270px;
-
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+  margin: 0 auto 1em auto;
 }
 
 .image-flex {
   aspect-ratio: 1;
   display: flex;
   flex-wrap: nowrap;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 }
 
 </style>

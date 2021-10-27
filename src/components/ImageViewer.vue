@@ -1,12 +1,12 @@
 <template>
   <q-dialog ref="dialog" @hide="onDialogHide" class="text-center">
-    <q-card class="q-dialog-plugin">
+    <q-card class="q-dialog-plugin q-pt-lg q-pb-sm">
       <q-img :src="image" alt="image"/>
 
 
       <!-- buttons example -->
-      <q-card-actions align="right">
-        <q-btn color="primary" label="OK" @click="onOKClick" />
+      <q-card-actions align="center">
+        <q-btn color="primary"  label="סגור" @click="onOKClick" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -54,6 +54,7 @@ export default {
 .q-img {
   max-width: 250px;
   max-height: 300px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  margin-bottom: 1em;
 }
-
 </style>

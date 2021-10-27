@@ -80,7 +80,8 @@ module.exports = function (/* ctx */) {
       lang: 'he', // Quasar language pack
       config: {
         notify: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ },
-        loading: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ }
+        loading: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ },
+        loadingBar: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ }
       },
 
       // Possible values for "importStrategy":
@@ -99,7 +100,8 @@ module.exports = function (/* ctx */) {
       plugins: [
         'Dialog',
         'Notify',
-        'Loading'
+        'Loading',
+        'LoadingBar'
       ]
     },
 

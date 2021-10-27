@@ -116,7 +116,9 @@ export default {
   methods: {
     ...mapActions('users', ['getUser', 'getUsers', 'deleteUser']),
     deleteUserButton(companyName, password) {
-      this.$q.loading.show()
+      this.$q.loading.show({
+        message: 'מוחק את המשתמש'
+      })
       this.deleteUser({companyName, password}).then(() => {
         this.$q.notify({
           type: 'negative',
@@ -139,7 +141,6 @@ export default {
         color
         // ...more.props...
       }).onOk(() => {
-        this.$q.loading.show()
       }).onCancel(() => {
         console.log('Cancel')
       }).onDismiss(() => {
@@ -148,7 +149,6 @@ export default {
           console.log('users from state', this.users)
           console.log('users from action', res)
           this.data = res
-          this.$q.loading.hide()
         }).catch(err => console.log(err))
       })
     },
@@ -159,13 +159,11 @@ export default {
         parent: this,
         // ...more.props...
       }).onOk(async () => {
-        this.$q.loading.show()
         this.getUsers().then((res) => {
           this.data = res
           this.$q.loading.hide()
         }).catch(err => console.log(err))
         this.data = this.users
-        this.$q.loading.hide()
       }).onCancel(() => {
         console.log('Cancel')
       }).onDismiss(() => {
@@ -189,11 +187,10 @@ export default {
       })
     }
   },
+
   created() {
-    this.$q.loading.show()
     this.getUsers().then(() => {
       this.data = this.users
-      this.$q.loading.hide()
     }).catch(err => console.log(err))
   }
 }

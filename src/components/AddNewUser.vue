@@ -89,7 +89,9 @@ export default {
       this.$emit('hide')
     },
     async onOKClick() {
-      this.$q.loading.show()
+      this.$q.loading.show({
+        message: 'מוסיף את המשתמש'
+      })
       this.$refs.email.validate()
       this.formData.generatedPassword = this.generatePassword()
       await firebaseInstance.addUser({

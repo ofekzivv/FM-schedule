@@ -5,7 +5,7 @@
       <q-card-section class="q-gutter-lg">
         <q-input v-model="formData.title" label="נושא"/>
 
-        <q-input v-model="formData.details" label="פרטים"/>
+        <q-input v-model="formData.details"  type="textarea" label="פרטים"/>
 
         <q-select v-model="eventTypeSelector" :options="options" label="סוג אירוע" />
 
