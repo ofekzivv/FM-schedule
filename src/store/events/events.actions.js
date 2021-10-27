@@ -66,7 +66,6 @@ export default {
     if(state.searchKeys.eventType.length >0)
       filteredEvents = filteredEvents.filter(event=> state.searchKeys.eventType.includes(event.eventType))
 
-
     return filteredEvents
   },
 
