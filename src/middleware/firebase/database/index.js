@@ -140,7 +140,6 @@ async function addLogoToStorage(file, password, newUser) {
 }
 
 async function addUser(options) {
-  console.log('options', options)
   if (typeof options.logo === 'object') {
     options.logo = await addLogoToStorage(options.logo, options.password, options.newUser)
   }

@@ -100,6 +100,7 @@ export default {
     },
 
     async onOKClick() {
+      this.$q.loading.show()
       await this.getUser(this.companyName)
       let password = this.userData.password
       await this.getUserColor(this.companyName).then(res => {
@@ -116,6 +117,7 @@ export default {
         this.formData.icon = 'post_add'
       }
       await this.addNewEvent([this.formData.title, this.companyName,password, this.formData]).then(() => {
+        this.$q.loading.hide()
         this.$q.notify({
           message: 'הוספת את האירוע בהצלחה! ',
           icon: 'event_available',

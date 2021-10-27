@@ -11,7 +11,7 @@ export default {
     commit('setUser',user)
     return user
   },
-  getUsers: async ({commit}) =>{
+  getUsers: async ({commit}) => {
     const users = await firebaseInstance.getAllUsers()
     commit('setUsers', users)
     return users

@@ -51,6 +51,7 @@
 <script>
 import firebaseInstance from 'src/middleware/firebase/database'
 import VSwatches from 'vue-swatches'
+import {mapActions, mapState} from "vuex";
 
 
 export default {
@@ -58,7 +59,6 @@ export default {
   name: "AddNewUser",
   data() {
     return {
-
       formData: {
         email: '',
         companyName: '',
@@ -68,7 +68,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState('users', ['users'])
+  },
   methods: {
+    ...mapActions('users', ['getUsers']),
     show() {
       this.$refs.dialog.show()
     },
@@ -88,26 +92,25 @@ export default {
       this.$q.loading.show()
       this.$refs.email.validate()
       this.formData.generatedPassword = this.generatePassword()
-      firebaseInstance.addUser({
+      await firebaseInstance.addUser({
         newUser: true,
         companyName: this.formData.companyName,
         email: this.formData.email,
         password: this.formData.generatedPassword,
         logo: this.formData.profilePic,
         color: this.formData.companyColor
-      }).then(() => {
-        this.$q.notify({
-          message: 'הוספת את המשתמש בהצלחה! ',
-          icon: 'person_add',
-          type: 'positive',
-        })
+      }).then(async () => {
+        await this.getUsers().then(() => {
+          this.$q.notify({
+            message: 'הוספת את המשתמש בהצלחה! ',
+            icon: 'person_add',
+            type: 'positive',
+          })
+          this.$q.loading.hide()
+          this.$emit('ok')
+          this.hide()
+        }).catch(err => console.log(err, 'ה בכלל לא מגיע'))
       })
-      this.$q.loading.hide()
-      this.$emit('ok')
-      // or with payload: this.$emit('ok', { ... })
-
-      // then hiding dialog
-      this.hide()
     },
 
     onCancelClick() {

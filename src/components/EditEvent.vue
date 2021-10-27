@@ -82,7 +82,7 @@ export default {
     },
 
     // following method is REQUIRED
-    // (don't change its name --> "hide")
+    // (don't chshowange its name --> "hide")
     hide() {
       this.$refs.dialog.hide()
     },
@@ -94,7 +94,9 @@ export default {
     },
 
     onOKClick() {
+      this.$q.loading.show()
       this.editExistingEvent({newEvent: this.formData, company: this.companyName}).then(() => {
+        this.$q.loading.hide()
         this.$q.notify({
           message: ' ערכת את האירוע בהצלחה! ',
           icon: 'event_available',

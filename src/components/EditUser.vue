@@ -82,16 +82,17 @@ export default {
       this.$emit('hide')
     },
     async onOKClick() {
+      this.$q.loading.show()
       await this.getUser(this.companyName)
       let user = this.userData
       await this.editExistingUser({user, editedUser: this.newData})
         .then(() => {
+          this.$q.loading.hide()
           this.$q.notify({
             message: ' ערכת את המשתמש בהצלחה! ',
             icon: 'event_available',
             type: 'warning',
           })
-
         })
       this.$emit('ok')
       // or with payload: this.$emit('ok', { ... })

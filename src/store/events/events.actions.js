@@ -71,7 +71,7 @@ export default {
   },
 
   FilterByToggle: ({state, commit},all) => {
-    let filteredEvents = []
+    let filteredEvents
     if (all !== 'all') {
       filteredEvents = state.userEvents.filter(event => state.toggleFilter
         .includes(event.eventType))
