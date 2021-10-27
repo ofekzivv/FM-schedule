@@ -1,6 +1,5 @@
 import fireBaseInstance from '../';
 
-
 async function getAllUsers() {
   return await fireBaseInstance.firebase.database().ref('users').once('value')
     .then(res => {

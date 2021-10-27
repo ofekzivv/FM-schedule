@@ -37,22 +37,6 @@
 
       <!--Results Section-->
       <q-card-section v-if="results" style="max-width: 600px; width: 80%; margin: 1em auto;">
-<!--        <template v-for="(event, index) in results">
-          <q-badge
-            :key="index"
-            style="cursor: pointer; margin-bottom: 2px; width: 100%"
-            @click="testEvent(event)"
-            :class="badgeClasses(event, 'day')"
-            :style="styles(event, 'day')"
-          >
-            <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs" size="xs"></q-icon>
-            <div class="column">
-              <span class="text-subtitle1 text-bold">{{ event.title }} </span>
-              <span style="font-size: 1em;">{{ event.details }}</span>
-            </div>
-          </q-badge>
-        </template>-->
-
         <q-card
           bordered
           @click="testEvent(event)"

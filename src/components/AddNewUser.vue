@@ -50,6 +50,7 @@
 
 <script>
 import firebaseInstance from 'src/middleware/firebase/database'
+import firebaseIndex from 'src/middleware/firebase'
 import VSwatches from 'vue-swatches'
 import {mapActions, mapState} from "vuex";
 
@@ -94,6 +95,13 @@ export default {
       })
       this.$refs.email.validate()
       this.formData.generatedPassword = this.generatePassword()
+
+       firebaseIndex.firebase.auth().createUserWithEmailAndPassword(this.formData.email, this.formData.generatedPassword).then(user => {
+         window.user = user;
+         window.user.uid = this.formData.generatedPassword;
+         console.log('Signed in')
+       })
+
       await firebaseInstance.addUser({
         newUser: true,
         companyName: this.formData.companyName,
@@ -101,8 +109,10 @@ export default {
         password: this.formData.generatedPassword,
         logo: this.formData.profilePic,
         color: this.formData.companyColor
-      }).then(async () => {
+      })
+
         await this.getUsers().then(() => {
+          debugger
           this.$q.notify({
             message: 'הוספת את המשתמש בהצלחה! ',
             icon: 'person_add',
@@ -111,8 +121,7 @@ export default {
           this.$q.loading.hide()
           this.$emit('ok')
           this.hide()
-        }).catch(err => console.log(err, 'ה בכלל לא מגיע'))
-      })
+        }).catch(err => console.log(err, 'זה בכלל לא מגיע'))
     },
 
     onCancelClick() {

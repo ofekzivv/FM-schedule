@@ -76,7 +76,7 @@ export default {
       this.$refs.email.validate()
       this.$refs.password.validate()
       if (!this.$refs.email.hasError && !this.$refs.password.hasError) {
-        this.loginUser(this.formData)
+        this.loginUser({formData: this.formData})
           .then(async() => {
             //this.getUserInfo(userId)
             this.$q.notify({
