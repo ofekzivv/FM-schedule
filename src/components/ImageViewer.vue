@@ -1,14 +1,8 @@
 <template>
-  <q-dialog ref="dialog" @hide="onDialogHide" class="text-center">
-    <q-card class="q-dialog-plugin q-pt-lg q-pb-sm">
-      <q-img :src="image" alt="image"/>
-
-
-      <!-- buttons example -->
-      <q-card-actions align="center">
-        <q-btn color="primary"  label="סגור" @click="onOKClick" />
-      </q-card-actions>
-    </q-card>
+  <q-dialog ref="dialog" @hide="onDialogHide">
+      <q-img :src="image" alt="image">
+        <q-btn icon="close" color="white" flat dense @click="onOKClick" />
+      </q-img>
   </q-dialog>
 </template>
 
@@ -52,9 +46,13 @@ export default {
 <style scoped>
 
 .q-img {
-  max-width: 250px;
-  max-height: 300px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  margin-bottom: 1em;
+}
+
+@media screen and (max-width: 599px) {
+  .q-img {
+    max-width: 350px;
+    max-height: 400px;
+  }
 }
 </style>

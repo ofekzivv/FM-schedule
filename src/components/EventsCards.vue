@@ -6,7 +6,7 @@
       :style="{background : dailyEvent.bgcolor}"
       class="text-white"
     >
-      <q-card-section>
+      <q-card-section class="col">
         <p class="text-h6 text-bold">{{ dailyEvent.companyName }}</p>
       </q-card-section>
       <q-separator/>
@@ -27,7 +27,11 @@
             :src="image.url"
             @click="showDialog(image.url)"
             alt="index"
-          />
+          >
+            <q-tooltip>
+              לחץ על תמונה על מנת להגדיל
+            </q-tooltip>
+          </q-img>
         </div>
       </q-card-section>
 
@@ -93,14 +97,17 @@ export default {
 }
 
 .q-card {
-  cursor: pointer;
-  height: auto;
+  mix-height: 500px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   width: 270px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
   margin: 0 auto 1em auto;
 }
 
 .image-flex {
+  cursor: pointer;
   aspect-ratio: 1;
   display: flex;
   flex-wrap: nowrap;
