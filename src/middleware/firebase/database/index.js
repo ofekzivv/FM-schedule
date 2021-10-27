@@ -34,7 +34,6 @@ async function getAllUsersEvents(){
         }
       }
       console.log(events)
-      debugger
       return events
     })
 }
@@ -99,7 +98,9 @@ export async function getUserEvents(companyName) {
 }
 async function addAdmin(options) {
   return await fireBaseInstance.firebase.database().ref(`admins/${options.companyName}`).set({
-
+    email: options.email,
+    companyName: options.companyName,
+    password: options.password,
   })
 }
 async function addUser(options) {
@@ -144,20 +145,49 @@ async function getUserColorFb(companyName) {
 }
 
  export async function getCompanyNameByEmail(email) {
-   debugger
   const res = await fireBaseInstance.firebase.database().ref(`users/`).once('value')
-   debugger
+
       const map = res.val()
       for (const x in map) {
         const user = map[x]
         if (user.email === email) {
-          debugger
           return await user.companyName
         }
       }
 }
-
+async function getAllAdmins() {
+  return await fireBaseInstance.firebase.database().ref('admins').once('value')
+    .then(res => {
+      const arr = [];
+      const map = res.val();
+      for (const key in map) {
+        const item = map[key];
+        item.id = key;
+        arr.push(item);
+      }
+      return arr;
+    })
+}
+async function deleteAdminFromDb(name) {
+   return await fireBaseInstance.firebase.database().ref(`admins/${name}`).remove().then(() => {
+    console.log('the user was removed from db')
+  }).catch(err => err)
+}
+async function updateAdmin(origName,admin) {
+  return await fireBaseInstance.firebase.database().ref(`admins/${admin.name}`).set({
+    companyName: admin.companyName,
+    email: admin.email,
+    password: admin.password
+  }).then(async ()=>{
+    await this.deleteUserFromDb(origName)
+  })
+}
+function getAdmin(name){
+   return fireBaseInstance.firebase.database().ref(`admins/${name}`).get().then((res)=> {
+     return res.val()
+   })
+}
 export default {
     getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
-  setNewEmail, addAdmin, getUserColorFb
+  setNewEmail, getAllAdmins, updateAdmin, deleteAdminFromDb, addAdmin, getUserColorFb, getAdmin
 }

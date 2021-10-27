@@ -1,10 +1,20 @@
 <template>
     <div class="q-pa-md">
       <q-table
-        title="events"
+        grid
+        title="All Events"
         :data="this.events"
         :columns="columns"
         row-key="name"
+        color="orange"
+        title-class="text-bold bg-black-9 text-orange-9"
+        card-header-class="text-bold text-orange-9"
+        card-class="text-bold bg-black-9 text-white"
+        card-style="border: 5px solid orange;"
+        dense
+        bordered
+        flat
+        dark
       />
     </div>
 </template>

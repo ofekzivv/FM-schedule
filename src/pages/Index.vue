@@ -35,11 +35,11 @@ import AddNewUser from "components/AddNewUser";
 import EventAdder from "components/EventAdder";
 import EventsCards from "components/EventsCards";
 import UsersTableViewer from "components/UsersTableViewer";
-
+import AdminTableViewer from "components/AdminTableViewer"
 export default {
   name: 'PageIndex',
   components: {
-    EventAdder, EventsCards, AddNewUser,  UsersTableViewer
+    EventAdder, EventsCards, AddNewUser,  UsersTableViewer,  AdminTableViewer
   },
   data() {
     return {

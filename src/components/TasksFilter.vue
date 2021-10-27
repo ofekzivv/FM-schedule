@@ -1,6 +1,6 @@
 <template>
-  <div class="q-pa-lg my-font">
-    <p class="text-center text-bold">סנן אירועים: </p>
+  <div class="q-pa-lg my-font ">
+    <p class="text-bold">סנן אירועים: </p>
     <div class="filter-group">
       <q-option-group
         v-model="filteredGroup"
@@ -36,20 +36,21 @@ export default {
   methods: {
 
     ...mapMutations('events', ['setToggleFilter','setUserEvents']),
-
-    ...mapActions('events', ['getAllUserEvents', 'FilterByToggle']),
+    ...mapActions('events', ['getAllUserEvents', 'FilterByToggle','getAllUsersEvents']),
 
     async changeFilter() {
-      await this.setToggleFilter(this.filteredGroup)
-
-      console.log(this.companyName)
-      let userEvents = await this.getAllUserEvents(this.company)
-      console.log(userEvents)
-
-      await this.setUserEvents(userEvents)
-
-      await this.FilterByToggle()
-      console.log(this.userEvents)
+      if (this.company !== "כל המשתמשים") {
+        await this.setToggleFilter(this.filteredGroup)
+        console.log(this.company)
+        await this.getAllUserEvents(this.company)
+        console.log(this.userEvents)
+        await this.FilterByToggle('')
+      }
+      else {
+        await this.setToggleFilter(this.filteredGroup)
+        await this.getAllUsersEvents('')
+        await this.FilterByToggle('all')
+      }
     },
   },
   created() {

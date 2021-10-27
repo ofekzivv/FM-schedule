@@ -116,10 +116,9 @@ export default {
     async onOKClick() {
       this.setEventType()
       this.setSearchKeys(this.searchKeys)
-      const userEvents = await this.getAllUserEvents(this.companyName)
-
+      let userEvents = await this.getAllUserEvents(this.companyName)
+      console.log(userEvents)
       let res = await this.getFilteredEvents(userEvents)
-      debugger
       console.log(res)
       this.results = res
       console.log(` this.results = ${this.results}`)
