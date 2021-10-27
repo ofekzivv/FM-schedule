@@ -1,19 +1,21 @@
 import fireBaseInstance from '../';
 
- async function getAllUsers() {
-    return await fireBaseInstance.firebase.database().ref('users').once('value')
-        .then(res => {
-            const arr = [];
-            const map = res.val();
-            for (const key in map) {
-                const item = map[key];
-                item.id = key;
-                arr.push(item);
-            }
-            return arr;
-        })
+
+async function getAllUsers() {
+  return await fireBaseInstance.firebase.database().ref('users').once('value')
+    .then(res => {
+      const arr = [];
+      const map = res.val();
+      for (const key in map) {
+        const item = map[key];
+        item.id = key;
+        arr.push(item);
+      }
+      return arr;
+    })
 }
-async function getAllUsersEvents(){
+
+async function getAllUsersEvents() {
   let events = [];
   return await fireBaseInstance.firebase.database().ref('users').once('value')
     .then(async res => {
@@ -37,65 +39,83 @@ async function getAllUsersEvents(){
       return events
     })
 }
-function getUserPassword(companyName) {
+
+/*function getUserPassword(companyName) {
   return fireBaseInstance.firebase.database().ref(`users/${companyName}`).once('value')
     .then(res => {
       return res.val().password
     })
-}
+}*/
+
 async function getUser(companyName) {
-     return await fireBaseInstance.firebase.database().ref(`users/${companyName}`).once('value')
-        .then(res => {
-            return res.val();
-        })
+  return await fireBaseInstance.firebase.database().ref(`users/${companyName}`).once('value')
+    .then(res => {
+      return res.val();
+    })
 }
 
-function deleteUserFromDb(companyName) {
-    return fireBaseInstance.firebase.database().ref(`users/${companyName}`).remove().then(() => {
-        console.log('the user was removed from db')
-    }).catch(err => err)
+async function deleteUserFromDb(companyName, password) {
+  await fireBaseInstance.firebase.database().ref(`users/${companyName}`).remove().then(() => {
+    let storageRef = fireBaseInstance.firebase.storage().ref().child(`${password}`);
+    // Now we get the references of these files
+    storageRef.listAll().then(function (result) {
+      result.items.forEach(function (file) {
+        file.delete();
+      });
+    }).catch(function (error) {
+      // Handle any errors
+    });
+  }).catch(err => console.log(err))
 }
 
 
 async function addEvent(options) {
   if (options.event.files) {
+    let timeStamp = Date.now()
     let fileLinks = []
+    let index = 0
     for (let file of options.event.files) {
-      let storageRef = fireBaseInstance.firebase.storage().ref();
-      let imageStorageRef = storageRef.child(`${file.name}`)
+      timeStamp = timeStamp + index
+      let storageRef = fireBaseInstance.firebase.storage().ref()
+      let imageStorageRef = storageRef.child(`${options.password}`).child(`${timeStamp}`)
+      index++
       await imageStorageRef.put(file)
       await imageStorageRef.getDownloadURL()
         .then((url) => {
-          fileLinks.push(url)
+          fileLinks.push({
+            url,
+            timeStamp
+          })
         }).catch(err => console.log(err))
     }
     options.event.files = fileLinks
-    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
+    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.eventKey}`).set(options.event)
   } else {
-    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.title}`).set(options.event)
+    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.eventKey}`).set(options.event)
   }
 }
 
 function editEvent(options) {
-    return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.eventKey}`).set(options.event)
+  return fireBaseInstance.firebase.database().ref(`users/${options.company}/events/${options.event.date}/${options.event.eventKey}`).update(options.event)
 }
 
 
 export async function getUserEvents(companyName) {
-    return await fireBaseInstance.firebase.database().ref(`users/${companyName}/events`).once('value')
-        .then(res => {
-          console.log(`${companyName} in index db`)
-            const arr = [];
-            const map = res.val();
-            for (const key in map) {
-                const item = map[key];
-                for (const val in item) {
-                    arr.push(item[val])
-                }
-            }
-            return arr;
-        })
+  return await fireBaseInstance.firebase.database().ref(`users/${companyName}/events`).once('value')
+    .then(res => {
+      console.log(`${companyName} in index db`)
+      const arr = [];
+      const map = res.val();
+      for (const key in map) {
+        const item = map[key];
+        for (const val in item) {
+          arr.push(item[val])
+        }
+      }
+      return arr;
+    })
 }
+
 async function addAdmin(options) {
   return await fireBaseInstance.firebase.database().ref(`admins/${options.companyName}`).set({
     email: options.email,
@@ -103,16 +123,27 @@ async function addAdmin(options) {
     password: options.password,
   })
 }
-async function addUser(options) {
-  let file = options.logo
+
+async function addLogoToStorage(file, password, newUser) {
   let storageRef = fireBaseInstance.firebase.storage().ref();
-  let imageStorageRef = storageRef.child(`${file.name}`)
+  let imageStorageRef = storageRef.child(`${password}`).child('logo')
+  if (!newUser) {
+    if (await imageStorageRef.getDownloadURL() !== null) {
+      await imageStorageRef.delete()
+    }
+  }
   await imageStorageRef.put(file)
-  await imageStorageRef.getDownloadURL()
+  return await imageStorageRef.getDownloadURL()
     .then((url) => {
-      file = url;
+      return url
     }).catch(err => console.log(err))
-  options.logo = file
+}
+
+async function addUser(options) {
+  console.log('options', options)
+  if (typeof options.logo === 'object') {
+    options.logo = await addLogoToStorage(options.logo, options.password, options.newUser)
+  }
   return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).set({
     email: options.email,
     companyName: options.companyName,
@@ -120,21 +151,32 @@ async function addUser(options) {
     logo: options.logo,
     color: options.color
   }).then(async () => {
-    if(options.events) {
+    if (options.events) {
       for (let i = 0; i < options.events.length; i++) {
-          await this.addEvent({companyName: options.companyName, event: options.events[i]})
-        }
+        await this.addEvent({companyName: options.companyName, event: options.events[i]})
+      }
     }
   })
-
-   }
-
- function deleteEvent(event, companyName){
-  return fireBaseInstance.firebase.database().ref(`users/${companyName}/events/${event.title}`).remove()
 }
 
-async function setNewEmail(options) {
-  return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).update({email: options.email})
+function deleteEvent(password, event, companyName) {
+  for (let userFile of event.files) {
+    console.log(userFile.timeStamp)
+    let storageRef = fireBaseInstance.firebase.storage().ref().child(`${password}/${userFile.timeStamp}`)
+    storageRef.delete().then(() => console.log('file deleted', userFile.timeStamp)).catch(err => console.log(err));
+  }
+  return fireBaseInstance.firebase.database().ref(`users/${companyName}/events/${event.date}/${event.eventKey}`).remove()
+}
+
+async function editUser(options) {
+  if (typeof options.logo === 'object') {
+    options.logo = await addLogoToStorage(options.logo, options.password)
+  }
+  return await fireBaseInstance.firebase.database().ref(`users/${options.companyName}`).update({
+    email: options.email,
+    logo: options.logo,
+    color: options.color
+  })
 }
 
 async function getUserColorFb(companyName) {
@@ -144,17 +186,18 @@ async function getUserColorFb(companyName) {
   })
 }
 
- export async function getCompanyNameByEmail(email) {
+export async function getCompanyNameByEmail(email) {
   const res = await fireBaseInstance.firebase.database().ref(`users/`).once('value')
 
-      const map = res.val()
-      for (const x in map) {
-        const user = map[x]
-        if (user.email === email) {
-          return await user.companyName
-        }
-      }
+  const map = res.val()
+  for (const x in map) {
+    const user = map[x]
+    if (user.email === email) {
+      return await user.companyName
+    }
+  }
 }
+
 async function getAllAdmins() {
   return await fireBaseInstance.firebase.database().ref('admins').once('value')
     .then(res => {
@@ -168,26 +211,30 @@ async function getAllAdmins() {
       return arr;
     })
 }
+
 async function deleteAdminFromDb(name) {
-   return await fireBaseInstance.firebase.database().ref(`admins/${name}`).remove().then(() => {
+  return await fireBaseInstance.firebase.database().ref(`admins/${name}`).remove().then(() => {
     console.log('the user was removed from db')
   }).catch(err => err)
 }
-async function updateAdmin(origName,admin) {
+
+async function updateAdmin(origName, admin) {
   return await fireBaseInstance.firebase.database().ref(`admins/${admin.name}`).set({
     companyName: admin.companyName,
     email: admin.email,
     password: admin.password
-  }).then(async ()=>{
+  }).then(async () => {
     await this.deleteUserFromDb(origName)
   })
 }
-function getAdmin(name){
-   return fireBaseInstance.firebase.database().ref(`admins/${name}`).get().then((res)=> {
-     return res.val()
-   })
+
+function getAdmin(name) {
+  return fireBaseInstance.firebase.database().ref(`admins/${name}`).get().then((res) => {
+    return res.val()
+  })
 }
+
 export default {
-    getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
-  setNewEmail, getAllAdmins, updateAdmin, deleteAdminFromDb, addAdmin, getUserColorFb, getAdmin
+  getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
+  editUser, getAllAdmins, updateAdmin, deleteAdminFromDb, addAdmin, getUserColorFb, getAdmin
 }

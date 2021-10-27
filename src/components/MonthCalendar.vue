@@ -57,11 +57,9 @@
 <script>
 import QCalendarTry from '@quasar/quasar-ui-qcalendar'
 import {QCalendar} from '@quasar/quasar-ui-qcalendar'
-import {mapActions, mapState, mapMutations, mapGetters} from "vuex";
-import {Dialog} from 'quasar'
+import {mapActions, mapState, mapMutations} from "vuex";
 import EventAdder from "components/EventAdder";
 import EditEvent from "components/EditEvent";
-import VueHtmlToPaper from "vue-html-to-paper";
 import TasksFilter from "components/TasksFilter";
 import SearchEvents from "components/SearchEvents";
 
@@ -199,14 +197,13 @@ export default {
     isCssColor(color) {
       return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/)
     },
-    badgeClasses(event, type) {
+    badgeClasses(event) {
       const cssColor = this.isCssColor(event.bgcolor)
-      const isHeader = type === 'header'
       return {
         [`text-white bg-${event.bgcolor}`]: !cssColor
       }
     },
-    styles(event, type) {
+    styles(event) {
       const s = {}
       if (this.isCssColor(event.bgcolor)) {
         s['background-color'] = event.bgcolor

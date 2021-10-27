@@ -46,7 +46,7 @@
           <q-td>
             <q-btn @click="editUser(props.row.companyName, props.row.email, props.row.logo, props.row.color)" color="primary" icon="edit" dense push
                    class="q-ma-xs q-pa-xs"></q-btn>
-            <q-btn @click="deleteUserButton(props.row.companyName)" color="red" icon="delete" dense
+            <q-btn @click="deleteUserButton(props.row.companyName, props.row.password)" color="red" icon="delete" dense
                    class="q-ma-xs q-pa-xs" push></q-btn>
           </q-td>
         </q-tr>
@@ -113,9 +113,9 @@ export default {
   },
   methods: {
     ...mapActions('users', ['getUser', 'getUsers', 'deleteUser']),
-    deleteUserButton(companyName) {
+    deleteUserButton(companyName, password) {
       this.$q.loading.show()
-      this.deleteUser(companyName).then(() => {
+      this.deleteUser({companyName, password}).then(() => {
         this.$q.notify({
           type: 'negative',
           message: `המשתמש נמחק.`

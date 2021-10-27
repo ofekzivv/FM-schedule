@@ -38,16 +38,16 @@ export default {
    return dailyEvents
 },
 
-  addNewEvent: async ({},[title,companyName,event]) => {
-    await firebaseInstance.addEvent({title,companyName,event})
+  addNewEvent: async ({},[title,companyName,password, event]) => {
+    await firebaseInstance.addEvent({title,companyName,password,event})
   },
 
-  editExistingEvent: async ({},[name, companyName, event]) => {
-    await firebaseInstance.editEvent([name, companyName, event])
+  editExistingEvent: async ({},payload) => {
+    await firebaseInstance.editEvent({event: payload.newEvent, company: payload.company})
   },
 
-  deleteExistingEvent: async ({},[event, companyName]) => {
-    await firebaseInstance.deleteEvent(event,companyName)
+  deleteExistingEvent: async ({},payload) => {
+    await firebaseInstance.deleteEvent(payload.password, payload.event,payload.companyName)
   },
 
   getFilteredEvents: async ({state, commit}, userEvents) => {

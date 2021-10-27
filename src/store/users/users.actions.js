@@ -17,19 +17,32 @@ export default {
     return users
   },
 
-  editExistingUser: async ({commit}, [user,newCompanyName,newEmail]) => {
-    if (user.companyName !== newCompanyName){
-      let events = await firebaseInstance.getUserEvents(user.companyName)
-      await firebaseInstance.addUser({companyName: newCompanyName, email: newEmail, password: user.password, events: events})
-      await firebaseInstance.deleteUserFromDb(user.companyName)
+  editExistingUser: async ({commit}, payload) => {
+    let events = await firebaseInstance.getUserEvents(payload.user.companyName)
+    if (payload.user.companyName !== payload.editedUser.companyNameInput){
+      await firebaseInstance.addUser({
+        companyName:payload.editedUser.companyNameInput,
+        email: payload.editedUser.emailInput,
+        password:payload.user.password,
+        logo: payload.editedUser.logoInput,
+        color: payload.editedUser.colorInput,
+        events: events
+      })
+      await firebaseInstance.deleteUserFromDb(payload.user.companyName)
     }
     else {
-      await firebaseInstance.setNewEmail({companyName: newCompanyName, email: newEmail})
+      await firebaseInstance.editUser({
+        companyName: payload.user.companyName,
+        email: payload.editedUser.emailInput,
+        password: payload.user.password,
+        logo: payload.editedUser.logoInput,
+        color: payload.editedUser.colorInput
+      })
     }
   },
 
-  deleteUser: async ({commit}, companyName) => {
-    await firebaseInstance.deleteUserFromDb(companyName).then(() => {
+  deleteUser: async ({commit}, payload) => {
+    await firebaseInstance.deleteUserFromDb(payload.companyName, payload.password).then(() => {
       console.log('The user was removed from actions')
     }).catch(err => console.log(err))
   }

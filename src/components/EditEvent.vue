@@ -3,25 +3,10 @@
     <q-card class="q-dialog-plugin my-font">
       <p class="text-h5 text-center q-mt-md">ערוך אירוע:</p>
       <q-card-section class="q-gutter-lg">
-        <q-input v-model="event.title" label="נושא"/>
+        <q-input v-model="formData.title" label="נושא"/>
 
-        <q-input v-model="event.details" label="פרטים"/>
+        <q-input v-model="formData.details" label="פרטים"/>
 
-        <q-select v-model="event.eventType" :options="options" label="סוג אירוע"/>
-
-        <q-input filled v-model="event.date" mask="date" :rules="['date']">
-          <template v-slot:append>
-            <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                <q-date v-model="event.date">
-                  <div class="row items-center justify-end">
-                    <q-btn v-close-popup label="Close" color="primary" flat/>
-                  </div>
-                </q-date>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input>
       </q-card-section>
 
       <q-card-actions align="right">
@@ -35,7 +20,7 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapState} from "vuex";
 
 export default {
   props: ['event', 'companyName'],
@@ -44,11 +29,22 @@ export default {
       options: [
         'פוסט', 'תמונה', 'סרטון'
       ],
+      formData: {
+        title: this.event.title,
+        details: this.event.details,
+        date:  this.event.date,
+        eventKey:  this.event.eventKey,
+      }
     }
+  },
+
+  computed: {
+    ...mapState('users', ['userData'])
   },
 
   methods: {
     ...mapActions('events', ['editExistingEvent', 'deleteExistingEvent']),
+    ...mapActions('users', ['getUser']),
 
     deleteEvent(event, companyName) {
       this.$q.dialog({
@@ -57,16 +53,20 @@ export default {
         cancel: true,
         persistent: true
       }).onOk(() => {
-        this.deleteExistingEvent([event, companyName]).then(() => {
-          this.$q.notify({
-            message: 'האירוע נמחק בהצלחה',
-            color: 'red'
+        this.getUser(companyName).then(() => {
+          let password = this.userData.password
+          this.deleteExistingEvent({password, companyName, event}).then(() => {
+            this.$q.notify({
+              message: 'האירוע נמחק בהצלחה',
+              color: 'red'
+            })
+            this.$emit('ok')
+            this.$refs.dialog.hide()
+          }).catch(err => {
+            console.log(err)
           })
-          this.$emit('ok')
-          this.$refs.dialog.hide()
-        }).catch(err => {
-          console.log(err)
         })
+
       }).onOk(() => {
         // console.log('>>>> second OK catcher')
         this.$refs.dialog.hide()
@@ -94,17 +94,7 @@ export default {
     },
 
     onOKClick() {
-      if (this.event.eventType === 'סרטון') {
-        this.event.icon = 'movie'
-        this.event.bgcolor = 'green'
-      } else if (this.event.eventType === 'תמונה') {
-        this.event.icon = 'image'
-        this.event.bgcolor = 'orange'
-      } else {
-        this.event.icon = 'post_add'
-        this.event.bgcolor = 'blue'
-      }
-      this.editExistingEvent([this.event.title, this.companyName, this.event]).then(() => {
+      this.editExistingEvent({newEvent: this.formData, company: this.companyName}).then(() => {
         this.$q.notify({
           message: ' ערכת את האירוע בהצלחה! ',
           icon: 'event_available',

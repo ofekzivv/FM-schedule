@@ -89,6 +89,7 @@ export default {
       this.$refs.email.validate()
       this.formData.generatedPassword = this.generatePassword()
       firebaseInstance.addUser({
+        newUser: true,
         companyName: this.formData.companyName,
         email: this.formData.email,
         password: this.formData.generatedPassword,

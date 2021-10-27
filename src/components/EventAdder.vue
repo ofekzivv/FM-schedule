@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapState} from "vuex";
 export default {
   name: "EventAdder",
   props: [ 'companyName', 'eventDate'],
@@ -68,13 +68,19 @@ export default {
         date: this.eventDate,
         files: null,
         bgcolor: '',
-        icon: '',
+        eventKey: Date.now(),
+        icon: ''
       },
     }
   },
 
+  computed: {
+    ...mapState('users', ['userData'])
+  },
+
   methods: {
     ...mapActions('events', ['addNewEvent', 'getUserColor']),
+    ...mapActions('users', ['getUser']),
     // following method is REQUIRED
     // (don't change its name --> "show")
     show() {
@@ -94,6 +100,8 @@ export default {
     },
 
     async onOKClick() {
+      await this.getUser(this.companyName)
+      let password = this.userData.password
       await this.getUserColor(this.companyName).then(res => {
         this.formData.bgcolor = res
       })
@@ -107,7 +115,7 @@ export default {
       else {
         this.formData.icon = 'post_add'
       }
-      await this.addNewEvent([this.formData.title, this.companyName, this.formData]).then(() => {
+      await this.addNewEvent([this.formData.title, this.companyName,password, this.formData]).then(() => {
         this.$q.notify({
           message: 'הוספת את האירוע בהצלחה! ',
           icon: 'event_available',
