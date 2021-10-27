@@ -36,7 +36,7 @@ export default {
   methods: {
 
     ...mapMutations('events', ['setToggleFilter','setUserEvents']),
-    ...mapActions('events', ['getAllUserEvents', 'FilterByToggle']),
+    ...mapActions('events', ['getAllUserEvents', 'FilterByToggle','getAllUsersEvents']),
 
     async changeFilter() {
       if (this.company !== "כל המשתמשים") {
