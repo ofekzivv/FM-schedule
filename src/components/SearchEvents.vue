@@ -37,12 +37,29 @@
 
       <!--Results Section-->
       <q-card-section v-if="results" style="max-width: 600px; width: 80%; margin: 1em auto;">
+<!--        <template v-for="(event, index) in results">
+          <q-badge
+            :key="index"
+            style="cursor: pointer; margin-bottom: 2px; width: 100%"
+            @click="testEvent(event)"
+            :class="badgeClasses(event, 'day')"
+            :style="styles(event, 'day')"
+          >
+            <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs" size="xs"></q-icon>
+            <div class="column">
+              <span class="text-subtitle1 text-bold">{{ event.title }} </span>
+              <span style="font-size: 1em;">{{ event.details }}</span>
+            </div>
+          </q-badge>
+        </template>-->
+
         <q-card
-          :class="{ 'bg-blue': event.bgcolor === 'blue', 'bg-green': event.bgcolor === 'green', 'bg-orange': event.bgcolor === 'orange' }"
-          dark
           bordered
-          class="my-card q-ma-sm"
-          v-for="(event,index) of results" :key="index">
+          @click="testEvent(event)"
+          v-for="(event,index) of results" :key="index"
+          :style="{background : resultsColor}"
+          style="margin-bottom: 20px"
+          >
           <q-card-section>
             <div class="text-h6">{{ event.title }} </div>
             <div class="text-subtitle2">{{ event.date }}</div>
@@ -65,6 +82,7 @@
 //the user can search events by key like "Title"
 import EventsCards from "components/EventsCards";
 import {mapState, mapMutations, mapActions, mapGetters} from 'vuex'
+import EditEvent from "components/EditEvent";
 
 export default {
   name: "SearchEvents",
@@ -74,6 +92,7 @@ export default {
       results: [],
       options: [],
       companyName: null,
+      resultsColor: '',
       searchKeys: {
         title: '',
         details: '',
@@ -91,8 +110,8 @@ export default {
     ...mapState('users', ['users']),
   },
   methods: {
-    ...mapActions('users',['getUsers']),
-    ...mapActions('events', ['getAllUserEvents','getFilteredEvents']),
+    ...mapActions('users',['getUsers', 'getUser']),
+    ...mapActions('events', ['getAllUserEvents','getFilteredEvents','getUserColor']),
     ...mapMutations('events', ['setSearchKeys','getEventsByKeys']),
     //...mapGetters('events', ['getEventsByKeys']),
     // following method is REQUIRED
@@ -114,6 +133,7 @@ export default {
     },
 
     async onOKClick() {
+      await this.getColor()
       this.setEventType()
       this.setSearchKeys(this.searchKeys)
       let userEvents = await this.getAllUserEvents(this.companyName)
@@ -150,6 +170,34 @@ export default {
       if (this.searchKeys.eventType.video)
         wantedTypes.push('סרטון')
       this.searchKeys.eventType = wantedTypes
+    },
+
+    testEvent(updateEvent) {
+      console.log('edit event: ', updateEvent)
+      this.$q.dialog({
+        component: EditEvent,
+        parent: this,
+        event: updateEvent,
+        companyName: this.companyName
+
+        // ...more.props...
+      }).onOk(() => {
+        this.getAllUserEvents(this.companyName).then((res) => {
+          this.events = res
+        })
+      }).onCancel(() => {
+        console.log('Cancel')
+      }).onDismiss(() => {
+        console.log('Called on OK or Cancel')
+      })
+    },
+
+    async getColor(){
+      this.resultsColor = await this.getUserColor(this.companyName);
+      console.log(this.resultsColor)
+      let s= {}
+      s['background-color'] = this.resultsColor
+      return this.resultsColor
     }
   },
   created() {
