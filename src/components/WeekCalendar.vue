@@ -1,13 +1,21 @@
 <template>
   <div class="my-font container">
-    <q-btn class="searchBtn q-ml-lg" label="חפש אירוע" color="primary" @click="onClickSearch()"/>
-    <q-dialog v-model="searchBar">
-      <SearchEvents/>
-    </q-dialog>
-    <TasksFilter :company="companyName"/>
     <div class="row justify-center items-center q-mb-sm">
-      <q-btn color="blue" push label="שבוע קודם" @click="calendarPrev" class="q-mr-xs"/>
-      <q-btn color="blue" push label="שבוע הבא" @click="calendarNext"/>
+
+      <div>
+        <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
+        <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
+      </div>
+
+      <TasksFilter :company="companyName"/>
+
+      <div>
+        <q-btn push class="searchBtn q-mr-lg" label="חפש אירוע" color="primary" @click="onClickSearch()"/>
+        <q-dialog v-model="searchBar">
+          <SearchEvents/>
+        </q-dialog>
+      </div>
+
     </div>
     <q-separator/>
 
