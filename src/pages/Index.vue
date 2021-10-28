@@ -11,7 +11,7 @@
         narrow-indicator
       >
         <q-tab name="todayEvents" label="משימות להיום"/>
-        <q-tab name="allUsers" label="כל המשתמשים"/>
+        <q-tab name="allUsers" label="כל הלקוחות"/>
       </q-tabs>
 
       <q-separator/>

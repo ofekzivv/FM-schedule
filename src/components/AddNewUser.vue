@@ -110,18 +110,14 @@ export default {
         logo: this.formData.profilePic,
         color: this.formData.companyColor
       })
-
-        await this.getUsers().then(() => {
-          debugger
-          this.$q.notify({
-            message: 'הוספת את המשתמש בהצלחה! ',
-            icon: 'person_add',
-            type: 'positive',
-          })
-          this.$q.loading.hide()
-          this.$emit('ok')
-          this.hide()
-        }).catch(err => console.log(err, 'זה בכלל לא מגיע'))
+      this.$q.notify({
+        message: 'הוספת את המשתמש בהצלחה! ',
+        icon: 'person_add',
+        type: 'positive',
+      })
+      this.$q.loading.hide()
+      this.$emit('ok')
+      this.hide()
     },
 
     onCancelClick() {
@@ -133,6 +129,7 @@ export default {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(String(email).toLowerCase());
     },
+
     generatePassword() {
       let pw = ""
       let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
