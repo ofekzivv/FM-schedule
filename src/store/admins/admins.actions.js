@@ -1,4 +1,3 @@
-
 import firebaseInstance from '../../middleware/firebase/database'
 
 export default {
@@ -6,6 +5,12 @@ export default {
     let admin = await firebaseInstance.getAdmin(companyName);
     commit('setAdmin', admin)
     return admin
+  },
+
+  getAdminWithEmail: async ({commit}, email) => {
+    await firebaseInstance.getAdminByMail(email).then(admin => {
+      commit('setAdmin', admin)
+    })
   },
 
   getAdmins: async ({commit}) =>{

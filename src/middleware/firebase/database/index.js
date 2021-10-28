@@ -251,6 +251,19 @@ function getAdmin(name) {
   })
 }
 
+function getAdminByMail(email) {
+  return fireBaseInstance.firebase.database().ref(`admins`).get().then((res) => {
+    const arr = res.val()
+    console.log(arr)
+    for (const admin in arr) {
+      if (admin.email === email)
+        return admin
+    }
+  }).catch(err => {
+    console.log('יש פה ארור כוסאמק')
+  })
+}
+
 export async function checkAdmin(email, password) {
   debugger
   const admins = await getAllAdmins()
@@ -264,5 +277,5 @@ export async function checkAdmin(email, password) {
 
 export default {
   getUser, getUserEvents, deleteUserFromDb, addEvent, editEvent, getAllUsers, addUser, deleteEvent, getAllUsersEvents,
-  editUser, getAllAdmins, updateAdmin, deleteAdminFromDb, addAdmin, getUserColorFb, getAdmin, editFilesInStorage
+  editUser, getAllAdmins, updateAdmin, deleteAdminFromDb, addAdmin, getUserColorFb, getAdmin, editFilesInStorage, getAdminByMail
 }
