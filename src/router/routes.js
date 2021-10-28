@@ -12,7 +12,6 @@ const routes = [
       {path: '/WeekView', component: () => import('pages/CalendarByWeek.vue')},
       {path: '/AllView', component: () => import('pages/AllView.vue')},
       {path: '/:companyName', component: () => import('pages/UserCalendarView.vue')},
-
     ]
   },
 

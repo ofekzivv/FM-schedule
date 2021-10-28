@@ -1,5 +1,6 @@
 
 import firebaseInstance from '../../middleware/firebase/database'
+import firebase from '../../middleware/firebase'
 
 export default {
   // getUserInfo: async ({commit}, user) => {
@@ -43,7 +44,6 @@ export default {
 
   deleteUser: async ({commit}, payload) => {
     await firebaseInstance.deleteUserFromDb(payload.companyName, payload.password).then(() => {
-      console.log('The user was removed from actions')
     }).catch(err => console.log(err))
   }
 }
