@@ -4,7 +4,6 @@ export default {
   getAllUserEvents: async ({commit}, companyName) => {
     let res = await firebaseInstance.getUserEvents(companyName)
       commit('setUserEvents', res)
-      //console.log('result actions: ', res)
       return res
   },
   getAllUsersEvents: async ({commit}, daily) =>{
@@ -38,12 +37,12 @@ export default {
    return dailyEvents
 },
 
-  addNewEvent: async ({},[title,companyName,password, event]) => {
-    await firebaseInstance.addEvent({title,companyName,password,event})
+  addNewEvent: async ({}, payload) => {
+    await firebaseInstance.addEvent({companyName: payload.companyName, password: payload.password, event: payload.newEvent})
   },
 
   editExistingEvent: async ({},payload) => {
-    await firebaseInstance.editEvent({event: payload.newEvent, company: payload.company})
+    await firebaseInstance.editEvent({event: payload.newEvent, company: payload.company, newFiles: payload.newFiles, password: payload.password})
   },
 
   deleteExistingEvent: async ({},payload) => {
@@ -74,7 +73,6 @@ export default {
     if (all !== 'all') {
       filteredEvents = state.userEvents.filter(event => state.toggleFilter
         .includes(event.eventType))
-      console.log(filteredEvents)
       commit('setUserEvents', filteredEvents)
     }
     else{
@@ -87,4 +85,8 @@ export default {
   getUserColor: async ({},companyName) => {
     return await firebaseInstance.getUserColorFb(companyName).then(res => {return res})
   },
+
+  editFiles: async ({}, payload) => {
+    return await firebaseInstance.editFilesInStorage(payload.newFiles, payload.password, payload.oldFiles)
+  }
 }
