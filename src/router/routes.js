@@ -2,7 +2,7 @@
 
 const routes = [
   {
-    path: '/', component: () => import('layouts/MainLayout.vue'),
+    path: '', component: () => import('layouts/MainLayout.vue'),
     children: [
       {path: '/admin', component: () => import('pages/Index.vue') },
       {path: '/MonthView', component: () => import('pages/CalendarByMonth.vue')},

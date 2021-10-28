@@ -90,7 +90,7 @@ const linksData = [
     title: 'בית',
     label: 'בית',
     icon: 'home',
-    link: '/'
+    link: '/admin'
   },
   {
     title: 'לפי חודש',

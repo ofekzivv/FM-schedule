@@ -159,14 +159,14 @@ export default {
         parent: this,
         // ...more.props...
       }).onOk(async () => {
+      }).onCancel(() => {
+        console.log('Cancel')
+      }).onDismiss(() => {
         this.getUsers().then((res) => {
           this.data = res
           this.$q.loading.hide()
         }).catch(err => console.log(err))
         this.data = this.users
-      }).onCancel(() => {
-        console.log('Cancel')
-      }).onDismiss(() => {
       })
     },
     addAdmin() {
