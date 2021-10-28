@@ -35,6 +35,7 @@ const actions = {
     if( isAdmin ){
       commit('setAdmin',true)
       LocalStorage.set('admin', true)
+      LocalStorage.set('adminEmail', payload.formData.email )
     }
     else {
       commit('setAdmin',false)
@@ -42,11 +43,8 @@ const actions = {
     }
     await firebaseInstance.firebase.auth().signInWithEmailAndPassword(payload.formData.email, payload.formData.password)
       .then( async response => {
-        debugger
-        window.user = response.user;
+        window.user = response.user
         window.user.password = payload.formData.password
-        debugger
-
       }).catch(error => {
         console.log('error', error)
       })
