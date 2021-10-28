@@ -1,12 +1,12 @@
 <template>
-  <div class="q-pa-lg my-font container">
+  <div class="q-pa-lg my-font ">
+    <p class="text-bold">סנן אירועים: </p>
     <div class="filter-group">
       <q-option-group
-        class="toggle"
         v-model="filteredGroup"
         :options="options"
+        color="options.color"
         type="toggle"
-        color="primary"
         @input="changeFilter()"
       />
     </div>
@@ -17,9 +17,9 @@
 import {mapActions, mapState, mapMutations} from "vuex";
 
 const optionsGroups = [
-  {label: 'סרטון', value: 'סרטון'},
-  {label: 'פוסט', value: 'פוסט'},
-  {label: 'תמונה', value: 'תמונה'},
+  {label: 'סרטון', color: 'black', value: 'סרטון'},
+  {label: 'פוסט', color: 'black', value: 'פוסט'},
+  {label: 'תמונה', color: 'black', value: 'תמונה'},
 ]
 
 export default {
@@ -41,7 +41,9 @@ export default {
     async changeFilter() {
       if (this.company !== "כל המשתמשים") {
         await this.setToggleFilter(this.filteredGroup)
+        console.log(this.company)
         await this.getAllUserEvents(this.company)
+        console.log(this.userEvents)
         await this.FilterByToggle('')
       }
       else {
@@ -58,13 +60,4 @@ export default {
 </script>
 
 <style scoped>
-
-.container {
-  display: flex;
-  flex-direction: column;
-}
-
-.toggle {
-  display: flex;
-}
 </style>

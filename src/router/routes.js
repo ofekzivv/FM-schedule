@@ -1,8 +1,10 @@
+
+
 const routes = [
   {
     path: '/', component: () => import('layouts/MainLayout.vue'),
     children: [
-      {path: '', component: () => import('pages/Index.vue')},
+      {path: '/admin', component: () => import('pages/Index.vue') },
       {path: '/MonthView', component: () => import('pages/CalendarByMonth.vue')},
       {path: '/auth', component: () => import('pages/Auth.vue')},
       {path: '/searchEvents', component: () => import('pages/SearchResults.vue')},

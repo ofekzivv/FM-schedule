@@ -49,8 +49,7 @@
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
-import {LocalStorage} from "quasar";
+import {mapActions, mapState, mapGetters} from "vuex";
 import {getCompanyNameByEmail} from 'src/middleware/firebase/database'
 
 export default {
@@ -60,13 +59,15 @@ export default {
         email: '',
         password: ''
       },
-      email:''
+      email:'',
+      company: ''
     }
   },
   // computed:
   //   mapState('users', ['']),
   methods: {
     // ...mapActions('users', ['']),
+    ...mapGetters('auth', ['getAdmin']),
     ...mapActions('auth', ['loginUser']),
     isValidEmailAddress(email) {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -76,6 +77,8 @@ export default {
       this.$refs.email.validate()
       this.$refs.password.validate()
       if (!this.$refs.email.hasError && !this.$refs.password.hasError) {
+
+
         this.loginUser({formData: this.formData})
           .then(async() => {
             //this.getUserInfo(userId)
@@ -85,8 +88,13 @@ export default {
               icon: 'cloud_done',
               message: 'Logged in'
             })
-            this.email = await getCompanyNameByEmail(this.formData.email)
-            await this.$router.push(`/${this.email}`)
+            if(!this.getAdmin) {
+              this.company = await getCompanyNameByEmail(this.formData.email)
+              await this.$router.push(`/${this.company}`)
+            }
+            else if(this.getAdmin){
+              await this.$router.push('/admin')
+            }
           }).catch(err => console.log(err))
       }
     },

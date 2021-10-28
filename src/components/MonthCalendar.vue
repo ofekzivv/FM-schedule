@@ -1,22 +1,15 @@
 <template>
   <div class="my-font container" id="capture" style="position: relative">
 
-    <div class="row justify-center items-center q-mb-sm">
-
-      <div >
-        <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
-        <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
-      </div>
-
       <TasksFilter :company="companyName"/>
+    <div class="row justify-center items-center q-mb-sm">
+      <q-btn push class="searchBtn q-mr-lg" label="חפש אירוע" color="primary" @click="onClickSearch()"/>
+      <q-dialog v-model="searchBar">
+        <SearchEvents/>
+      </q-dialog>
 
-      <div>
-        <q-btn push class="searchBtn q-mr-lg" label="חפש אירוע" color="primary" @click="onClickSearch()"/>
-        <q-dialog v-model="searchBar">
-          <SearchEvents/>
-        </q-dialog>
-      </div>
-
+      <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
+      <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
     </div>
     <q-separator/>
     <QCalendar
@@ -40,16 +33,14 @@
           <q-badge
             :key="index"
             style="cursor: pointer; margin-bottom: 2px; width: 100%"
-            @click="watchEvent(event)"
+            @click="testEvent(event)"
             :class="badgeClasses(event, 'day')"
             :style="styles(event, 'day')"
           >
+            <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs" size="xs"></q-icon>
             <div class="column">
-              <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs q-mb-sm" size="xs"></q-icon>
-              <div class="column">
-                <p class="title">{{ event.title }} </p>
-                <p class="details">{{ event.details }}</p>
-              </div>
+              <span class="text-subtitle1 text-bold">{{ event.title }} </span>
+              <span style="font-size: 1em;">{{ event.details }}</span>
             </div>
           </q-badge>
         </template>
@@ -149,6 +140,7 @@ export default {
   },
 
   created() {
+    console.log(this.companyName)
     if (this.companyName !== 'כל המשתמשים') {
       this.setCompanyName(this.companyName)
       if (this.$route.params.companyName) {
@@ -184,6 +176,7 @@ export default {
       this.$refs.calendar.prev()
     },
     onClickDate2(data) {
+      console.log(JSON.stringify(data))
       this.$q.dialog({
         component: EventAdder,
         parent: this,
@@ -192,14 +185,13 @@ export default {
 
         // ...more.props...
       }).onOk(() => {
+        this.getAllUserEvents(this.companyName).then((res) => {
+          this.events = res
+        })
       }).onCancel(() => {
         console.log('Cancel')
       }).onDismiss(() => {
-        this.$q.loading.show({
-          delay: 400 // ms
-        })
-        this.events = this.userEvents
-        this.$q.loading.hide()
+        console.log('Called on OK or Cancel')
       })
     },
     isCssColor(color) {
@@ -267,7 +259,8 @@ export default {
       return events
     },
 
-    watchEvent(updateEvent) {
+    testEvent(updateEvent) {
+      console.log(updateEvent)
       this.$q.dialog({
         component: EditEvent,
         parent: this,
@@ -276,15 +269,13 @@ export default {
 
         // ...more.props...
       }).onOk(() => {
-        console.log('ok MONTH')
-      }).onCancel(() => {
-        console.log('cancel MONTH')
-      }).onDismiss(() => {
-        console.log('dismiss MONTH')
-
-        this.getAllUserEvents(this.companyName).then(() => {
-          this.events = this.userEvents
+        this.getAllUserEvents(this.companyName).then((res) => {
+          this.events = res
         })
+      }).onCancel(() => {
+        console.log('Cancel')
+      }).onDismiss(() => {
+        console.log('Called on OK or Cancel')
       })
     },
     onClickSearch(){
@@ -338,44 +329,4 @@ export default {
 </script>
 
 <style src="@quasar/quasar-ui-qcalendar/dist/index.css"></style>
-
-<style>
-
-.title {
-  font-weight: bold;
-  font-size: 2em;
-  word-break: break-word;
-}
-
-.details {
-  font-size: 1.2em;
-  word-break: break-word;
-}
-
-
-@media screen and (max-width: 800px) {
-  .title {
-    font-weight: bold;
-    font-size: 1.8em;
-  }
-
-  .details {
-    font-size: 1em;
-  }
-
-}
-
-@media screen and (max-width: 599px) {
-
-  .title {
-    font-weight: bold;
-    font-size: 1em;
-  }
-
-  .details {
-    font-size: 0.8em;
-  }
-}
-
-</style>
 

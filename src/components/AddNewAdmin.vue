@@ -40,6 +40,7 @@
 
 <script>
 import firebaseInstance from 'src/middleware/firebase/database'
+import firebaseIndex from "src/middleware/firebase";
 
 export default {
   name: "AddNewAdmin",
@@ -69,9 +70,15 @@ export default {
       this.$emit('hide')
     },
     async onOKClick() {
+      debugger
       this.$q.loading.show()
       this.$refs.email.validate()
-      firebaseInstance.addAdmin({companyName: this.formData.companyName, email: this.formData.email, password: this.formData.password}).then(() => {
+     await firebaseIndex.firebase.auth().createUserWithEmailAndPassword(this.formData.email, this.formData.password).then(user => {
+        window.user = user;
+        window.user.uid = this.formData.generatedPassword;
+        console.log('Signed in')
+      })
+      await firebaseInstance.addAdmin({companyName: this.formData.companyName, email: this.formData.email, password: this.formData.password}).then(() => {
         this.$q.notify({
           message: 'הוספת את האדמין בהצלחה! ',
           icon: 'person_add',

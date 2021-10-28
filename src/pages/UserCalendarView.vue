@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="constrain text-center my-font">
-      <p class="q-mt-md text-subtitle1">שלום, {{ companyName }}</p>
+      <p class="q-mt-md text-subtitle1">שלום, {{ this.companyName }}</p>
       <p class="q-mt-md text-h5 text-bold">בחר תצוגת לוח שנה</p>
       <q-btn-group>
         <q-btn color="primary" push label="יומית" icon="calendar_view_day" @click="dayView"/>

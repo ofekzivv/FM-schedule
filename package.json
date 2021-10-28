@@ -1,8 +1,8 @@
 {
   "name": "fm-scheduler",
   "version": "0.0.1",
-  "description": "A scheduler",
-  "productName": "Flash Scheduler",
+  "description": "A Quasar Framework app",
+  "productName": "Quasar App",
   "author": "flashdev",
   "private": true,
   "scripts": {
