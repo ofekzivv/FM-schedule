@@ -1,15 +1,18 @@
 <template>
   <q-dialog ref="dialog" @hide="onDialogHide" style="height: 100%">
     <q-card class="q-dialog-plugin my-font">
-      <p class="text-h5 text-center q-mt-md">הוסף אירוע:</p>
+      <p v-if="!platformSelector" class="text-h5 text-center q-mt-md">בחר פלטפורמה:</p>
+      <q-select v-if="!platformSelector" v-model="platformSelector" :options="platform" label="סוג פלטפורמה"/>
+      <p v-if="platformSelector" class="text-h5 text-center q-mt-md">הוסף אירוע ב{{platformSelector}}:</p>
       <q-card-section class="q-gutter-lg">
-        <q-input v-model="formData.title" label="נושא"/>
+        <q-input v-if="platformSelector" v-model="formData.title" label="נושא"/>
 
-        <q-input v-model="formData.details"  type="textarea" label="פרטים"/>
+        <q-input v-if="platformSelector" v-model="formData.details"  type="textarea" label="פרטים"/>
 
-        <q-select v-model="eventTypeSelector" :options="options" label="סוג אירוע" />
+        <q-select v-if="platformSelector" v-model="eventTypeSelector" :options="options" label="סוג אירוע" />
 
         <q-file
+          v-if="platformSelector"
           v-show="eventTypeSelector && eventTypeSelector!=='פוסט'"
           color="primary"
           v-model="formData.files"
@@ -23,7 +26,7 @@
           </template>
         </q-file>
 
-        <q-input filled v-model="formData.date" mask="date" :rules="['date']">
+        <q-input v-if="platformSelector" filled v-model="formData.date" mask="date" :rules="['date']">
           <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -42,8 +45,8 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn color="primary" label="הוסף" @click="onOKClick"/>
-        <q-btn color="primary" label="ביטול" @click="onCancelClick"/>
+        <q-btn v-if="platformSelector" color="primary" label="הוסף" @click="onOKClick"/>
+        <q-btn v-if="platformSelector" color="primary" label="ביטול" @click="onCancelClick"/>
       </q-card-actions>
 
     </q-card>
@@ -58,10 +61,11 @@ export default {
   data() {
     return {
       eventTypeSelector: null,
-      options: [
-        'פוסט', 'תמונה', 'סרטון'
-      ],
+      platformSelector: null,
+      platform: ['אינסטגרם','פייסבוק'],
+      options: this.platformSelector,
       formData: {
+        platformType:'',
         eventType: '',
         title: '',
         details: '',
@@ -134,6 +138,17 @@ export default {
     onCancelClick() {
       // we just need to hide dialog
       this.hide()
+    }
+  },
+  watch: {
+    platformSelector(){
+      debugger
+      if (this.platformSelector === 'facebook'){
+        this.options =['פוסט', 'תמונה', 'סרטון']
+      }
+      else{
+        this.options = ['סרטון','תמונה']
+      }
     }
   }
 }
