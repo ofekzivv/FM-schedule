@@ -7,6 +7,12 @@ export default {
     return admin
   },
 
+  getAdminWithEmail: async ({commit}, email) => {
+    await firebaseInstance.getAdminByMail(email).then(admin => {
+      commit('setAdmin', admin)
+    })
+  },
+
   getAdmins: async ({commit}) =>{
     const admins = await firebaseInstance.getAllAdmins()
     commit('setAdmins', admins)
