@@ -259,11 +259,11 @@ export default {
     }
   },
   created() {
+    this.isAdmin = LocalStorage.getItem('admin')
+    console.log('is admin edit user: ', this.isAdmin)
     for (let i=0;i<this.event.files.length; i++) {
       this.editedFilesArr.push(this.event.files[i])
     }
-    this.isAdmin = LocalStorage.getItem('admin')
-
   }
 }
 </script>

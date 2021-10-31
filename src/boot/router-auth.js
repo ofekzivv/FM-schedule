@@ -10,7 +10,7 @@ export default ({router}) => {
       return next('/auth');
     }
 
-    if (!admin && loggedIn && (to.path === '/admin' || to.path === '/MonthView' || to.path === '/searchEvents' || to.path === '/DayView' || to.path === '/WeekView' || to.path === '/AllView')) {
+    if (!admin && loggedIn && (to.path === '/' || to.path === '/admin' || to.path === '/MonthView' || to.path === '/searchEvents' || to.path === '/DayView' || to.path === '/WeekView' || to.path === '/AllView')) {
       return next(`/${companyName}`);
     }
 
