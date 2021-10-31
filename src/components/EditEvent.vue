@@ -3,7 +3,7 @@
     <div class="container">
       <q-card v-if="!editEvent" class="q-dialog-plugin my-font">
         <q-card-section class="q-gutter-sm">
-          <q-btn class="edit" icon="edit" round flat color="primary" size="14px" @click="editEvent = true"
+          <q-btn v-if="isAdmin" class="edit" icon="edit" round flat color="primary" size="14px" @click="editEvent = true"
                  style="position: absolute; left: 5px; top: 5px"/>
 
           <q-card-section class="row items-center" style="width: 90%">
@@ -135,11 +135,13 @@
 
 <script>
 import {mapActions, mapState} from "vuex";
+import {LocalStorage} from "quasar";
 
 export default {
   props: ['event', 'companyName'],
   data() {
     return {
+      isAdmin: false,
       slide: 0,
       newFiles: null,
       editEvent: false,
@@ -260,6 +262,8 @@ export default {
     for (let i=0;i<this.event.files.length; i++) {
       this.editedFilesArr.push(this.event.files[i])
     }
+    this.isAdmin = LocalStorage.getItem('admin')
+
   }
 }
 </script>
@@ -329,7 +333,6 @@ export default {
 
 .q-video {
   width: 100%;
-  aspect-ratio: 1;
 }
 
 @media screen and (max-width: 1025px) {

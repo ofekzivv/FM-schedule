@@ -92,10 +92,10 @@ export default {
     EditAdmin, AddNewAdmin
   },
   computed: {
-    ...mapState('auth', ["admins"])
+    ...mapState('admins', ["admins"])
   },
   methods: {
-    ...mapActions('auth', ['getAdmins', 'getAdmin', 'deleteAdmin']),
+    ...mapActions('admins', ['getAdmins', 'getAdmin', 'deleteAdmin']),
     deleteAdminButton(companyName) {
       this.$q.loading.show()
       this.deleteAdmin(companyName).then(() => {

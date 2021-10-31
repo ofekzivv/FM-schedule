@@ -71,6 +71,7 @@ import EventAdder from "components/EventAdder";
 import EditEvent from "components/EditEvent";
 import TasksFilter from "components/TasksFilter";
 import SearchEvents from "components/SearchEvents";
+import {LocalStorage} from "quasar";
 
 const reRGBA = /^\s*rgb(a)?\s*\((\s*(\d+)\s*,\s*?){2}(\d+)\s*,?\s*([01]?\.?\d*?)?\s*\)\s*$/
 
@@ -133,6 +134,7 @@ function luminosity(color) {
 export default {
   data() {
     return {
+      isAdmin: false,
       selectedDate: '',
       test: false,
       events: [],
@@ -149,6 +151,7 @@ export default {
   },
 
   created() {
+    this.isAdmin = LocalStorage.getItem('admin')
     if (this.companyName !== 'כל המשתמשים') {
       this.setCompanyName(this.companyName)
       if (this.$route.params.companyName) {
@@ -184,6 +187,9 @@ export default {
       this.$refs.calendar.prev()
     },
     onClickDate2(data) {
+      if (!this.isAdmin) {
+        return
+      }
       this.$q.dialog({
         component: EventAdder,
         parent: this,
