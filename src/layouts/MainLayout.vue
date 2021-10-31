@@ -33,6 +33,7 @@
     </q-header>
 
     <q-drawer
+      v-if="isAdmin"
       bordered
       dark
       content-class="bg-grey-1"
@@ -61,7 +62,7 @@
       <router-view/>
     </q-page-container>
 
-    <q-footer class="small-screen-only">
+    <q-footer class="small-screen-only" v-if="isAdmin">
       <q-tabs
         v-model="tab"
         dense
@@ -84,6 +85,7 @@ import EssentialLink from 'components/EssentialLink.vue'
 import TasksFilter from "components/TasksFilter";
 import SearchEvents from "components/SearchEvents";
 import {mapActions, mapState} from "vuex";
+import {LocalStorage} from "quasar";
 
 const linksData = [
   {
@@ -121,6 +123,7 @@ export default {
   components: {EssentialLink, TasksFilter, SearchEvents},
   data() {
     return {
+      isAdmin: false,
       essentialLinks: linksData,
       tab: 'Home',
     }
@@ -134,7 +137,10 @@ export default {
       this.logoutUser()
     },
   },
-
+  created() {
+    this.isAdmin = LocalStorage.getItem('admin')
+    console.log('is Admin', this.isAdmin)
+  }
 }
 </script>
 

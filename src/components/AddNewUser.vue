@@ -132,7 +132,7 @@ export default {
 
     generatePassword() {
       let pw = ""
-      let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+      let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
       for (let i = 0; i < 10; i++) {
         pw += characters.charAt(Math.floor(Math.random() * characters.length))
       }

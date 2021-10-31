@@ -63,7 +63,7 @@
 import QCalendarTry from '@quasar/quasar-ui-qcalendar'
 import {QCalendar} from '@quasar/quasar-ui-qcalendar'
 import {mapActions, mapState, mapMutations} from "vuex";
-import {Dialog} from 'quasar'
+import {Dialog, LocalStorage} from 'quasar'
 import EventAdder from "components/EventAdder";
 import EditEvent from "components/EditEvent";
 import SearchEvents from "components/SearchEvents";
@@ -131,6 +131,7 @@ function luminosity(color) {
 export default {
   data() {
     return {
+      isAdmin: false,
       selectedDate: '',
       test: false,
       events: [],
@@ -148,6 +149,7 @@ export default {
   },
 
   created() {
+    this.isAdmin = LocalStorage.getItem('admin')
     console.log("company on created", this.company)
     this.$q.loading.show()
     this.companyName = this.company
@@ -174,6 +176,9 @@ export default {
       this.$refs.calendar.prev()
     },
     onClickDate2(data) {
+      if (!this.isAdmin) {
+        return
+      }
       this.$q.dialog({
         component: EventAdder,
         parent: this,

@@ -78,11 +78,21 @@ export default {
       this.$refs.email.validate()
       this.$refs.password.validate()
       if (!this.$refs.email.hasError && !this.$refs.password.hasError) {
-
-
         this.loginUser({formData: this.formData})
           .then(async() => {
-            //this.getUserInfo(userId)
+            if (!window.user) {
+              this.$q.dialog({
+                title: 'פרטים שגויים',
+                message: 'הפרטים שהזנת הינם שגויים, אנא נסה שוב.'
+              }).onOk(() => {
+                //
+              }).onCancel(() => {
+                // console.log('Cancel')
+              }).onDismiss(() => {
+                // console.log('I am triggered on both OK and Cancel')
+              })
+              return
+            }
             this.$q.notify({
               color: 'green-4',
               textColor: 'white',
@@ -93,11 +103,25 @@ export default {
               this.company = await getCompanyNameByEmail(this.formData.email)
               LocalStorage.set('companyName', this.company)
               await this.$router.push(`/${this.company}`)
+              location.reload();
             }
             else if(this.admin){
               await this.$router.push('/admin')
+              location.reload();
             }
           }).catch(err => console.log(err))
+      }
+      else {
+        this.$q.dialog({
+          title: 'פרטים לא תקינים',
+          message: 'המייל או הסיסמא שלך לא תקינים, אנא נסה שוב.'
+        }).onOk(() => {
+          //
+        }).onCancel(() => {
+          // console.log('Cancel')
+        }).onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        })
       }
     },
     onReset() {
