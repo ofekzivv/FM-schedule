@@ -8,7 +8,7 @@
         <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
       </div>
 
-      <TasksFilter :company="companyName"/>
+      <TasksFilter :company="cName"/>
 
       <div>
         <q-btn push class="searchBtn q-mr-lg" label="חפש אירוע" color="primary" @click="onClickSearch()"/>
@@ -138,7 +138,7 @@ export default {
       selectedDate: '',
       test: false,
       events: [],
-      companyName: '',
+      cName: '',
       getDailyEvents: 0,
       output: null,
       searchBar: false,
@@ -151,16 +151,17 @@ export default {
   },
 
   created() {
+    debugger
     this.isAdmin = LocalStorage.getItem('admin')
-    if (this.companyName !== 'כל המשתמשים') {
-      this.setCompanyName(this.companyName)
+    if (this.cName !== 'כל המשתמשים') {
+      this.setCompanyName(this.cName)
       if (this.$route.params.companyName) {
-        this.companyName = this.$route.params.companyName
+        this.cName = this.$route.params.companyName
       } else {
-        this.companyName = this.company
+        this.cName = this.company
       }
       this.$q.loading.show()
-      this.getAllUserEvents(this.companyName).then(() => {
+      this.getAllUserEvents(this.cName).then(() => {
         this.events = this.userEvents
         this.$q.loading.hide()
       })
@@ -193,7 +194,7 @@ export default {
       this.$q.dialog({
         component: EventAdder,
         parent: this,
-        companyName: this.companyName,
+        companyName: this.cName,
         eventDate: data.scope.timestamp.date
 
         // ...more.props...
@@ -278,7 +279,7 @@ export default {
         component: EditEvent,
         parent: this,
         event: updateEvent,
-        companyName: this.companyName
+        companyName: this.cName
 
         // ...more.props...
       }).onOk(() => {
@@ -288,7 +289,7 @@ export default {
       }).onDismiss(() => {
         console.log('dismiss MONTH')
 
-        this.getAllUserEvents(this.companyName).then(() => {
+        this.getAllUserEvents(this.cName).then(() => {
           this.events = this.userEvents
         })
       })
@@ -323,10 +324,10 @@ export default {
     company(newValue) {
       this.$q.loading.show()
       console.log("company on watch", newValue)
-      this.companyName = newValue
+      this.cName = newValue
       debugger
       if (newValue !== 'כל המשתמשים') {
-        this.getAllUserEvents(this.companyName).then(() => {
+        this.getAllUserEvents(this.cName).then(() => {
           this.events = this.userEvents
           this.$q.loading.hide()
         })

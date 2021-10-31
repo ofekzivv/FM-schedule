@@ -130,6 +130,7 @@ async function addAdmin(options) {
     email: options.email,
     companyName: options.companyName,
     password: options.password,
+    uid: options.uid
   })
 }
 
