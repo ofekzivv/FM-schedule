@@ -3,8 +3,8 @@
     <div class="row justify-center items-center q-mb-sm">
 
       <div >
-        <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
-        <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
+        <q-btn color="blue" push label="יום קודם" @click="calendarPrev" class="q-mr-xs"/>
+        <q-btn color="blue" push label="יום הבא" @click="calendarNext"/>
       </div>
 
       <TasksFilter :company="companyName"/>

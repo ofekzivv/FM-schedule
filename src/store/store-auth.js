@@ -34,7 +34,6 @@ const actions = {
     if( isAdmin ){
       commit('setAdmin',true)
       LocalStorage.set('admin', true)
-      LocalStorage.set('adminEmail', payload.formData.email )
     }
     else {
       commit('setAdmin',false)
