@@ -4,7 +4,13 @@ import {checkAdmin} from "src/middleware/firebase/database";
 
 const state = {
   loggedIn: false,
-  admin: false
+  admin: false,
+  admins: [],
+  adminData: {
+    password:'',
+    email: '',
+    companyName: ''
+  }
 }
 
 const mutations = {
@@ -13,7 +19,14 @@ const mutations = {
   },
   setAdmin(state,value){
     state.admin = value
-  }
+  },
+  setAdminData: ((state, admin)=> {
+    state.adminData.password = admin.password;
+    state.adminData.email = admin.email;
+    state.adminData.companyName = admin.companyName
+  }),
+  setAdmins: ((state, allAdmins) => state.admins = allAdmins)
+
 }
 
 const actions = {
@@ -76,6 +89,27 @@ const actions = {
         this.$router.replace('/auth')
       }
     })
+  },
+  getAdmin: async ({commit}, companyName) => {
+    let admin = await firebaseInstance.getAdmin(companyName);
+    commit('setAdmin', admin)
+    return admin
+  },
+
+  getAdmins: async ({commit}) =>{
+    const admins = await firebaseInstance.getAllAdmins()
+    commit('setAdmins', admins)
+    return admins
+  },
+
+  editExistingAdmin: async ({commit}, [name,newName, email,password]) => {
+    await firebaseInstance.deleteAdminFromDb(name)
+    await firebaseInstance.addAdmin({companyName: newName, email, password})
+  },
+  deleteAdmin: async ({commit}, name) => {
+    await firebaseInstance.deleteAdminFromDb(name).then(() =>{
+      console.log('The admin was removed from actions')
+    }).catch(err => console.log(err))
   }
 }
 
