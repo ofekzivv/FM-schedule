@@ -4,15 +4,15 @@
       <p class="text-h5 text-center q-mt-md">ערוך משתמש:</p>
       <q-card-section class="q-gutter-lg">
 
-        <q-input v-model="companyNameInput" label="שם חברה"/>
+        <q-input v-model="newData.companyNameInput" label="שם חברה"/>
 
-        <q-input v-model="emailInput" label="אימייל"/>
+        <q-input v-model="newData.emailInput" label="אימייל"/>
 
         <q-img class="text-center" :src="logo" alt="logo" width="150px">
-          <q-btn icon="edit" label="שנה תמונה"/>
+          <q-btn @click="changeLogo = true" icon="edit" class="bg-primary text-white absolute-bottom-right" dense label="שנה תמונה"/>
         </q-img>
 
-        <q-file v-model="logoInput" label="בחר לוגו חברה">
+        <q-file v-if="changeLogo" v-model="newData.logoInput" label="בחר לוגו חברה">
           <template v-slot:append>
             <q-icon name="attach_file"/>
           </template>
@@ -21,7 +21,7 @@
         <div class="form__field">
           <p class="text-grey-8" style="font-size: 16px">בחר צבע לחברה: </p>
           <v-swatches
-            v-model="colorInput"
+            v-model="newData.colorInput"
             popover-x="center"
             swatches="text-advanced"
             show-fallback
@@ -44,7 +44,6 @@ import {mapActions, mapMutations, mapState} from "vuex";
 import VSwatches from 'vue-swatches'
 
 
-
 export default {
   name: "EditUser",
   components: {
@@ -52,18 +51,21 @@ export default {
   },
   data() {
     return {
+      changeLogo: false,
+      newData: {
         companyNameInput: this.companyName,
         emailInput: this.email,
-      colorInput: this.color,
-      logoInput: this.logo
+        colorInput: this.color,
+        logoInput: this.logo
+      }
     }
   },
 
-  props: ['email', 'companyName', 'logo', 'color' ],
-computed: mapState('users',['userData']),
+  props: ['email', 'companyName', 'logo', 'color'],
+  computed: mapState('users', ['userData']),
   methods: {
     ...mapMutations('users', ['setUser']),
-    ...mapActions('users', ['editExistingUser', 'deleteUser','getUser']),
+    ...mapActions('users', ['editExistingUser', 'deleteUser', 'getUser']),
     show() {
       this.$refs.dialog.show()
     },
@@ -80,15 +82,19 @@ computed: mapState('users',['userData']),
       this.$emit('hide')
     },
     async onOKClick() {
-      let user = await this.getUser(this.companyName);
-      await this.editExistingUser([user,this.companyNameInput,this.emailInput])
+      this.$q.loading.show({
+        message: 'עורך את המשתמש'
+      })
+      await this.getUser(this.companyName)
+      let user = this.userData
+      await this.editExistingUser({user, editedUser: this.newData})
         .then(() => {
+          this.$q.loading.hide()
           this.$q.notify({
             message: ' ערכת את המשתמש בהצלחה! ',
             icon: 'event_available',
             type: 'warning',
           })
-
         })
       this.$emit('ok')
       // or with payload: this.$emit('ok', { ... })

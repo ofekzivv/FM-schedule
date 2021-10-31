@@ -37,26 +37,27 @@
             <img :src="props.row.logo" alt="לוגו חברה" width="50px"/>
           </q-td>
           <q-td>
-            <q-icon name="circle" :style="{color: props.row.color}" size="md" >
+            <q-icon name="circle" :style="{color: props.row.color}" size="md">
               <q-tooltip content-class="bg-grey-6" :offset="[10, 10]">
-               {{props.row.color}}
+                {{ props.row.color }}
               </q-tooltip>
             </q-icon>
           </q-td>
           <q-td>
-            <q-btn @click="editUser(props.row.companyName, props.row.email, props.row.logo, props.row.color)" color="primary" icon="edit" dense push
+            <q-btn @click="editUser(props.row.companyName, props.row.email, props.row.logo, props.row.color)"
+                   color="primary" icon="edit" dense push
                    class="q-ma-xs q-pa-xs"></q-btn>
-            <q-btn @click="deleteUserButton(props.row.companyName)" color="red" icon="delete" dense
+            <q-btn @click="deleteUserButton(props.row.companyName, props.row.password)" color="red" icon="delete" dense
                    class="q-ma-xs q-pa-xs" push></q-btn>
           </q-td>
         </q-tr>
       </template>
     </q-table>
     <AdminTableViewer/>
-    <q-btn @click="addUser()" color="primary"  push class="q-ma-sm q-pa-xs">
+    <q-btn @click="addUser()" color="primary" push class="q-ma-sm q-pa-xs">
       הוסף משתמש חדש
     </q-btn>
-    <q-btn @click="addAdmin()" color="blue"  push class="q-ma-sm q-pa-xs">
+    <q-btn @click="addAdmin()" color="blue" push class="q-ma-sm q-pa-xs">
       הוסף אדמין
     </q-btn>
   </div>
@@ -66,6 +67,7 @@
 import EditUser from "components/EditUser";
 import AddNewUser from "components/AddNewUser";
 import AdminTableViewer from "components/AdminTableViewer";
+
 export default {
   data() {
     return {
@@ -113,9 +115,11 @@ export default {
   },
   methods: {
     ...mapActions('users', ['getUser', 'getUsers', 'deleteUser']),
-    deleteUserButton(companyName) {
-      this.$q.loading.show()
-      this.deleteUser(companyName).then(() => {
+    deleteUserButton(companyName, password) {
+      this.$q.loading.show({
+        message: 'מוחק את המשתמש'
+      })
+      this.deleteUser({companyName, password}).then(() => {
         this.$q.notify({
           type: 'negative',
           message: `המשתמש נמחק.`
@@ -135,19 +139,17 @@ export default {
         email,
         logo,
         color
-
-
         // ...more.props...
       }).onOk(() => {
-        this.$q.loading.show()
-        this.getUsers().then(() => {
-          this.data = this.users
-          this.$q.loading.hide()
-        }).catch(err => console.log(err))
       }).onCancel(() => {
         console.log('Cancel')
       }).onDismiss(() => {
         console.log('Called on OK or Cancel')
+        this.getUsers().then((res) => {
+          console.log('users from state', this.users)
+          console.log('users from action', res)
+          this.data = res
+        }).catch(err => console.log(err))
       })
     },
 
@@ -155,18 +157,16 @@ export default {
       this.$q.dialog({
         component: AddNewUser,
         parent: this,
-
         // ...more.props...
-      }).onOk(() => {
-        this.$q.loading.show()
-        this.getUsers().then(() => {
-          this.data = this.users
-          this.$q.loading.hide()
-        }).catch(err => console.log(err))
+      }).onOk(async () => {
       }).onCancel(() => {
         console.log('Cancel')
       }).onDismiss(() => {
-        console.log('Called on OK or Cancel')
+        this.getUsers().then((res) => {
+          this.data = res
+          this.$q.loading.hide()
+        }).catch(err => console.log(err))
+        this.data = this.users
       })
     },
     addAdmin() {
@@ -176,9 +176,8 @@ export default {
 
         // ...more.props...
       }).onOk(() => {
-        this.$q.loading.show()
-        this.getUsers().then(() => {
-          this.data = this.users
+        this.getUsers().then((res) => {
+          this.data = res
           this.$q.loading.hide()
         }).catch(err => console.log(err))
       }).onCancel(() => {
@@ -188,11 +187,10 @@ export default {
       })
     }
   },
+
   created() {
-    this.$q.loading.show()
     this.getUsers().then(() => {
       this.data = this.users
-      this.$q.loading.hide()
     }).catch(err => console.log(err))
   }
 }

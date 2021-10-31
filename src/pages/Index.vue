@@ -1,6 +1,6 @@
 <template>
   <q-page class="text-center my-font">
-    <h5>שלום, לירן אלמליח</h5>
+    <h5 class="text-bold">פאנל אדמין</h5>
     <q-card flat style="max-width: 900px; margin: 0 auto">
       <q-tabs
         v-model="tab"
@@ -11,7 +11,7 @@
         narrow-indicator
       >
         <q-tab name="todayEvents" label="משימות להיום"/>
-        <q-tab name="allUsers" label="כל המשתמשים"/>
+        <q-tab name="allUsers" label="כל הלקוחות"/>
       </q-tabs>
 
       <q-separator/>
@@ -36,6 +36,7 @@ import EventAdder from "components/EventAdder";
 import EventsCards from "components/EventsCards";
 import UsersTableViewer from "components/UsersTableViewer";
 import AdminTableViewer from "components/AdminTableViewer"
+
 export default {
   name: 'PageIndex',
   components: {
@@ -43,9 +44,9 @@ export default {
   },
   data() {
     return {
-      tab: 'allUsers'
+      tab: 'allUsers',
     }
-  }
+  },
 }
 </script>
 

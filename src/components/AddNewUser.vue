@@ -50,7 +50,9 @@
 
 <script>
 import firebaseInstance from 'src/middleware/firebase/database'
+import firebaseIndex from 'src/middleware/firebase'
 import VSwatches from 'vue-swatches'
+import {mapActions, mapState} from "vuex";
 
 
 export default {
@@ -58,7 +60,6 @@ export default {
   name: "AddNewUser",
   data() {
     return {
-
       formData: {
         email: '',
         companyName: '',
@@ -68,7 +69,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState('users', ['users'])
+  },
   methods: {
+    ...mapActions('users', ['getUsers']),
     show() {
       this.$refs.dialog.show()
     },
@@ -85,27 +90,33 @@ export default {
       this.$emit('hide')
     },
     async onOKClick() {
-      this.$q.loading.show()
+      this.$q.loading.show({
+        message: 'מוסיף את המשתמש'
+      })
       this.$refs.email.validate()
       this.formData.generatedPassword = this.generatePassword()
-      firebaseInstance.addUser({
+
+       firebaseIndex.firebase.auth().createUserWithEmailAndPassword(this.formData.email, this.formData.generatedPassword).then(user => {
+         window.user = user;
+         window.user.uid = this.formData.generatedPassword;
+         console.log('Signed in')
+       })
+
+      await firebaseInstance.addUser({
+        newUser: true,
         companyName: this.formData.companyName,
         email: this.formData.email,
         password: this.formData.generatedPassword,
         logo: this.formData.profilePic,
         color: this.formData.companyColor
-      }).then(() => {
-        this.$q.notify({
-          message: 'הוספת את המשתמש בהצלחה! ',
-          icon: 'person_add',
-          type: 'positive',
-        })
+      })
+      this.$q.notify({
+        message: 'הוספת את המשתמש בהצלחה! ',
+        icon: 'person_add',
+        type: 'positive',
       })
       this.$q.loading.hide()
       this.$emit('ok')
-      // or with payload: this.$emit('ok', { ... })
-
-      // then hiding dialog
       this.hide()
     },
 
@@ -118,6 +129,7 @@ export default {
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(String(email).toLowerCase());
     },
+
     generatePassword() {
       let pw = ""
       let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"

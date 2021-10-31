@@ -13,12 +13,7 @@ export default {
 
   setUsers: ((state, allUsers) => state.users = allUsers),
 
-  setUser: ((state, user) => {
-      state.userData.password = user.password;
-      state.userData.email = user.email;
-      state.userData.companyName = user.companyName
-    }
-  ),
+  setUser: ((state, user) => state.userData = user),
 
   setEmail: ((state, email) => state.userData.user = email),
 

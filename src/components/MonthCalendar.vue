@@ -1,15 +1,22 @@
 <template>
   <div class="my-font container" id="capture" style="position: relative">
 
-      <TasksFilter :company="companyName"/>
     <div class="row justify-center items-center q-mb-sm">
-      <q-btn push class="searchBtn q-mr-lg" label="חפש אירוע" color="primary" @click="onClickSearch()"/>
-      <q-dialog v-model="searchBar">
-        <SearchEvents/>
-      </q-dialog>
 
-      <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
-      <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
+      <div >
+        <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
+        <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
+      </div>
+
+      <TasksFilter :company="companyName"/>
+
+      <div>
+        <q-btn push class="searchBtn q-mr-lg" label="חפש אירוע" color="primary" @click="onClickSearch()"/>
+        <q-dialog v-model="searchBar">
+          <SearchEvents/>
+        </q-dialog>
+      </div>
+
     </div>
     <q-separator/>
     <QCalendar
@@ -33,14 +40,16 @@
           <q-badge
             :key="index"
             style="cursor: pointer; margin-bottom: 2px; width: 100%"
-            @click="testEvent(event)"
+            @click="watchEvent(event)"
             :class="badgeClasses(event, 'day')"
             :style="styles(event, 'day')"
           >
-            <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs" size="xs"></q-icon>
             <div class="column">
-              <span class="text-subtitle1 text-bold">{{ event.title }} </span>
-              <span style="font-size: 1em;">{{ event.details }}</span>
+              <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs q-mb-sm" size="xs"></q-icon>
+              <div class="column">
+                <p class="title">{{ event.title }} </p>
+                <p class="details">{{ event.details }}</p>
+              </div>
             </div>
           </q-badge>
         </template>
@@ -57,11 +66,9 @@
 <script>
 import QCalendarTry from '@quasar/quasar-ui-qcalendar'
 import {QCalendar} from '@quasar/quasar-ui-qcalendar'
-import {mapActions, mapState, mapMutations, mapGetters} from "vuex";
-import {Dialog} from 'quasar'
+import {mapActions, mapState, mapMutations} from "vuex";
 import EventAdder from "components/EventAdder";
 import EditEvent from "components/EditEvent";
-import VueHtmlToPaper from "vue-html-to-paper";
 import TasksFilter from "components/TasksFilter";
 import SearchEvents from "components/SearchEvents";
 
@@ -142,7 +149,6 @@ export default {
   },
 
   created() {
-    console.log(this.companyName)
     if (this.companyName !== 'כל המשתמשים') {
       this.setCompanyName(this.companyName)
       if (this.$route.params.companyName) {
@@ -178,7 +184,6 @@ export default {
       this.$refs.calendar.prev()
     },
     onClickDate2(data) {
-      console.log(JSON.stringify(data))
       this.$q.dialog({
         component: EventAdder,
         parent: this,
@@ -187,26 +192,26 @@ export default {
 
         // ...more.props...
       }).onOk(() => {
-        this.getAllUserEvents(this.companyName).then((res) => {
-          this.events = res
-        })
       }).onCancel(() => {
         console.log('Cancel')
       }).onDismiss(() => {
-        console.log('Called on OK or Cancel')
+        this.$q.loading.show({
+          delay: 400 // ms
+        })
+        this.events = this.userEvents
+        this.$q.loading.hide()
       })
     },
     isCssColor(color) {
       return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/)
     },
-    badgeClasses(event, type) {
+    badgeClasses(event) {
       const cssColor = this.isCssColor(event.bgcolor)
-      const isHeader = type === 'header'
       return {
         [`text-white bg-${event.bgcolor}`]: !cssColor
       }
     },
-    styles(event, type) {
+    styles(event) {
       const s = {}
       if (this.isCssColor(event.bgcolor)) {
         s['background-color'] = event.bgcolor
@@ -262,8 +267,7 @@ export default {
       return events
     },
 
-    testEvent(updateEvent) {
-      console.log('edit event: ', updateEvent)
+    watchEvent(updateEvent) {
       this.$q.dialog({
         component: EditEvent,
         parent: this,
@@ -272,13 +276,15 @@ export default {
 
         // ...more.props...
       }).onOk(() => {
-        this.getAllUserEvents(this.companyName).then((res) => {
-          this.events = res
-        })
+        console.log('ok MONTH')
       }).onCancel(() => {
-        console.log('Cancel')
+        console.log('cancel MONTH')
       }).onDismiss(() => {
-        console.log('Called on OK or Cancel')
+        console.log('dismiss MONTH')
+
+        this.getAllUserEvents(this.companyName).then(() => {
+          this.events = this.userEvents
+        })
       })
     },
     onClickSearch(){
@@ -315,9 +321,9 @@ export default {
       debugger
       if (newValue !== 'כל המשתמשים') {
         this.getAllUserEvents(this.companyName).then(() => {
-            this.events = this.userEvents
-            this.$q.loading.hide()
-          })
+          this.events = this.userEvents
+          this.$q.loading.hide()
+        })
       }
       else{
         this.getAllUsersEvents('').then(()=> {
@@ -332,4 +338,44 @@ export default {
 </script>
 
 <style src="@quasar/quasar-ui-qcalendar/dist/index.css"></style>
+
+<style>
+
+.title {
+  font-weight: bold;
+  font-size: 2em;
+  word-break: break-word;
+}
+
+.details {
+  font-size: 1.2em;
+  word-break: break-word;
+}
+
+
+@media screen and (max-width: 800px) {
+  .title {
+    font-weight: bold;
+    font-size: 1.8em;
+  }
+
+  .details {
+    font-size: 1em;
+  }
+
+}
+
+@media screen and (max-width: 599px) {
+
+  .title {
+    font-weight: bold;
+    font-size: 1em;
+  }
+
+  .details {
+    font-size: 0.8em;
+  }
+}
+
+</style>
 
