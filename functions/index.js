@@ -16,7 +16,7 @@ exports.sendMailToContact = functions.database.ref('/users/{usersId}')
     const text = `
                     <head>
                            <meta charset="utf-8">
-       <style>
+                         <style>
 body {background-color: gray;}
 h1   {color: #FFA813;}
 h3   {color: #272727;}
