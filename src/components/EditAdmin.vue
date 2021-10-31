@@ -38,7 +38,7 @@ export default {
 
   props: ['email', 'companyName', 'password'],
   methods: {
-    ...mapActions('auth', ['editExistingAdmin', 'getAdmin']),
+    ...mapActions('admins', ['editExistingAdmin', 'getAdmin']),
     show() {
       this.$refs.dialog.show()
     },

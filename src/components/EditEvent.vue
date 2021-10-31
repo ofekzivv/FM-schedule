@@ -264,6 +264,8 @@ export default {
     for (let i=0;i<this.event.files.length; i++) {
       this.editedFilesArr.push(this.event.files[i])
     }
+    this.isAdmin = LocalStorage.getItem('admin')
+
   }
 }
 </script>
