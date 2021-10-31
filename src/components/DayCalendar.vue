@@ -53,7 +53,7 @@
     </QCalendar>
 
     <q-dialog v-if="this.test">
-      <EventAdder/>
+      <EventAdder :companyName="this.companyName"/>
     </q-dialog>
 
   </div>

@@ -74,11 +74,14 @@ export default {
       this.$q.loading.show()
       this.$refs.email.validate()
      await firebaseIndex.firebase.auth().createUserWithEmailAndPassword(this.formData.email, this.formData.password).then(user => {
+      debugger
+       console.log(user.user.uid)
         window.user = user;
-        window.user.uid = this.formData.generatedPassword;
+        window.user.uid = user.user.uid;
+        this.formData.uid = user.user.uid
         console.log('Signed in')
       })
-      await firebaseInstance.addAdmin({companyName: this.formData.companyName, email: this.formData.email, password: this.formData.password}).then(() => {
+      await firebaseInstance.addAdmin({companyName: this.formData.companyName, email: this.formData.email, password: this.formData.password, uid: this.formData.uid}).then(() => {
         this.$q.notify({
           message: 'הוספת את האדמין בהצלחה! ',
           icon: 'person_add',

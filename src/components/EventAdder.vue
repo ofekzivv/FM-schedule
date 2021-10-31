@@ -145,7 +145,6 @@ export default {
       } else {
         this.formData.icon = 'post_add'
       }
-      debugger
       await this.addNewEvent({companyName: this.companyName, password, newEvent: this.formData}).then(async () => {
         await this.getAllUserEvents(this.companyName)
         this.$q.loading.hide()
@@ -174,6 +173,9 @@ export default {
       }
     }
   },
+  created() {
+
+  }
 }
 </script>
 
