@@ -1,5 +1,6 @@
 import fireBaseInstance from '../';
 
+// getAllUsers returns all of the users as array of users
 async function getAllUsers() {
   return await fireBaseInstance.firebase.database().ref('users').once('value')
     .then(res => {
@@ -13,7 +14,7 @@ async function getAllUsers() {
       return arr;
     })
 }
-
+// getAllUsersEvents returns all of the users events as array
 async function getAllUsersEvents() {
   let events = [];
   return await fireBaseInstance.firebase.database().ref('users').once('value')
@@ -44,14 +45,14 @@ async function getAllUsersEvents() {
       return res.val().password
     })
 }*/
-
+// getUser returns user
 async function getUser(companyName) {
   return await fireBaseInstance.firebase.database().ref(`users/${companyName}`).once('value')
     .then(res => {
       return res.val();
     })
 }
-
+// deleteUserFromDb deletes a user from the DB, realtime and storage
 async function deleteUserFromDb(companyName, password) {
   await fireBaseInstance.firebase.database().ref(`users/${companyName}`).remove().then(() => {
     let storageRef = fireBaseInstance.firebase.storage().ref().child(`${password}`);
@@ -87,7 +88,7 @@ async function addFilesToStorage(files, password) {
   return fileLinks
 }
 
-
+// addEvent adds an event under the user in the DB and adds event files to storage
 async function addEvent(options) {
   if (options.event.files) {
     await addFilesToStorage(options.event.files, options.password).then(fileLinks => {
@@ -98,7 +99,7 @@ async function addEvent(options) {
     return fireBaseInstance.firebase.database().ref(`users/${options.companyName}/events/${options.event.date}/${options.event.eventKey}`).set(options.event)
   }
 }
-
+// editEvent updates the event
 async function editEvent(options) {
   if (options.newFiles) {
     await addFilesToStorage(options.newFiles, options.password).then(fileLinks => {
@@ -109,7 +110,7 @@ async function editEvent(options) {
   return fireBaseInstance.firebase.database().ref(`users/${options.company}/events/${options.event.date}/${options.event.eventKey}`).update(options.event)
 }
 
-
+// getUserEvents returns all of the events for a single user
 export async function getUserEvents(companyName) {
   return await fireBaseInstance.firebase.database().ref(`users/${companyName}/events`).once('value')
     .then(res => {
@@ -124,7 +125,7 @@ export async function getUserEvents(companyName) {
       return arr;
     })
 }
-
+// addAdmin adds inserted admin to the DB
 async function addAdmin(options) {
   return await fireBaseInstance.firebase.database().ref(`admins/${options.companyName}`).set({
     email: options.email,
@@ -133,7 +134,7 @@ async function addAdmin(options) {
     uid: options.uid
   })
 }
-
+// addLogoToStorage adds the company logo to storage, if already exists delete the previous logo
 async function addLogoToStorage(file, password, newUser) {
   let storageRef = fireBaseInstance.firebase.storage().ref();
   let imageStorageRef = storageRef.child(`${password}`).child('logo')
@@ -148,7 +149,7 @@ async function addLogoToStorage(file, password, newUser) {
       return url
     }).catch(err => console.log(err))
 }
-
+// addUser adds a user to the DB
 async function addUser(options) {
   if (typeof options.logo === 'object') {
     options.logo = await addLogoToStorage(options.logo, options.password, options.newUser)
@@ -167,7 +168,7 @@ async function addUser(options) {
     }
   })
 }
-
+// deleteEvent deletes an event from the DB and the events files from storage
 async function deleteEvent(password, event, companyName) {
   if (event.files) {
     for (let userFile of event.files) {
@@ -177,7 +178,7 @@ async function deleteEvent(password, event, companyName) {
   }
   return fireBaseInstance.firebase.database().ref(`users/${companyName}/events/${event.date}/${event.eventKey}`).remove()
 }
-
+// editUser edits the user in the DB and changes logo in storage if changed
 async function editUser(options) {
   if (typeof options.logo === 'object') {
     options.logo = await addLogoToStorage(options.logo, options.password)
@@ -203,7 +204,7 @@ async function editFilesInStorage(newFiles, password, oldFiles) {
     await storageRef.child(`${file.timeStamp}`).delete()
   }
 }
-
+// gets company name with company Email address
 export async function getCompanyNameByEmail(email) {
   const res = await fireBaseInstance.firebase.database().ref(`users/`).once('value')
 
@@ -215,7 +216,7 @@ export async function getCompanyNameByEmail(email) {
     }
   }
 }
-
+//getAllAdmins gets all admins as an array
 async function getAllAdmins() {
   return await fireBaseInstance.firebase.database().ref('admins').once('value')
     .then(res => {
@@ -229,13 +230,13 @@ async function getAllAdmins() {
       return arr;
     })
 }
-
+//deleteAdminFromDb deletes admin for DB
 async function deleteAdminFromDb(name) {
   return await fireBaseInstance.firebase.database().ref(`admins/${name}`).remove().then(() => {
     console.log('the user was removed from db')
   }).catch(err => err)
 }
-
+// updateAdmin updates admin in DB
 async function updateAdmin(origName, admin) {
   return await fireBaseInstance.firebase.database().ref(`admins/${admin.name}`).set({
     companyName: admin.companyName,
@@ -245,13 +246,13 @@ async function updateAdmin(origName, admin) {
     await this.deleteUserFromDb(origName)
   })
 }
-
+// getAdmin gets a single admin from db
 function getAdmin(name) {
   return fireBaseInstance.firebase.database().ref(`admins/${name}`).get().then((res) => {
     return res.val()
   })
 }
-
+// checkAdmin checks if the user entering the system is an admin or not, returns true if admin and false if user
 export async function checkAdmin(email, password) {
   debugger
   const admins = await getAllAdmins()
