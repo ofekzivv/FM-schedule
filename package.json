@@ -12,9 +12,11 @@
     "@google-cloud/storage": "^5.15.3",
     "@quasar/extras": "^1.0.0",
     "core-js": "^3.6.5",
+    "dns": "^0.2.2",
     "firebase": "^9.1.3",
     "html2canvas": "^1.3.2",
     "jspdf": "^2.4.0",
+    "nodemailer": "^6.7.0",
     "quasar": "^1.0.0",
     "vue": "^2.6.14",
     "vue-html-to-paper": "^1.4.3",
@@ -27,6 +29,7 @@
     "@quasar/app": "^2.0.0",
     "@quasar/quasar-app-extension-qcalendar": "^3.4.1",
     "@quasar/quasar-ui-qcalendar": "^3.4.1",
+    "src": "^1.1.2",
     "strip-ansi": "^3.0.1"
   },
   "browserslist": [
