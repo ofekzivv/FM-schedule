@@ -89,6 +89,14 @@ export default {
       // when QDialog emits "hide" event
       this.$emit('hide')
     },
+
+    /*
+   * This function is triggered when the admin click on ok button.
+   * the function will validate the user email was entered by the admin and
+   * generate new password.
+   * after that, the function will do an authentication and create new user on the app,
+   * additionally add the user to the DB.
+   */
     async onOKClick() {
       this.$q.loading.show({
         message: 'מוסיף את המשתמש'

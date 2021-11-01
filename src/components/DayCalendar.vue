@@ -288,6 +288,10 @@ export default {
         console.log('Called on OK or Cancel')
       })
     },
+    /*
+   * This function is triggered when the user click on search button and will
+   * pop up the search events window.
+   */
     onClickSearch(){
       this.$q.dialog({
         component: SearchEvents,

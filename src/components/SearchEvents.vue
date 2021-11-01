@@ -116,6 +116,12 @@ export default {
       this.$emit('hide')
     },
 
+    /*
+    * This function will execute when the user fill his wanted search fields and click on "ok" button.
+    * The function set the search keys on the state,
+    * filter the user's events according to the search keys,
+    * set it on the local variable.
+    */
     async onOKClick() {
       await this.getColor()
       this.setEventType()
@@ -145,6 +151,10 @@ export default {
       this.hide()
     },
 
+    /*
+    * This function take the wanted types the user want to search
+    * and set it to array.
+    */
     setEventType() {
       let wantedTypes = []
       if (this.searchKeys.eventType.post)
@@ -156,6 +166,12 @@ export default {
       this.searchKeys.eventType = wantedTypes
     },
 
+    /*
+    * This function will execute when the user click on one of the search results
+    * for edit the event.
+    * after the click, new window will show with the relevant data and ready
+    * for edit.
+    */
     testEvent(updateEvent) {
       console.log('edit event: ', updateEvent)
       this.$q.dialog({
@@ -176,6 +192,10 @@ export default {
       })
     },
 
+    /*
+    * This function bring the user's unique color from the state
+    * and set it on local variable.
+    */
     async getColor(){
       this.resultsColor = await this.getUserColor(this.companyName);
       console.log(this.resultsColor)

@@ -28,7 +28,6 @@ export default {
   computed: mapState('events', ['toggleFilter', 'userEvents']),
   data() {
     return {
-      //will be in the state
       options: optionsGroups,
       filteredGroup: ['סרטון', 'תמונה', 'פוסט'],
     }
@@ -38,13 +37,19 @@ export default {
     ...mapMutations('events', ['setToggleFilter', 'setUserEvents']),
     ...mapActions('events', ['getAllUserEvents', 'FilterByToggle', 'getAllUsersEvents']),
 
+    /*
+    * This function take the current toggle filter and set it in the state.
+    * Bring all the user/users events from the DB.
+    * Filter the events by the toggle filtered we set on the state.
+    * there is two options of filter: filter single user events or
+    * filter all the events of all the users.
+    * */
     async changeFilter() {
+      await this.setToggleFilter(this.filteredGroup)
       if (this.company !== "כל המשתמשים") {
-        await this.setToggleFilter(this.filteredGroup)
         await this.getAllUserEvents(this.company)
         await this.FilterByToggle('')
       } else {
-        await this.setToggleFilter(this.filteredGroup)
         await this.getAllUsersEvents('')
         await this.FilterByToggle('all')
       }

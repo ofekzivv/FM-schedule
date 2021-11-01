@@ -136,7 +136,7 @@ export default {
     return {
       isAdmin: false,
       selectedDate: '',
-      test: false,
+       test: false,
       events: [],
       cName: '',
       getDailyEvents: 0,
@@ -294,6 +294,10 @@ export default {
         })
       })
     },
+    /*
+    * This function is triggered when the user click on search button and will
+    * pop up the search events window.
+    */
     onClickSearch(){
       this.$q.dialog({
         component: SearchEvents,
