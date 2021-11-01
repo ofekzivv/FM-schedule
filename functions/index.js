@@ -1,5 +1,7 @@
 const functions = require("firebase-functions");
 const nodemailer = require('nodemailer');
+const admin = require('firebase-admin');
+admin.initializeApp()
 
 let transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',

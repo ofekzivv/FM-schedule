@@ -102,12 +102,14 @@ export default {
               message: 'Logged in'
             })
             if(!this.admin) {
+              window.user.password = this.formData.password
               this.company = await getCompanyNameByEmail(this.formData.email)
               LocalStorage.set('companyName', this.company)
               await this.$router.push(`/${this.company}`)
               location.reload();
             }
             else if(this.admin){
+              window.user.password = this.formData.password
               await this.$router.push('/admin')
               location.reload();
             }

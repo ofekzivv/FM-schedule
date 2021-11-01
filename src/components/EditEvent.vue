@@ -3,7 +3,8 @@
     <div class="container">
       <q-card v-if="!editEvent" class="q-dialog-plugin my-font">
         <q-card-section class="q-gutter-sm">
-          <q-btn v-if="isAdmin" class="edit" icon="edit" round flat color="primary" size="14px" @click="editEvent = true"
+          <q-btn v-if="isAdmin" class="edit" icon="edit" round flat color="primary" size="14px"
+                 @click="editEvent = true"
                  style="position: absolute; left: 5px; top: 5px"/>
 
           <q-card-section class="row items-center" style="width: 90%">
@@ -99,7 +100,7 @@
               style="width: 100%"
             >
               <template v-slot:before>
-                <q-icon name="attach_file" />
+                <q-icon name="attach_file"/>
               </template>
             </q-file>
           </q-card-section>
@@ -109,14 +110,16 @@
               <q-img class="col edit-images" v-if="formData.eventType === 'תמונה'"
                      v-for="(image, index) of editedFilesArr"
                      :key="index" :src="image.url">
-                <q-btn class="delete-file-btn" icon="close" flat color="primary" @click="deleteFile(image, editedFilesArr)"/>
+                <q-btn class="delete-file-btn" icon="close" flat color="primary"
+                       @click="deleteFile(image, editedFilesArr)"/>
               </q-img>
               <q-card v-if="formData.eventType === 'סרטון'"
                       v-for="(movie, index) of editedFilesArr"
                       :key="index"
                       class="video">
                 <q-video :src="movie.url"/>
-                <q-btn class="delete-file-btn" icon="close" flat color="primary" @click="deleteFile(movie, editedFilesArr)"/>
+                <q-btn class="delete-file-btn" icon="close" flat color="primary"
+                       @click="deleteFile(movie, editedFilesArr)"/>
               </q-card>
             </div>
           </q-card-section>
@@ -148,7 +151,7 @@ export default {
       options: [
         'פוסט', 'תמונה', 'סרטון'
       ],
-      editedFilesArr:[],
+      editedFilesArr: [],
       formData: {
         title: this.event.title,
         details: this.event.details,
@@ -226,10 +229,18 @@ export default {
       })
       await this.getUser(companyName)
       let password = this.userData.password
-      debugger
-      await this.editFiles({newFiles: this.editedFilesArr, password: this.userData.password, oldFiles: this.formData.files})
+      await this.editFiles({
+        newFiles: this.editedFilesArr,
+        password: this.userData.password,
+        oldFiles: this.formData.files
+      })
       this.formData.files = this.editedFilesArr
-      this.editExistingEvent({newEvent: this.formData, company: this.companyName, newFiles: this.newFiles, password}).then(() => {
+      await this.editExistingEvent({
+        newEvent: this.formData,
+        company: this.companyName,
+        newFiles: this.newFiles,
+        password
+      }).then(async () => {
         this.$q.loading.hide()
         this.$q.notify({
           message: ' ערכת את האירוע בהצלחה! ',
@@ -239,9 +250,12 @@ export default {
       })
       this.$emit('ok')
       // or with payload: this.$emit('ok', { ... })
-
       // then hiding dialog
       this.hide()
+      // reload the current after edited event
+      // if its render error go to node module to relevant file and delete/change the error catcher
+      const current = window.location.hash.substring(1,window.location.hash.length)
+      await this.$router.push(`${current}`)
     },
 
     onCancelClick() {
@@ -249,7 +263,7 @@ export default {
       this.hide()
     },
     deleteFile(file, fileArr) {
-      for (let i=0; i<fileArr.length; i++){
+      for (let i = 0; i < fileArr.length; i++) {
         if (fileArr[i] === file) {
           fileArr.splice(i, 1);
         }
@@ -261,8 +275,10 @@ export default {
   created() {
     this.isAdmin = LocalStorage.getItem('admin')
     console.log('is admin edit user: ', this.isAdmin)
-    for (let i=0;i<this.event.files.length; i++) {
-      this.editedFilesArr.push(this.event.files[i])
+    if (this.event.files) {
+      for (let i = 0; i < this.event.files.length; i++) {
+        this.editedFilesArr.push(this.event.files[i])
+      }
     }
   }
 }
