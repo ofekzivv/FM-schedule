@@ -65,7 +65,7 @@
 //This component is a popup search window
 //the user can search events by key like "Title"
 import EventsCards from "components/EventsCards";
-import {mapState, mapMutations, mapActions, mapGetters} from 'vuex'
+import {mapState, mapMutations, mapActions} from 'vuex'
 import EditEvent from "components/EditEvent";
 
 export default {

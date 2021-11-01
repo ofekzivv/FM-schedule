@@ -1,18 +1,28 @@
 <template>
-  <div className="q-pa-md my-font">
-    <q-table
-      grid
-      title="כל האירועים"
-      :data="this.events"
-      :columns="columns"
-      row-key="name"
-      title-class="text-h5 text-bold text-orange-9"
-      card-class="text-bold"
-      :pagination="initialPagination"
-      card-style="border-radius: 2em; box-shadow: rgba(255, 168, 19, 0.50) 0px 1px 2px 0px; border:none; padding: 2em"
-      bordered
-      flat
-    />
+
+  <div class="q-pa-md row items-start q-gutter-md">
+    <q-card v-for="(event,index) of events" :key="index"
+      class="my-card text-black"
+    :style="{background: getColor(event.companyName)}">
+      <q-card-section>
+        <q-item-label>שם חברה</q-item-label>
+        <div class="text-bold text-h5">{{event.companyName}}</div>
+
+        <q-item-label>תאריך</q-item-label>
+        <div >{{event.date}}</div>
+      </q-card-section>
+      <q-separator/>
+      <q-card-section class="card-content">
+        <q-item-label class="text-bold">שם אירוע</q-item-label>
+        <div class="card-content">{{event.title}}</div>
+        <q-item-label class="text-bold">פרטים</q-item-label>
+        <div class="card-content">{{event.title}}</div>
+        <q-item-label class="text-bold">פלטפורמה</q-item-label>
+        <div class="card-content">{{event.platformType}}</div>
+        <q-item-label class="text-bold">סוג אירוע</q-item-label>
+        <div class="card-content">{{event.eventType}}</div>
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 
@@ -44,13 +54,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions('events', ['getAllUsersEvents', 'getAllUserEvents']),
+    ...mapActions('events', ['getAllUsersEvents', 'getAllUserEvents', 'getUserColor']),
     async getEvents() {
       if (!this.$route.params.companyName) {
         this.events = await this.getAllUsersEvents('')
       } else {
         this.events = await this.getAllUserEvents(this.$route.params.companyName)
       }
+    },
+    async getColor(userName) {
+      let color = await this.getUserColor(userName);
+      return color
     }
   },
   created() {
@@ -60,6 +74,25 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
+.q-pa-md{
+  justify-content: center;
+}
+.my-card{
+  width: 500px;
+  display: flex;
+  box-shadow: rgba(95, 21, 19, 0.5) 2px 2px 10px 2px;
+  font-size: 30px;
+}
+.card-content{
 
+}
+.events-table  *{
+  font-size: 20px;
+}
+@media (max-width: 500px){
+  .my-card{
+    max-width: 370px;
+  }
+}
 </style>
