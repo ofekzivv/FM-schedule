@@ -2,8 +2,7 @@
 
   <div class="q-pa-md row items-start q-gutter-md">
     <q-card v-for="(event,index) of events" :key="index"
-      class="my-card text-black"
-    :style="{background: getColor(event.companyName)}">
+      class="my-card text-black">
       <q-card-section>
         <q-item-label>שם חברה</q-item-label>
         <div class="text-bold text-h5">{{event.companyName}}</div>
@@ -71,7 +70,6 @@ export default {
     this.getEvents()
   }
 }
-
 </script>
 
 <style>
@@ -93,6 +91,7 @@ export default {
 @media (max-width: 500px){
   .my-card{
     max-width: 370px;
+    font-size: 15px;
   }
 }
 </style>
