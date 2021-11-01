@@ -3,7 +3,7 @@
 
     <div class="row justify-center items-center q-mb-sm">
 
-      <div >
+      <div>
         <q-btn color="blue" push label="חודש קודם" @click="calendarPrev" class="q-mr-xs"/>
         <q-btn color="blue" push label="חודש הבא" @click="calendarNext"/>
       </div>
@@ -44,12 +44,9 @@
             :class="badgeClasses(event, 'day')"
             :style="styles(event, 'day')"
           >
-            <div class="column">
-              <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs q-mb-sm" size="xs"></q-icon>
-              <div class="column">
-                <p class="title">{{ event.title }} </p>
-                <p class="details">{{ event.details }}</p>
-              </div>
+            <div class="row items-center">
+                <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs q-mb-sm" size="xs"></q-icon>
+                <p class="title q-mt-xs">{{ event.title }} </p>
             </div>
           </q-badge>
         </template>
@@ -147,7 +144,7 @@ export default {
   props: ['company'],
   components: {
     QCalendar,
-    EventAdder,TasksFilter, SearchEvents
+    EventAdder, TasksFilter, SearchEvents
   },
 
   created() {
@@ -165,21 +162,20 @@ export default {
         this.events = this.userEvents
         this.$q.loading.hide()
       })
-    }
-    else {
-      this.getAllUsersEvents('').then(()=>{
+    } else {
+      this.getAllUsersEvents('').then(() => {
         this.events = this.usersEvents
         this.$q.loading.hide()
       })
     }
   },
-  computed:{
-    ...mapState('events',['toggleFilter','companyName','userEvents','usersEvents']),
+  computed: {
+    ...mapState('events', ['toggleFilter', 'companyName', 'userEvents', 'usersEvents']),
   },
   methods: {
-    ...mapMutations('events',['setCompanyName','setUserEvents']),
+    ...mapMutations('events', ['setCompanyName', 'setUserEvents']),
 
-    ...mapActions('events', ['getAllUserEvents','getAllUsersEvents']),
+    ...mapActions('events', ['getAllUserEvents', 'getAllUsersEvents']),
 
     calendarNext() {
       this.$refs.calendar.next()
@@ -225,16 +221,15 @@ export default {
         s.color = luminosity(event.bgcolor) > 0.5 ? 'black' : 'white'
       }
 
-      if(this.events.filter(e => e.date === event.date).length<3){
-        s.height = (100/ (this.events.filter(e => e.date === event.date).length)) + '%'
-      }
-      else {
+      if (this.events.filter(e => e.date === event.date).length < 3) {
+        s.height = (100 / (this.events.filter(e => e.date === event.date).length)) + '%'
+      } else {
         s.height = (100 / (this.events.filter(e => e.date === event.date).length + 2)) + '%'
       }
       s['align-items'] = 'flex-start'
       return s
     },
-    getEvents(dt){
+    getEvents(dt) {
       const currentDate = QCalendarTry.parseTimestamp(dt)
       const events = []
       for (let i = 0; i < this.userEvents.length; ++i) {
@@ -298,7 +293,7 @@ export default {
     * This function is triggered when the user click on search button and will
     * pop up the search events window.
     */
-    onClickSearch(){
+    onClickSearch() {
       this.$q.dialog({
         component: SearchEvents,
 
@@ -335,9 +330,8 @@ export default {
           this.events = this.userEvents
           this.$q.loading.hide()
         })
-      }
-      else{
-        this.getAllUsersEvents('').then(()=> {
+      } else {
+        this.getAllUsersEvents('').then(() => {
           this.events = this.usersEvents
           this.$q.loading.hide()
         })
@@ -354,12 +348,10 @@ export default {
 
 .title {
   font-weight: bold;
-  font-size: 2em;
   word-break: break-word;
 }
 
 .details {
-  font-size: 1.2em;
   word-break: break-word;
 }
 
@@ -367,13 +359,7 @@ export default {
 @media screen and (max-width: 800px) {
   .title {
     font-weight: bold;
-    font-size: 1.8em;
   }
-
-  .details {
-    font-size: 1em;
-  }
-
 }
 
 @media screen and (max-width: 599px) {
