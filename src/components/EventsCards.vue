@@ -93,6 +93,7 @@ export default {
 <style scoped>
 
 .constrain {
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;

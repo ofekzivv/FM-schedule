@@ -69,7 +69,12 @@
             </q-input>
           </q-card-section>
           <q-card-actions align="center">
-            <q-btn color="primary" label="הוסף" @click="onOKClick" style="padding: 0 1em"/>
+            <q-btn
+                :disable="!formData.details || !formData.title || !formData.platformType || !eventTypeSelector"
+                color="primary"
+                label="הוסף"
+                @click="onOKClick" s
+                tyle="padding: 0 1em"/>
           </q-card-actions>
         </q-card-section>
       </q-card>
