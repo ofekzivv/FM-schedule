@@ -1,12 +1,14 @@
 import firebaseInstance from 'src/middleware/firebase/database'
 
 export default {
+
   // getAllUserEvents sends a request to DB to get all user events, commits the answer to state
   getAllUserEvents: async ({commit}, companyName) => {
     let res = await firebaseInstance.getUserEvents(companyName)
     commit('setUserEvents', res)
     return res
   },
+
   // getAllUserEvents sends a request to DB to get all users events, commits the answer to state
   getAllUsersEvents: async ({commit}, daily) =>{
     const events =  await firebaseInstance.getAllUsersEvents()
