@@ -1,6 +1,6 @@
 <template>
   <q-page class="text-center my-font">
-    <h5 class="text-bold">פאנל אדמין</h5>
+    <h5 class="text-bold text-primary">פאנל אדמין</h5>
     <q-card flat style="max-width: 900px; margin: 0 auto">
       <q-tabs
         v-model="tab"

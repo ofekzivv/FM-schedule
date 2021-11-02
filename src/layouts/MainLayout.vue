@@ -3,31 +3,53 @@
     <q-header class="my-font">
       <q-toolbar>
 
-        <q-toolbar-title class="absolute-center english-font text-h5 text-white large-screen-only">
+        <q-img src="../assets/AppIcon.png" width="55px"/>
+
+        <q-toolbar-title class="absolute-center text-h5 text-white large-screen-only text-bold">
           FLASH MEDIA SCHEDULER
-          <q-icon name="bolt" size="md"/>
         </q-toolbar-title>
 
-        <q-toolbar-title class="absolute-center english-font text-h5 text-white small-screen-only">
+        <q-toolbar-title class="absolute-center text-h5 text-white small-screen-only text-bold">
           FMSCHEDULER
         </q-toolbar-title>
 
         <q-space/>
 
-        <q-btn
-          v-if="!loggedIn"
-          icon="login"
-          label="התחבר"
-          to="/auth"
-          flat
-          size="12px" />
-        <q-btn
-          v-if="loggedIn"
-          @click="logout()"
-          icon="logout"
-          label="התנתק"
-          flat
-          size="12px" />
+        <div class="large-screen-only">
+          <q-btn
+            class="text-bold"
+            v-if="!loggedIn"
+            icon="login"
+            label="התחבר"
+            to="/auth"
+            flat
+            size="12px" />
+          <q-btn
+            class="text-bold"
+            v-if="loggedIn"
+            @click="logout()"
+            icon="logout"
+            label="התנתק"
+            flat
+            size="12px" />
+        </div>
+
+        <div class="small-screen-only">
+          <q-btn
+            class="text-bold"
+            v-if="!loggedIn"
+            icon="login"
+            to="/auth"
+            flat
+            size="12px" />
+          <q-btn
+            class="text-bold"
+            v-if="loggedIn"
+            @click="logout()"
+            icon="logout"
+            flat
+            size="12px" />
+        </div>
 
       </q-toolbar>
     </q-header>

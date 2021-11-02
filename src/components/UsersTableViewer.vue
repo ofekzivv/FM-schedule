@@ -55,7 +55,7 @@
     </q-table>
     <AdminTableViewer/>
     <q-btn @click="addUser()" color="primary" push class="q-ma-sm q-pa-xs">
-      הוסף משתמש חדש
+      הוסף לקוח חדש
     </q-btn>
     <q-btn @click="addAdmin()" color="blue" push class="q-ma-sm q-pa-xs">
       הוסף אדמין

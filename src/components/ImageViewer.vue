@@ -1,8 +1,8 @@
 <template>
   <q-dialog ref="dialog" @hide="onDialogHide">
-      <q-img :src="image" alt="image">
-        <q-btn icon="close" color="white" flat dense @click="onOKClick" />
-      </q-img>
+    <q-img class="image" :src="image" alt="image">
+      <q-btn icon="close" color="white" flat dense @click="onOKClick"/>
+    </q-img>
   </q-dialog>
 </template>
 
@@ -13,23 +13,23 @@ export default {
   methods: {
     // following method is REQUIRED
     // (don't change its name --> "show")
-    show () {
+    show() {
       this.$refs.dialog.show()
     },
 
     // following method is REQUIRED
     // (don't change its name --> "hide")
-    hide () {
+    hide() {
       this.$refs.dialog.hide()
     },
 
-    onDialogHide () {
+    onDialogHide() {
       // required to be emitted
       // when QDialog emits "hide" event
       this.$emit('hide')
     },
 
-    onOKClick () {
+    onOKClick() {
       // on OK, it is REQUIRED to
       // emit "ok" event (with optional payload)
       // before hiding the QDialog
@@ -45,12 +45,12 @@ export default {
 
 <style scoped>
 
-.q-img {
+.image {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 @media screen and (max-width: 599px) {
-  .q-img {
+  .image {
     max-width: 350px;
     max-height: 400px;
   }

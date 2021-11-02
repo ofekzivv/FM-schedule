@@ -43,10 +43,9 @@
             :class="badgeClasses(event, 'header')"
             :style="badgeStyles(event, 'header')"
           >
-            <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs" size="sm"></q-icon>
-            <div class="column">
-              <span class="text-h5 text-bold">{{ event.title }} </span>
-              <span style="font-size: 1.3em;">{{ event.details }}</span>
+            <div class="row items-center">
+              <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs q-mb-sm" size="xs"></q-icon>
+              <p class="title q-mt-xs">{{ event.title }} </p>
             </div>
           </q-badge>
         </template>
@@ -352,5 +351,35 @@ export default {
 .q-calendar-daily__intervals-head {
   display: none;
 }
+
+
+.title {
+  font-weight: bold;
+  word-break: break-word;
+}
+
+.details {
+  word-break: break-word;
+}
+
+
+@media screen and (max-width: 800px) {
+  .title {
+    font-weight: bold;
+  }
+}
+
+@media screen and (max-width: 599px) {
+
+  .title {
+    font-weight: bold;
+    font-size: 1em;
+  }
+
+  .details {
+    font-size: 0.8em;
+  }
+}
+
 </style>
 

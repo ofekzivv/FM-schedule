@@ -45,8 +45,8 @@
             :style="styles(event, 'day')"
           >
             <div class="row items-center">
-                <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs q-mb-sm" size="xs"></q-icon>
-                <p class="title q-mt-xs">{{ event.title }} </p>
+              <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs q-mb-sm" size="xs"></q-icon>
+              <p class="title q-mt-xs">{{ event.title }} </p>
             </div>
           </q-badge>
         </template>
@@ -133,7 +133,7 @@ export default {
     return {
       isAdmin: false,
       selectedDate: '',
-       test: false,
+      test: false,
       events: [],
       cName: '',
       getDailyEvents: 0,

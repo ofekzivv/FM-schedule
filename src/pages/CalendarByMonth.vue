@@ -2,8 +2,8 @@
   <div class="my-font">
     <div class="q-mt-lg items-center">
       <div class="select text-center" style="max-width: 500px; width: 80%; margin: 2em auto;">
-        <p class="text-h5">בחר משתמש:</p>
-        <q-select v-model="companyName" :options="options" label="משתמש" />
+        <p class="text-h5 text-bold text-primary">בחר לקוח</p>
+        <q-select v-model="companyName" :options="options" label="לקוח" />
       </div>
     </div>
     <div>
@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       companyName: null,
-      options: ['כל המשתמשים']
+      options: ['כל הלקוחות']
     }
   },
   computed: mapState('users',['users']),
