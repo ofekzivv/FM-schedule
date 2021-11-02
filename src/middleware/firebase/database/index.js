@@ -303,7 +303,6 @@ function getAdmin(name) {
  checkAdmin checks if the user entering the system is an admin or not, returns true if admin and false if user
 */
 export async function checkAdmin(email, password) {
-  debugger
   const admins = await getAllAdmins()
   for (let i = 0; i < admins.length; i++) {
     if (admins[i].email === email && admins[i].password === password) {

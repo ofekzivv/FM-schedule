@@ -135,7 +135,7 @@ export default {
       selectedDate: '',
       test: false,
       events: [],
-      cName: '',
+      cName: null,
       getDailyEvents: 0,
       output: null,
       searchBar: false,
@@ -148,9 +148,9 @@ export default {
   },
 
   created() {
-    debugger
+    this.cName = this.company
     this.isAdmin = LocalStorage.getItem('admin')
-    if (this.cName !== 'כל המשתמשים') {
+    if (this.cName !== 'כל הלקוחות' && this.cName ) {
       this.setCompanyName(this.cName)
       if (this.$route.params.companyName) {
         this.cName = this.$route.params.companyName
@@ -165,6 +165,7 @@ export default {
     } else {
       this.getAllUsersEvents('').then(() => {
         this.events = this.usersEvents
+        console.log(this.events)
         this.$q.loading.hide()
       })
     }
@@ -174,8 +175,7 @@ export default {
   },
   methods: {
     ...mapMutations('events', ['setCompanyName', 'setUserEvents']),
-
-    ...mapActions('events', ['getAllUserEvents', 'getAllUsersEvents']),
+    ...mapActions('events', ['getAllUserEvents', 'getAllUsersEvents', 'FilterByToggle']),
 
     calendarNext() {
       this.$refs.calendar.next()
@@ -320,23 +320,22 @@ export default {
     },
   },
   watch: {
-    company(newValue) {
+    async company(newValue) {
       this.$q.loading.show()
-      console.log("company on watch", newValue)
       this.cName = newValue
-      debugger
-      if (newValue !== 'כל המשתמשים') {
-        this.getAllUserEvents(this.cName).then(() => {
+      if (newValue !== 'כל הלקוחות') {
+        await this.getAllUserEvents(this.cName).then(() => {
           this.events = this.userEvents
           this.$q.loading.hide()
         })
       } else {
-        this.getAllUsersEvents('').then(() => {
+        await this.getAllUsersEvents('').then(async () => {
           this.events = this.usersEvents
+          await this.FilterByToggle('all')
           this.$q.loading.hide()
         })
       }
-    }
+    },
   }
 }
 

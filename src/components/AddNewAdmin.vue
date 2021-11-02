@@ -70,11 +70,9 @@ export default {
       this.$emit('hide')
     },
     async onOKClick() {
-      debugger
       this.$q.loading.show()
       this.$refs.email.validate()
      await firebaseIndex.firebase.auth().createUserWithEmailAndPassword(this.formData.email, this.formData.password).then(user => {
-      debugger
        console.log(user.user.uid)
         window.user = user;
         window.user.uid = user.user.uid;

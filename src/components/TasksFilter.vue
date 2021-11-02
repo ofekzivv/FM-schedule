@@ -44,9 +44,10 @@ export default {
     * there is two options of filter: filter single user events or
     * filter all the events of all the users.
     * */
+
     async changeFilter() {
       await this.setToggleFilter(this.filteredGroup)
-      if (this.company !== "כל המשתמשים") {
+      if (this.company !== "כל הלקוחות") {
         await this.getAllUserEvents(this.company)
         await this.FilterByToggle('')
       } else {
