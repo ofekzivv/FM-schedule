@@ -93,6 +93,7 @@ export default {
 <style scoped>
 
 .constrain {
+  height: auto;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -111,7 +112,7 @@ export default {
 .q-card {
   overflow: hidden;
   min-height: 520px;
-  width: 280px;
+  width: 240px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
