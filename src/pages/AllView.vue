@@ -1,25 +1,27 @@
 <template>
 
   <div class="q-pa-md row items-start q-gutter-md">
-    <q-card v-for="(event,index) of events" :key="index"
+    <q-card
+      v-for="(event,index) of events" :key="index"
       class="my-card text-black">
-      <q-card-section>
-        <q-item-label>שם חברה</q-item-label>
-        <div class="text-bold text-h5">{{event.companyName}}</div>
+      <q-card-section class="section1">
+        <q-item-label class="text-bold">שם חברה:</q-item-label>
+        <div>{{ event.companyName }}</div>
 
-        <q-item-label>תאריך</q-item-label>
-        <div >{{event.date}}</div>
-      </q-card-section>
-      <q-separator/>
-      <q-card-section class="card-content">
-        <q-item-label class="text-bold">שם אירוע</q-item-label>
-        <div class="card-content">{{event.title}}</div>
-        <q-item-label class="text-bold">פרטים</q-item-label>
-        <div class="card-content">{{event.title}}</div>
-        <q-item-label class="text-bold">פלטפורמה</q-item-label>
-        <div class="card-content">{{event.platformType}}</div>
-        <q-item-label class="text-bold">סוג אירוע</q-item-label>
-        <div class="card-content">{{event.eventType}}</div>
+        <q-item-label class="text-bold">תאריך:</q-item-label>
+        <div>{{ event.date }}</div>
+        <q-item-label class="text-bold">סוג אירוע:</q-item-label>
+        <div class="card-content">{{ event.eventType }}</div>
+        <!--      </q-card-section>-->
+
+        <!--      <q-card-section>-->
+        <q-item-label class="text-bold">שם אירוע:</q-item-label>
+        <div class="card-content">{{ event.title }}</div>
+        <q-item-label class="text-bold">פרטים:</q-item-label>
+        <div class="card-content">{{ event.title }}</div>
+        <q-item-label class="text-bold">פלטפורמה:</q-item-label>
+        <div class="card-content">{{ event.platformType }}</div>
+
       </q-card-section>
     </q-card>
   </div>
@@ -73,23 +75,18 @@ export default {
 </script>
 
 <style>
-.q-pa-md{
-  justify-content: center;
-}
-.my-card{
-  width: 500px;
-  display: flex;
-  box-shadow: rgba(95, 21, 19, 0.5) 2px 2px 10px 2px;
-  font-size: 30px;
-}
-.card-content{
 
+.my-card {
+  display: inline-block;
+  width: 500px;
+  box-shadow: rgb(253, 170, 1) 5px 5px 10px 2px;
+  font-size: 30px;
+  border-radius: 10%;
 }
-.events-table  *{
-  font-size: 20px;
-}
-@media (max-width: 500px){
-  .my-card{
+
+@media (max-width: 500px) {
+  .my-card {
+    justify-content: center;
     max-width: 370px;
     font-size: 15px;
   }

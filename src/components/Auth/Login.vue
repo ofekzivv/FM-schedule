@@ -66,7 +66,6 @@ export default {
   },
   computed:{
     ...mapState('auth', ['admin']),
-
   },
   methods: {
     ...mapActions('auth', ['loginUser']),

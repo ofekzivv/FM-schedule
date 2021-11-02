@@ -39,9 +39,7 @@ import AdminTableViewer from "components/AdminTableViewer"
 
 export default {
   name: 'PageIndex',
-  components: {
-    EventAdder, EventsCards, AddNewUser,  UsersTableViewer,  AdminTableViewer
-  },
+  components: {EventAdder, EventsCards, AddNewUser,  UsersTableViewer,  AdminTableViewer},
   data() {
     return {
       tab: 'allUsers',
