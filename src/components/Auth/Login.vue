@@ -77,8 +77,7 @@ export default {
       this.$refs.email.validate()
       this.$refs.password.validate()
       if (!this.$refs.email.hasError && !this.$refs.password.hasError) {
-
-
+        this.formData.email = this.formData.email.toLowerCase()
         this.loginUser({formData: this.formData})
           .then(async() => {
             if (!window.user) {
