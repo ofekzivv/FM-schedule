@@ -26,6 +26,7 @@ export default {
         password:payload.user.password,
         logo: payload.editedUser.logoInput,
         color: payload.editedUser.colorInput,
+        uid: payload.user.uid,
         events: events
       })
       await firebaseInstance.deleteUserFromDb(payload.user.companyName)
@@ -36,7 +37,8 @@ export default {
         email: payload.editedUser.emailInput,
         password: payload.user.password,
         logo: payload.editedUser.logoInput,
-        color: payload.editedUser.colorInput
+        color: payload.editedUser.colorInput,
+        uid: payload.editedUser.uid
       })
     }
   },
