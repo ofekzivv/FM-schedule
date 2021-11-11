@@ -12,7 +12,6 @@
     >
       <template v-slot:header="props">
         <q-tr :props="props">
-          <q-th class="bg-primary text-white" style="font-size: 1em; font-weight: bold">שם חברה</q-th>
           <q-th
             v-for="col in props.cols"
             class="bg-primary text-white"
@@ -29,18 +28,6 @@
 
       <template v-slot:body="props">
         <q-tr :props="props">
-          <q-td
-            v-if="company"
-            class="text-bold text-white text-center"
-            :style="{background : props.row.bgcolor}"
-          >{{ company }}
-          </q-td>
-          <q-td
-            v-if="!company"
-            class="text-bold text-white text-center"
-            :style="{background : props.row.bgcolor}"
-          >{{ props.row.companyName }}
-          </q-td>
           <q-td
             :style="{background : props.row.bgcolor}"
             :class="{ 'text-bold text-white' : col.label === 'שם חברה' , 'bg-white' : col.label !== 'שם חברה'}"
@@ -71,14 +58,13 @@ export default {
   computed: {
     ...mapState('events', ['userEvents', 'usersEvents'])
   },
-
   name: "AllView",
+  props: ['company'],
   components: {
     mediaViewer
   },
   data() {
     return {
-      company: null,
       openMore: false,
       initialPagination: {
         sortBy: 'desc',
@@ -86,6 +72,7 @@ export default {
         rowsPerPage: 20
       },
       columns: [
+        {name: 'companyName', align: 'center', label: 'שם חברה', field: 'companyName', sortable: true},
         {name: 'date', align: 'center', label: 'תאריך', field: 'date', sortable: true},
         {name: 'title', required: true, label: 'אירוע', align: 'center', field: 'title', sortable: true},
         {name: 'platformType', align: 'center', label: 'פלטפורמה', field: 'platformType', sortable: true},
@@ -101,7 +88,6 @@ export default {
       if (!this.$route.params.companyName) {
         this.events = await this.getAllUsersEvents('')
       } else {
-        this.company = this.$route.params.companyName;
         this.events = await this.getAllUserEvents(this.$route.params.companyName)
       }
     },
@@ -142,6 +128,7 @@ export default {
   },
   created() {
     this.getEvents()
+    console.log(this.usersEvents)
   }
 }
 </script>

@@ -148,7 +148,7 @@ export async function getUserEvents(companyName) {
  addAdmin adds inserted admin to the DB
 */
 async function addAdmin(options) {
-  return await fireBaseInstance.firebase.database().ref(`admins/${options.uid}`).set({
+  return await fireBaseInstance.firebase.database().ref(`admins/${options.companyName}`).set({
     email: options.email,
     companyName: options.companyName,
     password: options.password,
@@ -310,9 +310,6 @@ export async function checkAdmin(email, password) {
     }
   }
   return false
-}
-async function getCompanyNameWithUid(uid){
-
 }
 
 export default {
