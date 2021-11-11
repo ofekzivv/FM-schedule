@@ -6,6 +6,5 @@ export default {
     email: '',
     companyName: '',
     logo:'',
-    uid:''
   }
 }

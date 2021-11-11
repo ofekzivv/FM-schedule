@@ -185,8 +185,7 @@ async function addUser(options) {
     companyName: options.companyName,
     password: options.password,
     logo: options.logo,
-    color: options.color,
-    uid: options.uid
+    color: options.color
   }).then(async () => {
     if (options.events) {
       for (let i = 0; i < options.events.length; i++) {

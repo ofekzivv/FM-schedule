@@ -65,8 +65,7 @@ export default {
         companyName: '',
         generatedPassword: '',
         profilePic: null,
-        companyColor: '#000000',
-        uid: ''
+        companyColor: '#000000'
       }
     }
   },
@@ -105,9 +104,9 @@ export default {
       this.$refs.email.validate()
       this.formData.generatedPassword = this.generatePassword()
 
-       await firebaseIndex.firebase.auth().createUserWithEmailAndPassword(this.formData.email, this.formData.generatedPassword).then(user => {
+       firebaseIndex.firebase.auth().createUserWithEmailAndPassword(this.formData.email, this.formData.generatedPassword).then(user => {
          window.user = user;
-         this.formData.uid = user.user.uid
+         window.user.uid = this.formData.generatedPassword;
          console.log('Signed in')
        })
 
@@ -117,8 +116,7 @@ export default {
         email: this.formData.email,
         password: this.formData.generatedPassword,
         logo: this.formData.profilePic,
-        color: this.formData.companyColor,
-        uid: this.formData.uid
+        color: this.formData.companyColor
       })
       this.$q.notify({
         message: 'הוספת את המשתמש בהצלחה! ',
