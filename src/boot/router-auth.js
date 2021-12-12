@@ -1,11 +1,12 @@
 import {LocalStorage} from "quasar";
 
-
 export default ({router}) => {
   router.beforeEach((to, from, next) => {
     let companyName = LocalStorage.getItem('companyName')
     let loggedIn = LocalStorage.getItem('loggedIn')
     let admin = LocalStorage.getItem('admin')
+
+
     if (!loggedIn && to.path !== '/auth') {
       return next('/auth');
     }
@@ -14,8 +15,7 @@ export default ({router}) => {
       return next(`/${companyName}`);
     }
 
-    if (admin && loggedIn && to.path === '/')
-    {
+    if (admin && loggedIn && to.path === '/') {
       return next('/admin');
     }
     next();

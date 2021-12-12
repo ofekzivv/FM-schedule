@@ -2,7 +2,7 @@
   <div class="my-font container">
     <div class="row justify-center items-center q-mb-sm">
 
-      <div >
+      <div>
         <q-btn color="blue" push label="יום קודם" @click="calendarPrev" class="q-mr-xs"/>
         <q-btn color="blue" push label="יום הבא" @click="calendarNext"/>
       </div>

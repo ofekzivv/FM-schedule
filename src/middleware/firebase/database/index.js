@@ -306,6 +306,7 @@ export async function checkAdmin(email, password) {
   const admins = await getAllAdmins()
   for (let i = 0; i < admins.length; i++) {
     if (admins[i].email === email && admins[i].password === password) {
+      console.log('isadmin:true')
       return true
     }
   }

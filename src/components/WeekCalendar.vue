@@ -55,7 +55,6 @@
     <q-dialog v-if="this.test">
       <EventAdder/>
     </q-dialog>
-
   </div>
 </template>
 
@@ -116,9 +115,7 @@ function luminosity(color) {
   if (typeof color !== 'string' && (!color || color.r === undefined)) {
     throw new TypeError('Expected a string or a {r, g, b} object as color')
   }
-
-  const
-    rgb = typeof color === 'string' ? textToRgb(color) : color,
+  const rgb = typeof color === 'string' ? textToRgb(color) : color,
     r = rgb.r / 255,
     g = rgb.g / 255,
     b = rgb.b / 255,

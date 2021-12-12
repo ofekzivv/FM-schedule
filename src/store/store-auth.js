@@ -11,14 +11,14 @@ const mutations = {
   setLoggedIn(state, value) {
     state.loggedIn = value
   },
-  setAdmin(state,value){
+  setAdmin(state, value) {
     state.admin = value
   }
 }
 
 const actions = {
 
-  registerUser({},payload) {
+  registerUser({}, payload) {
     return firebaseInstance.firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
       .then(response => {
         window.user = response.user;
@@ -28,19 +28,18 @@ const actions = {
       })
   },
 
-  async loginUser({commit},payload) {
-    let isAdmin = await checkAdmin(payload.formData.email, payload.formData.password )
+  async loginUser({commit}, payload) {
+    let isAdmin = await checkAdmin(payload.formData.email, payload.formData.password)
     console.log('isAdmin = ', isAdmin)
-    if( isAdmin ){
-      commit('setAdmin',true)
+    if (isAdmin) {
+      commit('setAdmin', true)
       LocalStorage.set('admin', true)
-    }
-    else {
-      commit('setAdmin',false)
+    } else {
+      commit('setAdmin', false)
       LocalStorage.set('admin', false)
     }
     return await firebaseInstance.firebase.auth().signInWithEmailAndPassword(payload.formData.email, payload.formData.password)
-      .then( async response => {
+      .then(async response => {
         window.user = response.user
         window.user.password = payload.formData.password
       }).catch(error => {
@@ -50,8 +49,8 @@ const actions = {
 
   logoutUser({commit}) {
     return firebaseInstance.firebase.auth().signOut().then(() => {
-      commit('setAdmin',false)
-      commit('setLoggedIn',false)
+      commit('setAdmin', false)
+      commit('setLoggedIn', false)
       console.log('User Signed out')
     }).catch(err => {
       console.log(err)
@@ -66,12 +65,12 @@ const actions = {
         window.user = user
         this.$router.push('/')
           .catch(() => {
-        })
+          })
       } else {
         commit('setLoggedIn', false)
         LocalStorage.set('loggedIn', false)
         window.user = null
-        this.$router.replace('/auth')
+        return this.$router.replace('/auth')
       }
     })
   }

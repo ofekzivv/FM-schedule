@@ -1,4 +1,3 @@
-
 import firebaseInstance from '../../middleware/firebase/database'
 import firebase from '../../middleware/firebase'
 

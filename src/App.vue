@@ -14,7 +14,6 @@ export default {
   methods: {
     ...mapActions('auth', ['handleAuthStateChange'])
   },
-
   mounted() {
     this.handleAuthStateChange()
   }

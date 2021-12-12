@@ -13,7 +13,6 @@ firebase.initializeApp( {
   measurementId: "G-NB3G8ZGPNB"
 });
 
-
 export default {
   firebase,
   app

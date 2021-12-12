@@ -4,8 +4,6 @@ import router from './router'
 import store from './store'
 import './quasar'
 import VueHtmlToPaper from "vue-html-to-paper";
-
-
 import firebaseInstance from './middleware/firebase'
 
 Vue.config.productionTip = false

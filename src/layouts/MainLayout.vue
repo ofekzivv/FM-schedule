@@ -162,6 +162,8 @@ export default {
   created() {
     this.isAdmin = LocalStorage.getItem('admin')
     console.log('is Admin', this.isAdmin)
+
+
   }
 }
 </script>
